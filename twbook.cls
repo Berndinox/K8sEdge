@@ -93,7 +93,7 @@ numbers=noendperiod]{scrbook}
 \RequirePackage{acronym}
 \RequirePackage{amsmath,amssymb,amsfonts,amstext}
 \RequirePackage[\sprache]{babel}
-\ifstr{\sprache}{ngerman}
+\Ifstr{\sprache}{ngerman}
 {%
  %ngerman
  %change \sprache to german to translate everything else; babel's already loaded
@@ -165,7 +165,7 @@ urlcolor=TWblue, urlbordercolor=white}
 \addtocounter{tocdepth}{0}
 \addtokomafont{pagenumber}{\sffamily}
 \pagestyle{scrheadings}
-\clearscrheadings
+\clearmainofpairofpagestyles
 \ihead[]{}
 \chead[]{}
 \ohead[]{}
@@ -193,7 +193,7 @@ urlcolor=TWblue, urlbordercolor=white}
 }
 \sloppy\tolerance=10000
 
-\ifstr{\doctype}{}
+\Ifstr{\doctype}{}
 {
   \addtolength{\oddsidemargin}{-33pt}
   \addtolength{\evensidemargin}{-33pt}
@@ -212,174 +212,174 @@ urlcolor=TWblue, urlbordercolor=white}
 \renewcommand*\chapter{\par\global\@topnum\z@\@afterindentfalse%
 \secdef\@chapter\@schapter}
 
-\ifstr{\sprache}{english}{%
-  \ifstr{\doctype}{BACHELORARBEIT}{%
+\Ifstr{\sprache}{english}{%
+  \Ifstr{\doctype}{BACHELORARBEIT}{%
     \renewcommand*{\doctype}{BACHELORTHESIS}}{}
-  \ifstr{\doctype}{MASTERARBEIT}{%
+  \Ifstr{\doctype}{MASTERARBEIT}{%
     \renewcommand*{\doctype}{MASTERTHESIS}}{}
-  \ifstr{\doctype}{SEMINARARBEIT}{%
+  \Ifstr{\doctype}{SEMINARARBEIT}{%
     \renewcommand*{\doctype}{SEMINAR PAPER}}{}
-  \ifstr{\doctype}{PROJEKTBERICHT}{%
+  \Ifstr{\doctype}{PROJEKTBERICHT}{%
     \renewcommand*{\doctype}{PROJECT REPORT}}{}
-  \ifstr{\doctype}{PRAKTIKUMSBERICHT}{%
+  \Ifstr{\doctype}{PRAKTIKUMSBERICHT}{%
     \renewcommand*{\doctype}{INTERNSHIP REPORT}}{}
-  \ifstr{\doctype}{Laborbericht}{%
+  \Ifstr{\doctype}{Laborbericht}{%
     \renewcommand*{\doctype}{LABORATORY REPORT}}}{}
 
   \renewcommand*{\doctypeprint}{\doctype}
-  \ifstr{\doctypeprint}{MASTERTHESIS}{%
+  \Ifstr{\doctypeprint}{MASTERTHESIS}{%
     \renewcommand*{\doctypeprint}{MASTER THESIS}}{}
-  \ifstr{\doctypeprint}{BACHELORTHESIS}{%
+  \Ifstr{\doctypeprint}{BACHELORTHESIS}{%
     \renewcommand*{\doctypeprint}{BACHELOR PAPER}}{}
 
-\ifstr{\sprache}{german}{%
-\ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
+\Ifstr{\sprache}{german}{%
+\Ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
 \renewcommand*{\degreecourse}{Biomedical Engineering}}{}
-  \ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
+  \Ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
 \renewcommand*{\degreecourse}{Urbane Erneuerbare Energietechniken}}{}
-\ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
+\Ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
 \renewcommand*{\degreecourse}{Elektronik}}{}
-\ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW}%
+\Ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW}%
 \renewcommand*{\degreecourse}{Elektronik/\allowbreak{}Wirtschaft}}{}
-\ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
+\Ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
 \renewcommand*{\degreecourse}{Informations- und %
   Kommunikationssysteme}}{}
-\ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
+\Ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
 \renewcommand*{\degreecourse}{Informatik}}{}
-\ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
+\Ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
 \renewcommand*{\degreecourse}{Internationales %
   Wirtschaftsingenieurwesen}}{}
-\ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
+\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
 \renewcommand*{\degreecourse}{Mechatronik/\allowbreak{}Robotik}}{}
-\ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
+\Ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
 \renewcommand*{\degreecourse}{Maschinenbau}}{}
-\ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
+\Ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
 \renewcommand*{\degreecourse}{Smart Homes und Assistive Technologies}}{}
-\ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
+\Ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
 \renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
+\Ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
 \renewcommand*{\degreecourse}{Verkehr und Umwelt}}{}
-\ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI}
+\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI}
 \renewcommand*{\degreecourse}{Wirtschaftsinformatik}}{}
-\ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
+\Ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
 \renewcommand*{\degreecourse}{Medical Engineering \& e-Health}}{}
-\ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
+\Ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
 \renewcommand*{\degreecourse}{Erneuerbare Urbane Energiesysteme}}{}
-\ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
+\Ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
 \renewcommand*{\degreecourse}{Embedded Systems}}{}
-\ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
+\Ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
 \renewcommand*{\degreecourse}{Gesundheits- und %
   Rehabilitationstechnik}}{}
-\ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
+\Ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
 \renewcommand*{\degreecourse}{Game Engineering und Simulation}}{}
-\ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC}%
+\Ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC}%
 \renewcommand*{\degreecourse}{IT-Security}}{}
-\ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
+\Ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
 \renewcommand*{\degreecourse}{Industrielle Elektronik}}{}
-\ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
+\Ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
 \renewcommand*{\degreecourse}{Intelligent Transport Systems}}{}
-\ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
+\Ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
 \renewcommand*{\degreecourse}{Internationales %
   Wirtschaftsingenieurwesen}}{}
-\ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
+\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
 \renewcommand*{\degreecourse}{Mechatronik/\allowbreak{}Robotik}}{}
-\ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
+\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
 \renewcommand*{\degreecourse}{Integrative Stadtentwicklung -- Smart City}}{}
-\ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
+\Ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
 \renewcommand*{\degreecourse}{Softwareentwicklung}}{}
-\ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
+\Ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
 \renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE_en}%
+\Ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE_en}%
 \renewcommand*{\degreecourse}{Tissue Engineering and Regenerative %
 Medicine}}{}
-\ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI}%
+\Ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI}%
 \renewcommand*{\degreecourse}{Telekommunikation und %
   Internettechnologien}}{}
-\ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
+\Ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
 \renewcommand*{\degreecourse}{Innovations- und %
   Technologiemanagement}}{}
-\ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
+\Ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
 \renewcommand*{\degreecourse}{Technisches Umweltmanagement und %
   {\"O}kotoxikologie}}{}
-\ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI}%
+\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI}%
 \renewcommand*{\degreecourse}{Wirtschaftsinformatik}}
 }{}
 
-\ifstr{\sprache}{english}{%
-\ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
+\Ifstr{\sprache}{english}{%
+\Ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
 \renewcommand*{\degreecourse}{Biomedical Engineering}}{}
-\ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
+\Ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
 \renewcommand*{\degreecourse}{Urban Renewable Energy Technologies}}{}
-\ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
+\Ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
 \renewcommand*{\degreecourse}{Electronic Engineering}}{}
-\ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW_en}%
+\Ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW_en}%
 \renewcommand*{\degreecourse}{Electronics and Business}}{}
-\ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
+\Ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
 \renewcommand*{\degreecourse}{Information and Communication Systems %
 and Services}}{}
-\ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
+\Ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
 \renewcommand*{\degreecourse}{Computer Science}}{}
-\ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
+\Ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
 \renewcommand*{\degreecourse}{International Business and %
 Engineering}}{}
-\ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
+\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
 \renewcommand*{\degreecourse}{Mechatronics/\allowbreak{}Robotics}}{}
-\ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
+\Ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
 \renewcommand*{\degreecourse}{Maschinenbau}}{}
-\ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
+\Ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
 \renewcommand*{\degreecourse}{Smart Homes und Assistive Technologies}}{}
-\ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
+\Ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
 \renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
+\Ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
 \renewcommand*{\degreecourse}{Transport and Environment}}{}
-\ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
+\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
 \renewcommand*{\degreecourse}{Business Informatics}}{}
-\ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
+\Ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
 \renewcommand*{\degreecourse}{Medical Engineering \& e-Health}}{}
-\ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
+\Ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
 \renewcommand*{\degreecourse}{Renewable Urban Energy Systems}}{}
-\ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
+\Ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
 \renewcommand*{\degreecourse}{Embedded Systems}}{}
-\ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
+\Ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
 \renewcommand*{\degreecourse}{Healthcare and Rehabilitation %
   Technology}}{}
-\ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
+\Ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
 \renewcommand*{\degreecourse}{Game Engineering and Simulation %
   Technology}}{}
-\ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC_en}%
+\Ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC_en}%
 \renewcommand*{\degreecourse}{IT-Security}}{}
-\ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
+\Ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
 \renewcommand*{\degreecourse}{Industrial Electronics}}{}
-\ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
+\Ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
 \renewcommand*{\degreecourse}{Intelligent Transport Systems}}{}
-\ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
+\Ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
 \renewcommand*{\degreecourse}{International Business and %
 Engineering}}{}
-\ifstr{\degreecourse}{MMB}{\renewcommand*{\cover}{PICs/BMB}%
+\Ifstr{\degreecourse}{MMB}{\renewcommand*{\cover}{PICs/BMB}%
 \renewcommand*{\degreecourse}{Maschinenbau}}{}
-\ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
+\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
 \renewcommand*{\degreecourse}{Mechatronics/\allowbreak{}Robotics}}{}
-\ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
+\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
 \renewcommand*{\degreecourse}{Smart City}}{}
-\ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
+\Ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
 \renewcommand*{\degreecourse}{Software Engineering}}{}
-\ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
+\Ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
 \renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE}%
+\Ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE}%
 \renewcommand*{\degreecourse}{Tissue Engineering and Regenerative %
 Medicine}}{}
-\ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI_en}%
+\Ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI_en}%
 \renewcommand*{\degreecourse}{Telecommunications- and Internet %
   Technologies}}{}
-\ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
+\Ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
 \renewcommand*{\degreecourse}{Innovation and Technology Management}}{}
-\ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
+\Ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
 \renewcommand*{\degreecourse}{Environmental Management and %
   Ecotoxicolgy}}{}
-\ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
+\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
 \renewcommand*{\degreecourse}{Information Systems Management}}{}
 }{}
-\ifstr{\doctype}{}{}{\ifstr{\institution}{Technikum}%
+\Ifstr{\doctype}{}{}{\Ifstr{\institution}{Technikum}%
   {\renewcommand*{\cover}{PICs/Arbeiten.jpg}}%
   {\renewcommand*{\cover}{PICs/Arbeiten_Academy.jpg}}}
 \newcommand*{\@supervisor}{}
@@ -416,7 +416,7 @@ Medicine}}{}
   \ThisTileWallPaper{\paperwidth}{\paperheight}{\cover}%
 }
 
-\ifstr{\doctype}{}
+\Ifstr{\doctype}{}
 {
 \color{TWblue}
 \null\vspace{125pt}
@@ -439,16 +439,16 @@ Medicine}}{}
 \vspace{17pt}
 
 \hspace*{-34pt}\scalebox{1.5}{%
-  \ifstr{\degreecourse}{Technisches Umweltmanagement und
+  \Ifstr{\degreecourse}{Technisches Umweltmanagement und
     {\"O}kotoxikologie}
   {
     \begin{minipage}{0.64\linewidth}
-      \ifstr{\sprache}{german}{\ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
+      \Ifstr{\sprache}{german}{\Ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\Ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\Ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\Ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
       \degreecourse
     \end{minipage}\vspace{5pt}}
   {
     \begin{minipage}{0.64\linewidth}
-      \ifstr{\sprache}{german}{\ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
+      \Ifstr{\sprache}{german}{\Ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\Ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\Ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\Ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
       \degreecourse\vspace{5pt}
     \end{minipage}}}
 
@@ -459,19 +459,19 @@ Medicine}}{}
 
 \Large
 \hspace*{-34pt}%
-\ifstr{\sprache}{german}{Ausgef{\"u}hrt von:~}{By:~}%
+\Ifstr{\sprache}{german}{Ausgef{\"u}hrt von:~}{By:~}%
 \begin{minipage}[t]{0.5\linewidth}\@author\end{minipage}%
 \vspace{0.33\baselineskip}%
 
 \hspace*{-34pt}%
-\ifstr{\sprache}{german}{Personenkennzeichen:~}{Student Number:~}%
+\Ifstr{\sprache}{german}{Personenkennzeichen:~}{Student Number:~}%
 \begin{minipage}[t]{0.25\linewidth}\@studentnumber\end{minipage}%
 \vspace{\baselineskip}%
 
 \hspace*{-34pt}%
 \ifx\@secondsupervisor\@empty%
 \ifx\@supervisordesc\@empty%
-\ifstr{\sprache}{german}{BegutachterIn:~}{Supervisor:~}%
+\Ifstr{\sprache}{german}{BegutachterIn:~}{Supervisor:~}%
 \else%
 \@supervisordesc:~%
 \fi%
@@ -480,7 +480,7 @@ Medicine}}{}
 \end{minipage}\vspace{0.8\baselineskip}%
 \else%
 \ifx\@supervisordesc\@empty%
-\ifstr{\sprache}{german}{\gdef\@supervisordesc{BegutachterInnen}}{\gdef\@supervisordesc{Supervisors}}%
+\Ifstr{\sprache}{german}{\gdef\@supervisordesc{BegutachterInnen}}{\gdef\@supervisordesc{Supervisors}}%
 \fi%
 \ifx\@secondsupervisordesc\@empty%
 \gdef\@secondsupervisordesc{}%
@@ -510,12 +510,12 @@ Medicine}}{}
 
 \hspace*{-34pt}%
 \@place%
-\ifstr{\sprache}{german}{, den~}{,~}\today%
+\Ifstr{\sprache}{german}{, den~}{,~}\today%
 
 \clearpage
 \color{black}\normalsize\mdseries
 
-\ifstr{\doctype}{PROJEKTBERICHT}{
+\Ifstr{\doctype}{PROJEKTBERICHT}{
 \ifx\@kurzfassung\@empty
 \else\clearpage
 \chapter*{Kurzfassung}
@@ -524,7 +524,7 @@ Medicine}}{}
 \else\vfill\paragraph*{Schlagworte:}\@schlagworte
 \fi
 \fi}{}
-\ifstr{\doctype}{PROJECT REPORT}{
+\Ifstr{\doctype}{PROJECT REPORT}{
 \ifx\@outline\@empty
 \else\clearpage
 \chapter*{Abstract}
@@ -534,7 +534,7 @@ Medicine}}{}
 \fi
 \fi}{}
 
-\ifstr{\doctype}{SEMINARARBEIT}{
+\Ifstr{\doctype}{SEMINARARBEIT}{
 \ifx\@kurzfassung\@empty
 \else\clearpage
 \chapter*{Kurzfassung}
@@ -551,7 +551,7 @@ Medicine}}{}
 \else\vfill\paragraph*{Keywords:}\@keywords
 \fi
 \fi}{}
-\ifstr{\doctype}{SEMINAR PAPER}{
+\Ifstr{\doctype}{SEMINAR PAPER}{
 \ifx\@outline\@empty
 \else\clearpage
 \chapter*{Abstract}
@@ -569,7 +569,7 @@ Medicine}}{}
 \fi
 \fi}{}
 
-\ifstr{\doctype}{BACHELORARBEIT}{
+\Ifstr{\doctype}{BACHELORARBEIT}{
   \chapter*{Eidesstattliche Erkl{\"a}rung}
     \glqq Ich, als Autor / als Autorin und Urheber / Urheberin der
     vorliegenden Arbeit, best{\"a}tige mit meiner Unterschrift die
@@ -629,7 +629,7 @@ Medicine}}{}
     \setcounter{page}{1}}{
 
 
-\ifstr{\doctype}{MASTERARBEIT}{
+\Ifstr{\doctype}{MASTERARBEIT}{
   \chapter*{Eidesstattliche Erkl{\"a}rung}
     \glqq Ich, als Autor / als Autorin und Urheber / Urheberin der
     vorliegenden Arbeit, best{\"a}tige mit meiner Unterschrift die
@@ -689,7 +689,7 @@ Medicine}}{}
     \setcounter{page}{1}}{
 
 
-\ifstr{\doctype}{BACHELORTHESIS}{
+\Ifstr{\doctype}{BACHELORTHESIS}{
   \chapter*{Declaration}
     ``As author and creator of this work to hand, I confirm with my
     signature knowledge of the relevant copyright regulations
@@ -747,7 +747,7 @@ Medicine}}{}
     \setcounter{page}{1}}{
 
 
-\ifstr{\doctype}{MASTERTHESIS}{
+\Ifstr{\doctype}{MASTERTHESIS}{
   \chapter*{Declaration}
     ``As author and creator of this work to hand, I confirm with my
     signature knowledge of the relevant copyright regulations
@@ -812,7 +812,7 @@ Medicine}}{}
   \end{titlepage}
  }
 
-\ifstr{\doctype}{}
+\Ifstr{\doctype}{}
 {
   \renewcommand*{\labelitemi}{
     \huge\raisebox{0.2ex}{$\centerdot$}\hspace{-5pt}}
