@@ -1,0 +1,208 @@
+%
+% FH Technikum Wien
+% !TEX encoding = UTF-8 Unicode
+%
+
+\documentclass[MSC,Master,english]{twbook}%\documentclass[Bachelor,BMR,ngerman]{twbook}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% BERND: Additional Pkg
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+
+% Define Code-Color
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Bitte in der folgenden Zeile den Zitierstandard festlegen
+\newcommand{\FHTWCitationType}{IEEE}
+\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{\usepackage{harvard}}{\usepackage{bibgerm}}
+
+
+%Formatieren des Quellcodeverzeichnisses
+\makeatletter
+% Setzen der Bezeichnungen für das Quellcodeverzeichnis/Abkürzungsverzeichnis
+%in Abhängigkeit von der eingestellten Sprache
+\providecommand\listacroname{}
+\@ifclasswith{twbook}{english}
+{%
+    \renewcommand\lstlistingname{Code}
+    \renewcommand\lstlistlistingname{List of Code}
+    \renewcommand\listacroname{List of Abbreviations}
+}{%
+    \renewcommand\lstlistingname{Quellcode}
+    \renewcommand\lstlistlistingname{Quellcodeverzeichnis}
+    \renewcommand\listacroname{Abkürzungsverzeichnis}
+}
+% Wenn die Option listof=entryprefix gewählt wurde, Definition des Entyprefixes für das
+%Quellcodeverzeichnis. Definition des Macros listoflolentryname analog zu listoflofentryname und
+%listoflotentryname der KOMA-Klasse
+\@ifclasswith{scrbook}{listof=entryprefix}
+{%
+    \newcommand\listoflolentryname\lstlistingname
+}{%
+}
+\makeatother
+\newcommand{\listofcode}{\phantomsection\lstlistoflistings}
+
+% Die nachfolgenden Pakete stellen sonst nicht benötigte Features zur Verfügung
+\usepackage{blindtext}
+
+% BERND: Code Style-Settings
+\lstdefinestyle{default}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%
+% Einträge für Deckblatt, Kurzfassung, etc.
+%
+\title{Kubernetes on the Edge}
+\author{Bernd KLAUS, BA}
+\studentnumber{2010303012}
+\supervisor{Dipl.-Ing. Hubert Kraut}
+\secondsupervisor{Dipl.-Ing. Andreas Happe}
+\place{Wien}
+
+\kurzfassung{
+Kubernetes wird als Schweizer Armemesser der Container-Orchestrierung bezeichnet. Auch im Bereich
+Edge-Computing bietet der Dienst eine Vielzahl an unterschiedlichen Werkzeugen und Tools an, welche
+Teils unterschiedliche Strategien und Ansätze verfolgen. Die Auswahl reicht von einem zentralen 
+Kubernetes-Cluster der verteilte Geräte, sogenannte „Leafs“, steuert bis hin zu vielen einzelnen und
+verteilten kleinen Clustern an der Edge, welche zentral gesteuert werden. Entscheidend ist es den 
+richtigen Anwendungsfall zu erheben, um sich für die optimale Lösung entscheiden zu können.
+Ebenfalls spielen sicherheitstechnische Aspekte bei derart komplexen Umgebungen eine wichtige Rolle.
+Die vorliegende Arbeit gibt Einblicke und Entscheidungsgrundlagen sowie Empfehlungen hinsichtlich
+der IT-Security. Belegt werden die Angaben durch Implementierung eines Proof-of-Concepts
+}
+\schlagworte{Kubernetes, Edge-Computing, distributed System, Proof-of-Concept}
+
+\outline{
+Kubernetes is the de facto swiss-army-knfife for orchestrating conatiner-platforms. In addition,
+kubernetes is also offering a toolset necessary for deploying on the edge. However, there are
+different methods for archiving comparable results. On the one hand a possible solution is to build
+a central instance managing small distributed and independent cluster, on the other hand a
+centralized cluster with just leafs on the edge may is a better fit. The challenge is to dine the
+best solution for the desired environment. The following thesis is making use of "Design Science
+Research" to give introductions on how to choose the proper environment.
+}
+\keywords{Kubernetes, Edge-Computing, distributed System, Proof-of-Concept}
+
+%
+% Start the Thesis
+%
+
+\begin{document}
+
+
+\maketitle
+
+\chapter{Introcution}
+Because of IoT Devices becoming more and more common, the number of devices capable of communicating
+with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the
+amount of data which must be processed increases accordingly. Regarding this development
+Edge-Computing is the rising start trying to solve that issues. Thereby data is not processed
+centrally like in traditional datacenters, but it is tried to handle those data close to the user 
+within several distributed systems. Because of this method only really necessary data is transmitted
+to a central instance for further treatment and those the processing-power as well as the bandwidth
+necessary for processing required data is reduced significant. \par
+It is expected that the number of IoT devices will continue to grow fast\cite{SotE21} over the
+coming years. Concomitant Edge-Computing also will become more important in the future and play
+an important role in modern \ac{IT} architectures. \par
+To be able to control distributed systems effectively \ac{K8S} is providing a lot of useful tools
+and functions. Fundamentally there are two different approaches regrading the architecture of how To
+build an Edge-Computing environment using \ac{K8S}:
+
+\begin{itemize}
+    \item One centralized \ac{K8S} Cluster controlling many Leaf-Devices on the Edge.
+    \item Small and distributed \ac{K8S} Clusters running independent on the Edge controlled by a
+    centralized Master-Instance.
+\end{itemize}
+
+\section{Problem area}
+Problems arise when trying to find the proper architecture for a specific use-cases. There is no
+clear winner when comparing the above-mentioned different variants. Each of the both architectures
+have their own pros and cons and may decide whether a project is successful or not. It is therefore
+all the more important to choose the proper architecture right before starting, changing the
+strategy in retrospect would take a lot of time and effort. However, there is no clear guidance on
+how to find the proper target environment, at least none which apply in general. Occasionally one
+finds recommendations for very specific use case, however the chance is slim low this findings fit
+your goals respectively enlighten the architecture decision. This leads us to the following research
+question.
+
+\section{Research question}
+This paper is going to answer the subsequent research questions:
+\begin{enumerate}
+    \item What are the main differences between the both defined main variants regarding
+    functionality, scalability, costs and security?
+    \item Which decision criteria must be defined respectively examined to create a catalog capable
+    of making choose the proper architecture easier for \ac{IT} managers as well as administrators.
+    \item Can two Proof-of-Concept environments, compared using the Design Science Research pattern,
+    prove the accuracy of defined criteria accordingly.
+\end{enumerate}
+
+\section{Methodology}
+In the first part of the present work existing literature will be inspected. Related and relevant
+work will be examined accordingly and linked in the document. Also results will be incorporated to
+get out the most of it. In the second part a catalog with main criteria necessary for
+decision-making is defined. The last chapter is testing those criteria against real world examples
+making use of the Design Science Research methodology. The last chapter is getting the most focus
+because it is the area where new technics respectively architecture decision are finally verified
+and those proof if the catalog is working as expected or not.
+
+%
+% Hier beginnen die Verzeichnisse.
+%
+\clearpage
+\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{}{\bibliographystyle{gerabbrv}}
+\bibliography{Literatur}
+\clearpage
+
+% Das Abbildungsverzeichnis
+\listoffigures
+\clearpage
+
+% Das Tabellenverzeichnis
+\listoftables
+\clearpage
+
+% Das Quellcodeverzeichnis
+\listofcode
+\clearpage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\listacroname}
+\chapter*{\listacroname}
+\begin{acronym}[XXXXX]
+    \acro{IT}[IT]{Information Technology}
+    \acro{WWW}[WWW]{world wide web}
+    \acro{K8S}[K8S]{Kubernetes}
+\end{acronym}
+
+%
+% Hier beginnt der Anhang.
+%
+\clearpage
+\appendix
+\chapter{Anhang A}
+\clearpage
+\chapter{Anhang B}
+\end{document}

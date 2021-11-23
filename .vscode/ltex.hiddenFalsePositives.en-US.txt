@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QIn addition kubernetes is also offering a toolset necessary for deploying on the edge.\\E$"}
