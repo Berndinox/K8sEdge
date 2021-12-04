@@ -1,4 +1,0 @@
-# Install
-## MASTER
-apt-get update && apt-get upgrade -y
-curl -sfL https://get.k3s.io | sh -
