@@ -1,4 +1,6 @@
 # Install
+Install KubeEdge: https://kubeedge.io
+
 ## Master
 ```
 # Update
@@ -76,5 +78,5 @@ cat cat /etc/rancher/k3s/k3s.yaml
 Modify Server IP to the public facing IP
 Add Skip-Verify: true (not recommend for production)
 
-Image: !MODIFY NO NEXT PUSH
-![LENS-K8s-Client](hhttps://LINK)
+Image: 
+![LENS-K8s-Client](https://raw.githubusercontent.com/Berndinox/K8sEdge/main/PICs/LensK8sClient.png?token=AAISDCWSKE3RZJRLGESME5TBWTTBQ)
