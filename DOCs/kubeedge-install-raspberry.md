@@ -13,8 +13,9 @@ sudo usermod -aG docker pi
 sudo systemctl enable docker
 #Tweak Cgroup
 nano /boot/cmdline.txt
+## ADD
   cgroup_enable=cpuset
-##
+#
 init 6
 ```
 
