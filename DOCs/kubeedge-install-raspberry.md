@@ -11,6 +11,10 @@ tar xvf keadm-v1.9.1-linux-arm.tar.gz
 curl -sSL https://get.docker.com | sh
 sudo usermod -aG docker pi
 sudo systemctl enable docker
+#Tweak Cgroup
+nano /boot/cmdline.txt
+  cgroup_enable=cpuset
+##
 init 6
 ```
 
