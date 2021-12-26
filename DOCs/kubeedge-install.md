@@ -57,9 +57,11 @@ sudo nano /etc/kubeedge/config/cloudcore.yaml
 # Modify to true
 cloudStream:
   enable: true
-```
+#
 pkill cloudcore
 nohup cloudcore > cloudcore.log 2>&1 &
+```
+
 ## Edge
 ```
 # Enable Loging on Ede node
