@@ -14,7 +14,7 @@ sudo systemctl enable docker
 #Tweak Cgroup
 nano /boot/cmdline.txt
 ## ADD
-  cgroup_enable=cpuset
+  cgroup_enable=memory
 #
 init 6
 ```
