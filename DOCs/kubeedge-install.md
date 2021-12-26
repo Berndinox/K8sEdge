@@ -81,4 +81,4 @@ Modify Server IP to the public facing IP
 Add Skip-Verify: true (not recommend for production)
 
 One nice Client is: Lens
-![LENS-K8s-Client](/main/PICs/LensK8sClient.png?raw=true)
+![LENS-K8s-Client](/PICs/LensK8sClient.png?raw=true)
