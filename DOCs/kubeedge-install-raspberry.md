@@ -5,8 +5,8 @@
 apt-get update && apt-get upgrade -y
 apt install apt-transport-https ca-certificates curl software-properties-common -y
 # Get Keadm
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.1/keadm-v1.9.1-linux-arm64.tar.gz
-tar xvf keadm-v1.9.1-linux-arm64.tar.gz
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.1/keadm-v1.9.1-linux-arm.tar.gz
+tar xvf keadm-v1.9.1-linux-arm.tar.gz
 # Install Docker
 curl -sSL https://get.docker.com | sh
 sudo usermod -aG docker pi
