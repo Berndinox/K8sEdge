@@ -75,10 +75,10 @@ systemctl restart edgecore.service
 # Connect (Admin)
 on Master Node
 ```
-cat cat /etc/rancher/k3s/k3s.yaml
+cat /etc/rancher/k3s/k3s.yaml
 ```
 Modify Server IP to the public facing IP
 Add Skip-Verify: true (not recommend for production)
 
 One nice Client is: Lens
-![LENS-K8s-Client](https://raw.githubusercontent.com/Berndinox/K8sEdge/main/PICs/LensK8sClient.png?token=AAISDCWSKE3RZJRLGESME5TBWTTBQ)
+![LENS-K8s-Client](https://raw.githubusercontent.com/Berndinox/K8sEdge/main/PICs/LensK8sClient.png)
