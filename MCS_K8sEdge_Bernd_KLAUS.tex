@@ -118,6 +118,7 @@ Because of \ac{IoT} Devices becoming more and more common, the number of devices
 Problems arise when trying to find the proper architecture for a specific use-cases. There is no clear winner when comparing the above-mentioned different variants. Each of them  have their own pros and cons and may decide whether a project is successful or not. It is therefore all the more important to choose the proper architecture right before starting, changing the strategy in retrospect would take a lot of time and effort. However, there is no clear guidance on how to find the proper target environment, at least none which apply in general. Occasionally one finds recommendations for very specific use case, however the chance is slim low this findings fit your goals respectively enlighten the architecture decision. This leads us to the following research question.
 
 \section{Research question}
+\label{sec:rq}
 This paper is going to answer the subsequent research questions:
 \begin{enumerate}
     \item What are the main differences of the above mentiones architectures regarding   functionality, scalability, costs and security?
@@ -127,15 +128,21 @@ This paper is going to answer the subsequent research questions:
 \end{enumerate}
 
 \section{Goal}
+\label{sec:goal}
 The main goal of this thesis is to highlight the pros and cons for each of the \hyperref[item:architecture]{architectures} defined in the \hyperref[chap:introduction]{Introduction}. The focus will mainly be on the geo-distribution aspect. Altough \ac{IoT} is playing a major role in pushing the development forward, however it is not considered further in the present work. To find the proper architecture, or at least recommandations what could fit best for different desired use-cases, a catalog will be defined. An important part will become the decision tree helping people making comprehensible decisions based on scientific research. The meain characteristics which are taken into account are scalability, state-of-the-art, handling, costs as well as security.
 
 \section{Methodology}
-In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. In the second part a catalog with main criteria necessary for decision-making is defined. Part of this catalog will also be a decisicon-tree, mentioned in the previous chapter, to easily find the proper architecture. The last chapter deals with testing the defined criteria against real world examples making use of the \ac{DSR} methodology. The last chapter is getting the most focus because it is the area where new technics respectively architecture decision are finally verified and those proofs if the catalog is working as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examinated again using \ac{DSR}
+\label{sec:methodology}
+In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. In the second part a catalog with main criteria necessary for decision-making is defined. Part of this catalog will also be a decisicon-tree, mentioned in the previous chapter, to easily find the proper architecture. The last chapter deals with testing the defined criteria against real world examples making use of the \ac{DSR} methodology. The last chapter is getting the most focus because it is the area where new technics respectively architecture decision are finally verified and those proofs if the catalog is working as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examinated again using \ac{DSR}.
+
+
+
 
 \chapter{Current State}
 \label{chap:current}
 
 \section{Technology}
+\label{sec:technology}
 \subsection{Kubernetes}
 short introduction
 Target length: 1-2 S
@@ -146,7 +153,17 @@ Target length: 1-2 S
 short introduction - whats that!
 Target length: 0,5-1 S
 
+
+\section{Related Work}
+\label{sec:related}
+Target length: 3 S (all subsections)
+\subsection{Extend Cloud to Edge with KubeEdge}
+Descripes KubeEdge and its advantages
+\subsection{Kubernetes and the Edge?}
+Some introdution to K8s at the Edge, highlighting the main Architectures.
+
 \section{Architecture}
+\label{sec:architecture}
 \subsection{Default}
 Centralized Master and Workers at the Edge (Default!) K8s architecture
 why is it called Default
@@ -159,27 +176,40 @@ Target length: 2-4 S (incl. picture)
 Using the Service-Mesh for Edge-Computing (Smar-Nic!)
 Target length: 2-4 S (incl. picture)
 
-\section{Related Work}
-Target length: 3 S (all subsections)
-\subsection{RL 1}
-\subsection{RL N}
 
 \chapter{Catalog}
-\section{Decision Variable}
+\label{chap:catalog}
+
+\section{Decision Variables}
+\label{sec:variables}
 Target length: 1-2 S
+
 \section{Decision Tree}
-Target length: 1 S
-\section{Exclusions and Special Cases}
+\label{sec:tree}
 Target length: 1 S
 
+\section{Exclusions and Special Cases}
+\label{sec:exclusions}
+Target length: 1 S
+
+
+
+
 \chapter{Design Science Research}
+\label{chap:dsr}
+
 \section{Methodlogy}
+\label{sec:dsrmethode}
 \subsection{Performed Tests}
 Target length: 2 S
+
 \section{Environment}
+\label{sec:env}
 describe the test-environemtn
 Target length: 0,5-1 S
+
 \section{Architecture}
+\label{sec:dsrarchitecture}
 \subsection{Default}
 Target length: 3-4 S
 \subsection{distributed K8s}
@@ -189,16 +219,29 @@ Target length: 3-4 S
 \section{Analysis}
 Target length: 2 S
 
+
+
+
 \chapter{Results}
+\label{chap:results}
+
 Target length: 3 S (all together)
 \section{Findings}
+\label{sec:findings}
+
 \section{Conclusio}
+\label{sec:conclusio}
+
 \section{Discussion and further research}
+\label{sec:discuss}
 
-
+\paragraph{Notes}
+---to-be-removed---
 Sites:
 - longest: 45 (may i need even more)
 - shortest: 31 (zu wenig)
+-------------------
+
 
 %
 % Hier beginnen die Verzeichnisse.
