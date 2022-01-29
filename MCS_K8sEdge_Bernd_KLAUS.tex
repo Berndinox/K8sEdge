@@ -142,13 +142,29 @@ In the first part of the present work existing literature will be inspected. Rel
 
 \chapter{State of the Art}
 \label{chap:current}
-The first chapter gives a brief introduction to the main technologies used respectively examinated in the later part of the document. If anyone is already familiar with the subject may you jump over to \hyperref[sec:architecture]{architecture} chapter.
+The first chapter gives a brief introduction to the main technologies used respectively examinated in the later part of the document. If anyone is already familiar with the subject may you jump over to the \hyperref[sec:architecture]{Architecture} chapter.
 \section{Technology}
 \label{sec:technology}
 \subsection{Kubernetes}
-To promote mondern development an be able to implement continious deployment pipelines cumbersome monolytic applications are divied into many smaller units. Each of this units provides only one function. In order to establish the overall functionality, these units are communicate with eacher other and thus provide services or make us of other ones. This new method of delivering applications brings many advantages in development but also challenges and complexities in operation. To simplify the tasks around the management of this architecture, \ac{K8S} has established itself as the de facto standard\cite{k8ssurv}.
+To promote mondern development and be able to implement continious deployment pipelines cumbersome monolytic applications are divied into many smaller units. Each of this units provides only one function. In order to establish the overall functionality, these units are communicate with eacher other and thus provide services or make us of other ones. This new method of delivering applications brings many advantages in development but also challenges and complexities in operation. To simplify the tasks around the management of this architecture, \ac{K8S} has established itself as the de facto standard \cite{k8ssurv}. Over the course of time, a broad community has developed around kubernetes and a number of further developments have emerged as a result. The mopst promising extensions regrading geo-distribution respectively Edge-Computing are highlighted in the subsequent section \hyperref[sec:architecture]{Architecture}. In order to be able to interpret the results of the use-cases, the following functionalities and components of \ac{K8S} are relevant.
 
-Target length: 1-2 S
+\paragraph{Master Nodes} run the so called \textit{Control Plane} which is resposible for controlling the cluster itself and all the ressoruces within. The Control Plane consist of the following components \cite{k8scomp}.
+\begin{itemize}
+    \item \textit{kube-apiserver} acts as frontend webinterface responsible for controlling the \ac{K8S} cluster. Tools like kubectl abstract the interface and provide access in form of an simply understandable and usable \ac{CLI}. 
+    \item \textit{etcd} represents a high-available and consistent key value store responsible for storing the actual state as well as the desired configuration of the cluster.
+    \item \textit{kube-scheduler} is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the master nodes. As discovered in the hereafter chapters, this appears to be an important variable. There are also already some white papers that come up with possible solutions such as e.g. custom schedulers. More details on this can be found in the chapter \hyperref[chap:related]{Related Work}.
+    \item \textit{kube-controller-manager} consists of a single compiled binary controling the status of nodes, jobs, service-accounts and endpoints as well as creating or removing them.
+    \item \textit{cloud-controller-manager} represents the interface to the underlying cloud-platform. This allows kubernetes to create and/or configure load-balancers, routes and persistent-volumes on the underlying cloud-infrastructure. In a local environment such as e.g. minikube provide the \textit{cloud-controller-manager} becomes an optional component and is not required. The same may applies to edge-locations as those areas are outside the cloud most of the times.
+\end{itemize}
+
+\paragraph{Worker Nodes} manage the workload, i.e. run the actual application(s). These nodes are composed of the following, see list below, parts \cite{k8scomp}. It should be mentioned, that also the previously descripte \textit{Master Nodes} are executing those components because some of the core-componentes are containerized (pods) itself. 
+\begin{itemize}
+    \item \textit{kubelet} is an agent which assures that the container is executed properly inside their associated pods according to its specifications defined via \textit{PodSpec}. Also \textit{kubelet} is responsible for monitoring the healthy state of the containers.
+    \item \textit{kube-proxy} uses the packet filters of the operating system underneath to forward traffic to the desired destination. The resulting access points, also called \textit{Services} in \ac{K8S}-jargon, can be made available either internally or externally.
+    \item \textit{container runtime} is the part that finally executes the containers. The default runtime at time of writing is \textit{containerd}, however any runtime is supported that complies with the CRI specification \cite{cri-runtime}.
+\end{itemize}
+
+
 \subsection{Edge-Computing}
 latency
 reliability and availability
@@ -301,6 +317,7 @@ Sites:
     \acro{K8S}[K8S]{Kubernetes}
     \acro{IoT}[IoT]{Internet-of-Things}
     \acro{DSR}[DSR]{Design Science Research}
+    \acro{CLI}[CLI]{Command Line Interface}
 \end{acronym}
 
 %

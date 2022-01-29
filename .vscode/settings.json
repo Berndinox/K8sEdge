@@ -1,2 +1,10 @@
 {
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.showContextMenu": true,
+    "prettier.proseWrap": "always",
+    "prettier.printWidth": 120,
+    "editor.accessibilitySupport": "off",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrapColumn": 100
 }

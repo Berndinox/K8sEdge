@@ -1467,6 +1467,8 @@ INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvro8t.vf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvro8r.tfm
 INPUT .\MCS_K8sEdge_Bernd_KLAUS.lof
 INPUT MCS_K8sEdge_Bernd_KLAUS.lof
 INPUT MCS_K8sEdge_Bernd_KLAUS.lof
@@ -1489,3 +1491,5 @@ INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvb8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvb8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvr8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvr8a.pfb
+INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvro8a.pfb
+INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvro8a.pfb
