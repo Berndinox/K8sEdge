@@ -47,7 +47,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{csquotes}
-\usepackage[backend=biber,style=numeric,bibstyle=ieee]{biblatex}
+%\usepackage[backend=biber,style=ieee,bibstyle=ieee]{biblatex}
+%\usepackage[backend=bibtex,style=numeric,bibstyle=ieee]{biblatex}
+%ARCH Linux fix
+\usepackage[backend=biber,style=numeric,sortcites,natbib=true,sorting=none]{biblatex}
 \addbibresource{Literatur.bib}
 
 %Formatieren des Quellcodeverzeichnisses
@@ -65,7 +68,7 @@
     \renewcommand\lstlistlistingname{Quellcodeverzeichnis}
     \renewcommand\listacroname{Abkürzungsverzeichnis}
 }
-% Wenn die Option listof=entryprefix gewählt wurde, Definition des Entyprefixes für das
+%Wenn die Option listof=entryprefix gewählt wurde, Definition des Entyprefixes für das
 %Quellcodeverzeichnis. Definition des Macros listoflolentryname analog zu listoflofentryname und
 %listoflotentryname der KOMA-Klasse
 \@ifclasswith{scrbook}{listof=entryprefix}
@@ -150,7 +153,7 @@ To promote mondern development and be able to implement continious deployment pi
 
 \paragraph{Master Nodes} run the so called \textit{Control Plane} which is resposible for controlling the cluster itself and all the ressoruces within. The Control Plane consist of the following components \cite{k8scomp}.
 \begin{itemize}
-    \item \textit{kube-apiserver} acts as frontend webinterface responsible for controlling the \ac{K8S} cluster. Tools like kubectl abstract the interface and provide access in form of an simply understandable and usable \ac{CLI}. 
+    \item \textit{kube-apiserver} acts as frontend web-interface responsible for controlling the \ac{K8S} cluster as well as the object inside the cluster. Tools like kubectl abstract the \textit{OpenAPI v2} endpoint and provide access in form of a simply understandable and usable \ac{CLI}. 
     \item \textit{etcd} represents a high-available and consistent key value store responsible for storing the actual state as well as the desired configuration of the cluster.
     \item \textit{kube-scheduler} is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the pods communicating with each other. As discovered in the hereafter chapters, this appears to be an important variable for edge-deployments. However, some available white-papers already try to address those issues and showed possible solution by adopting a custom scheduler taking care of those values. More details on this can be found in the chapter \hyperref[chap:related]{Related Work}.
     \item \textit{kube-controller-manager} consists of a single compiled binary controling the status of nodes, jobs, service-accounts and endpoints as well as creating or removing them.
@@ -164,6 +167,12 @@ To promote mondern development and be able to implement continious deployment pi
     \item \textit{container runtime} is the part that finally executes the containers. The default runtime at time of writing is \textit{containerd}, however any runtime is supported that complies with the CRI specification \cite{cri-runtime}.
 \end{itemize}
 
+\paragraph{Kubernetes Objects} are persistent properties inside the \ac{K8S} ecosystem representing the state of your cluster. The most important feature of those objects is to describe the target environment in a declarative way. For this purpose, most of the time, YAML files are used. Kubernetes now ensures that the desired state of the environment is actually achieved and continuously monitors the required objects to meet those defined requirements. This mechanism is also ideal for distributed systems, such as edge computing, as availability can be checked at any time and a response can be made if necessary. Subsequent the main objects are cited starting with the smallest unit \cite{k8sconc}.
+\begin{itemize}
+    \item \textit{Containers} decouple the actual application and its dependencies from the underlying infrastructure. The main properties of those containers are there immutability and repeatability. This means that the container can be rebuilt at anytime resulting in an identical clone. Likewise, the code of a running container cannot be modified subsequently.
+    \item \textit{Pods} include at least one or more \textit{Containers}. In the most scenarios a single pod consists of a single pod, in some cases a so-called sidecar container is used what make a pod consist of two containers. Containers which are in the same \textit{Pod} share the same local Socks as well as volumes mounted.
+    \item \textit{Deployments}, \textit{Statefulsets} and \textit{Daemonsets} are responsible for ensuring the actual workload is provided, to achieve this they control and scale the assigned \textit{Pods}. When creating an application for \ac{K8S} it is most likely to create one of those objects, the \textit{Pods} and \textit{Containers} are merely an end product that is created from it.
+\end{itemize}
 
 \subsection{Edge-Computing}
 latency
@@ -192,7 +201,6 @@ Target length: 2-4 S (incl. picture)
 \subsection{Service Mesh}
 Using the Service-Mesh for Edge-Computing (Smar-Nic!)
 Target length: 2-4 S (incl. picture)
-
 
 
 \chapter{Design Science Research}

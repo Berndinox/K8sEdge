@@ -3,7 +3,7 @@
 @Report{SotE21,
   author      = {Fay Arjomandi and Matt Trifiro and Jacob Smith},
   date        = {2020-08-01},
-  institution = {The Linud Foundation},
+  institution = {The Linux Foundation},
   title       = {State of the Edge 2021},
   type        = {resreport},
   subtitle    = {A Market and Ecosystem Report for Edge Computing},
@@ -28,6 +28,7 @@
 }
 
 @Misc{cri-runtime,
+  author    = {The Kubernetes Authors},
   title     = {Container Runtime Interface (CRI)},
   subtitle  = {a plugin interface which enables kubelet to use a wide variety of container runtimes.},
   url       = {https://github.com/kubernetes/cri-api},
