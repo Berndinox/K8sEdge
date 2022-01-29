@@ -12,7 +12,6 @@
 \usepackage{hyperref}
 \usepackage{listings}
 
-
 \lstset{
     captionpos=b,
     numberbychapter=false,
@@ -42,9 +41,14 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
-\newcommand{\FHTWCitationType}{IEEE}
-\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{\usepackage{harvard}}{\usepackage{bibgerm}}
-
+%\newcommand{\FHTWCitationType}{IEEE}
+%\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{\usepackage{harvard}}{\usepackage{bibgem}}
+%BERND: TBH that package is 20 years old, get some more up2date packages for cite
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,bibstyle=ieee]{biblatex}
+\addbibresource{Literatur.bib}
 
 %Formatieren des Quellcodeverzeichnisses
 \makeatletter
@@ -99,9 +103,7 @@ Kubernetes is the de facto swiss-army-knfife for orchestrating conatiner-platfor
 %
 
 \begin{document}
-
 \maketitle
-
 \chapter{Introcution}
 \label{chap:introduction}
 Because of \ac{IoT} Devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development Edge-Computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodlogy only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast\cite{SotE21} over the coming years. Concomitant Edge-Computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8S} is providing a lot of useful tools and functions. Fundamentally there are three different approaches regrading the architecture of how to build an Edge-Computing environment making use of \ac{K8S}:
@@ -140,14 +142,19 @@ In the first part of the present work existing literature will be inspected. Rel
 
 \chapter{State of the Art}
 \label{chap:current}
-
+The first chapter gives a brief introduction to the main technologies used respectively examinated in the later part of the document. If anyone is already familiar with the subject may you jump over to \hyperref[sec:architecture]{architecture} chapter.
 \section{Technology}
 \label{sec:technology}
 \subsection{Kubernetes}
-short introduction
+To promote mondern development an be able to implement continious deployment pipelines cumbersome monolytic applications are divied into many smaller units. Each of this units provides only one function. In order to establish the overall functionality, these units are communicate with eacher other and thus provide services or make us of other ones. This new method of delivering applications brings many advantages in development but also challenges and complexities in operation. To simplify the tasks around the management of this architecture, \ac{K8S} has established itself as the de facto standard\cite{k8ssurv}.
+
 Target length: 1-2 S
 \subsection{Edge-Computing}
-short introduction
+latency
+reliability and availability
+low ressources
+may bad network conditions
+
 Target length: 1-2 S
 \paragraph{Geo-Distribution}
 short introduction - whats that!
@@ -268,8 +275,9 @@ Sites:
 % Hier beginnen die Verzeichnisse.
 %
 \clearpage
-\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{}{\bibliographystyle{gerabbrv}}
-\bibliography{Literatur}
+%\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{}{\bibliographystyle{biblatex}}
+%\bibliography{Literatur}
+\printbibliography 
 \clearpage
 
 % Das Abbildungsverzeichnis
