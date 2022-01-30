@@ -1179,6 +1179,7 @@ INPUT /usr/share/texmf-dist/tex/latex/koma-script/listings.hak
 INPUT /usr/share/texmf-dist/tex/latex/koma-script/listings.hak
 INPUT /usr/share/texmf-dist/tex/latex/koma-script/listings.hak
 INPUT /usr/share/texmf-dist/tex/latex/koma-script/tocbasic.sty
+INPUT /usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
 INPUT /usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 INPUT /usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -1458,6 +1459,14 @@ INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvr8t.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm
 INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvro8t.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvro8r.tfm
+INPUT ./PICs/drawio/defaul-k8s.drawio.pdf
+INPUT ./PICs/drawio/defaul-k8s.drawio.pdf
+INPUT PICs/drawio/defaul-k8s.drawio.pdf
+INPUT ./PICs/drawio/defaul-k8s.drawio.pdf
+INPUT ./PICs/drawio/defaul-k8s.drawio.pdf
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvr8t.tfm
+INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvr8t.vf
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvrc8t.tfm
 INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvrc8t.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm

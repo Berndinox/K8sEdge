@@ -1,4 +1,3 @@
-%
 % FH Technikum Wien
 % !TEX encoding = UTF-8 Unicode
 %
@@ -11,6 +10,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{graphicx}
 
 \lstset{
     captionpos=b,
@@ -214,6 +214,15 @@ The above-mentioned challenges provide a good starting point for defining the ne
 Centralized Master and Workers at the Edge (Default!) K8s architecture
 why is it called Default
 challanges
+
+\begin{figure}[h]
+    \centering
+    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
+    \caption{Default \ac{K8S} architeture}
+    \label{fig:default-k8s}
+\end{figure}
+
+
 Target length: 2-4 S (incl. picture)
 \subsection{distributed K8s}
 Cluster running indepented - KubeFed
