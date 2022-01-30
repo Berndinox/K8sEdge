@@ -195,17 +195,17 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 \paragraph{Geo-Distribution} characterises the aspect of the geographical propagation of the edge ressources. The goal is to provide computing power over wide areas, each close to the users. By establishing many of these locations in different regions, network latency can be significantly reduced from the user's perspective. However, the latency between the edge-nodes and the centralized cloud still remain.
 
 \paragraph{Challenges} that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
-------- TODO --------
-\begin{itemize}
-    \item Variety - a lot different techologies / stacks
-    \item Integration - different devices (arm/x64) and network topologies put together
-    \item Awareness - user does not care where he is connectiong to - the application may is!
-    \item Resources - are lower at the edge
-    \item \ac{QoS} - Extensibility (dynamic expand), reliability, availability
-    \item Security - isolation
-    \item Monitoring - and accounting and metrics
-\end{itemize}
 
+\begin{itemize}
+    \item Variety - a lot of different locations, technologies as well as methods on how to control devices on the edge is challenging for both development and operation. The better these different factors can be abstracted and simplified, the more effectively the infrastructure can be used.
+    \item Integration - edge-computing evolves very quickly, thereby things could change quickly. The more important it is to keep the provided interfaces extensible. This way, new devices or application can be put in use swiftly. 
+    \item Awareness - the devices and/or end-user do not care about how their traffic is routed, or their data is processed. However, the architecture behind need to take care of that to use the topology in the best possible way.
+    \item Resources - scaling Resources like \ac{CPU}, \ac{RAM} and disk space at the edge is by far more elaborate than in a datacenter or in the cloud.
+    \item \ac{QoS} - The service provided at the edge should be reliable and provide a good user experience. Availability and performance play a central role in this context. Inasmuch as the availability can not be guaranteed to some extent, an appropriate failover mechanism should be in place.
+    \item Security - physical access control as well as isolating applications from each other is a difficult task. Also, the data traffic must be separated accordingly. In general, \ac{IT} security is a hot topic, and especially at the edge, it requires appropriate consideration for hardening the environment.
+    \item Monitoring - another important factor is on how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
+\end{itemize}
+The above-mentioned challenges provide a good starting point for defining the necessary test to find the matching target architecture. Details about this test can be found in the chapter \textit{\hyperref[sec:dsrmethode]{Methodlogy}}.
 
 
 \section{Architecture}
@@ -347,6 +347,8 @@ Sites:
     \acro{DSR}[DSR]{Design Science Research}
     \acro{CLI}[CLI]{Command Line Interface}
     \acro{QoS}[QoS]{Quality of Service}
+    \acro{CPU}[CPU]{Central Processing Unit}
+    \acro{RAM}[RAM]{Random Access Memory}
 \end{acronym}
 
 %
