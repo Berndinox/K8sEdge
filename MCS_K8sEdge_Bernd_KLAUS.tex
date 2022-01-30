@@ -179,16 +179,32 @@ To promote mondern development and be able to implement continious deployment pi
 \end{itemize}
 
 \subsection{Edge-Computing}
-latency
-reliability and availability
-low ressources
-may bad network conditions
+Edge-Computing is the model that extends cloud services to the edge of the
+network. The computing resources on the edge act as a layer between the user, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the user, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-ressources in the datacenter can be minimized because data can be processed earlier at edge. A major driver of thiThe subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
 
-Target length: 1-2 S
-\paragraph{Geo-Distribution}
-short introduction - whats that!
-Target length: 0,5-1 S
+\paragraph{Hierarchy} descripes the layers of the architecture. The following list enumerates the most important layers from top to bottom\cite{intro-edge}.
+\begin{enumerate}
+    \item \textit{Cloud} - centralized datacenter
+    \item \textit{Fog} - distributed "smaller" datacenters
+    \item \textit{Edge} - the closest unit to the end-user
+    \item \textit{\ac{IoT}} - device put into use
+\end{enumerate}
 
+The main focus of this work is to efficiently combine the two layers \textit{Cloud} and \textit{Edge} and orchestrate between them using \ac{K8S}. The layer \textit{Fog} is skipped because it is often seen to be "the same" as the \textit{Edge}. Also, current on \ac{K8S} based solutions do not make use of it. 
+
+\paragraph{Geo-Distribution} characterises the aspect of the geographical propagation of the edge ressources. The goal is to provide computing power over wide areas, each close to the users. By establishing many of these locations in different regions, network latency can be significantly reduced from the user's perspective. However, the latency between the edge-nodes and the centralized cloud still remain.
+
+\paragraph{Challenges} that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
+------- TODO --------
+\begin{itemize}
+    \item Variety - a lot different techologies / stacks
+    \item Integration - different devices (arm/x64) and network topologies put together
+    \item Awareness - user does not care where he is connectiong to - the application may is!
+    \item Resources - are lower at the edge
+    \item \ac{QoS} - Extensibility (dynamic expand), reliability, availability
+    \item Security - isolation
+    \item Monitoring - and accounting and metrics
+\end{itemize}
 
 
 
@@ -325,11 +341,12 @@ Sites:
 \chapter*{\listacroname}
 \begin{acronym}[XXXXX]
     \acro{IT}[IT]{Information Technology}
-    \acro{WWW}[WWW]{world wide web}
+    \acro{WWW}[WWW]{World Wide Web}
     \acro{K8S}[K8S]{Kubernetes}
     \acro{IoT}[IoT]{Internet-of-Things}
     \acro{DSR}[DSR]{Design Science Research}
     \acro{CLI}[CLI]{Command Line Interface}
+    \acro{QoS}[QoS]{Quality of Service}
 \end{acronym}
 
 %

@@ -1,2 +1,3 @@
 kubernetes
 Statefulsets
+computing-ressources

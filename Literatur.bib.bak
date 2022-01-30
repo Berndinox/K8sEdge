@@ -47,6 +47,13 @@
   abstract = {The Concepts section helps you learn about the parts of the Kubernetes system and the abstractions Kubernetes uses to represent your cluster, and helps you obtain a deeper understanding of how Kubernetes works.},
 }
 
+@Book{intro-edge,
+  author = {"Auday Al-Dulaimy" "Yogesh Sharma" "Michel Gokan-Khan" "Javid Taheri"},
+  date   = {2020-09-01},
+  title  = {Introduction to edge computing},
+  doi    = {10.1049/PBPC033E_ch1},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

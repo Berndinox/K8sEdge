@@ -1,1 +1,4 @@
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QIn addition kubernetes is also offering a toolset necessary for deploying on the edge.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qcloser to the user,\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qdescripes the aspect of the geographical propagation of the edge ressources.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Qdescripes the aspect of the geographical propagation of the edge ressources.\\E$"}
