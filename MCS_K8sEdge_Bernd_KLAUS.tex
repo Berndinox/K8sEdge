@@ -214,7 +214,12 @@ The above-mentioned challenges provide a good starting point for defining the ne
 Centralized Master and Workers at the Edge (Default!) K8s architecture
 why is it called Default
 challanges
-
+Important Part: \ac{CNI}
+what it is, Calico, Canal, Flannel and so on
+Storage is an issue (latency: asynch)
+DNS issue
+Services Issues (not awar of location)
+KubeEdge solves alot of issues (not all)
 \begin{figure}[h]
     \centering
     \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
@@ -226,6 +231,7 @@ challanges
 Target length: 2-4 S (incl. picture)
 \subsection{distributed K8s}
 Cluster running indepented - KubeFed
+Completely different approach, no network necessary beween at all.
 \begin{figure}[h]
     \centering
     \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
@@ -233,9 +239,27 @@ Cluster running indepented - KubeFed
     \label{fig:default-k8s}
 \end{figure}
 Target length: 2-4 S (incl. picture)
+
+
 \subsection{Service Mesh}
 Using the Service-Mesh for Edge-Computing (Smar-Nic!)
 Target length: 2-4 S (incl. picture)
+TODO:
+- same like Default Architecture
+- extends the existing \ac{CNI} but does not replace.
+- Service Mesh ist hosted itself inside the k8s cluster
+- some more funktions like: mtls, monitoring, tracing, proxying and label
+- extensible
+- disadvantage: overhead, complexity
+- how: sidecar proxy (can discover additional meta-data such as location, latecny, QoS) during runtime!! API-Gateway provide a similar solution for connecting from outside.
+- better resilence and monitoring when it comes to recovering.
+
+Additional Tools: DockerRouting Agent  (Latency-aware Optimization
+of the Existing Service Mesh
+in Edge Computing
+Environment) ZHEN SUN
+
+
 
 
 \chapter{Design Science Research}
@@ -307,7 +331,9 @@ Make Kubernetes aware of the latency between the nodes at the edge.
 \section{Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes}
 Similar to the paper before. Latecny awar pod deploymentm, but you also can deploy to regions and an custom re-scheduler is implementated taking care of redeploying when one node fails.
 Clustering node-groups based on latency.
-
+\section{Latency-aware Optimization of the Existing Service Mesh in Edge Computing Environment}
+RoutingAgent (Docker Image) extending Isito Service mesh with dynamic weight based routing.
+"With the RoutingAgent running in the system, the weights of the target routing clusters will be dyamically changed based on the detected inter-cluster network latency"
 
 \chapter{Results}
 \label{chap:results}
@@ -364,6 +390,7 @@ Sites:
     \acro{QoS}[QoS]{Quality of Service}
     \acro{CPU}[CPU]{Central Processing Unit}
     \acro{RAM}[RAM]{Random Access Memory}
+    \acro{CNI}[CNI]{Container Network Interface}
 \end{acronym}
 
 %
