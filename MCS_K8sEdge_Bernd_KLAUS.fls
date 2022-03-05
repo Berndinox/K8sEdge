@@ -1463,19 +1463,13 @@ INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvro8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvro8r.tfm
-INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
-INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
-INPUT PICs\drawio\defaul-k8s.drawio.pdf
-INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
-INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
-INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
 INPUT .\PICs\drawio\distributed-k8s.drawio.pdf
 INPUT .\PICs\drawio\distributed-k8s.drawio.pdf
 INPUT PICs\drawio\distributed-k8s.drawio.pdf
 INPUT .\PICs\drawio\distributed-k8s.drawio.pdf
 INPUT .\PICs\drawio\distributed-k8s.drawio.pdf
 INPUT .\PICs\drawio\distributed-k8s.drawio.pdf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvrc8t.tfm

@@ -109,15 +109,15 @@ Kubernetes is the de facto swiss-army-knife for orchestrating container-platform
 \maketitle
 \chapter{Introdutcion}
 \label{chap:introduction}
-Because of \ac{IoT} Devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast\cite{SotE21} over the coming years. Concomitant edge-computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are three different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
+Because of \ac{IoT} Devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast \cite{SotE21} over the coming years. Concomitant edge-computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are two different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
 
 \begin{itemize}
     \label{item:architecture}
-    \item A centralized \ac{K8s} Cluster controlling many leaf-devices (workers) on the Edge.
-    \item Small and distributed \ac{K8s} Clusters running independent on the Edge controlled by a
-    centralized Master-Instance.
-    \item A service-mesh expanding the functionality of the \ac{K8s} networking stack.
+    \item \textbf{Default}: A centralized \ac{K8s} Cluster controlling many leaf-devices (workers) on the Edge.
+    \item \textbf{Distributed}: Small and distributed \ac{K8s} Clusters running independent on the Edge controlled by a centralized Master-Instance.
 \end{itemize}
+
+Another upcoming approach of solving that issue is making use of the service mesh \cite{servicemesh}. This ultimately uses or builds on both of the aforementioned technologies. However, since this thesis concentrates on the two main architectures and their differentiation, the service mesh is not the main focus and just mentioned for the sake of completeness.
 
 \section{Problem area}
 Problems arise when trying to find the proper architecture for a specific use-case. There is no clear winner when comparing the above-mentioned different variants. Each of them  has their own pros and cons and may decide whether a project is successful or not. It is therefore all the more important to choose the proper architecture right before starting, changing the strategy in retrospect would take a lot of time and effort. However, there is no clear guidance on how to find the proper target environment, at least none which apply in general. Occasionally one finds recommendations for a very specific use case, however the chance is slim low this findings fit your goals respectively enlighten the decisions. This leads us to the following research question.
@@ -139,8 +139,6 @@ The main goal of this thesis is to highlight the pros and cons for each of the \
 \section{Methodology}
 \label{sec:methodology}
 In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. In the second part a catalog with main criteria necessary for decision-making is defined. Part of this catalog will also be a decision-tree, mentioned in the previous chapter, to easily find the proper architecture. The last chapter (\hyperref[sec:dsranalysis]{Analysis}) deals with testing the defined criteria against real world examples making use of the \ac{DSR} methodology. The last chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
-
-
 
 
 \chapter{State of the Art}
@@ -180,11 +178,11 @@ To promote modern development and be able to implement continuous deployment pip
     \item \textit{Volumes} provide persistent storage which extends beyond the life cycle of the pods. Volumes can be mounted at any defined position inside the pods. The disadvantage is that the data written to those \textit{Volumes} resides out of the \ac{K8s} ecosystem and therefore the operator must take care of data security and replication. This becomes even more complicated in an edge-computing environment where nodes have higher latency between them.
 \end{itemize}
 
-\subsection{edge-computing}
-edge-computing is the model that extends cloud services to the edge of the
+\subsection{Edge-Computing}
+Edge-computing is the model that extends cloud services to the edge of the
 network. The computing resources on the edge act as a layer between the user, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the user, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-ressources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
 
-\paragraph{Hierarchy} descripes the layers of the architecture. The following list enumerates the most important layers from top to bottom\cite{intro-edge}.
+\paragraph{Hierarchy} descripes the layers of the architecture. The following list enumerates the most important layers from top to bottom \cite{intro-edge}.
 \begin{enumerate}
     \item \textit{Cloud} - centralized datacenter
     \item \textit{Fog} - distributed "smaller" datacenters
@@ -197,20 +195,6 @@ network. The computing resources on the edge act as a layer between the user, wh
 The main focus of this work is to efficiently combine the two layers \textit{Cloud} and \textit{Edge} and orchestrate between them using \ac{K8s}. The layer \textit{Fog} is skipped because it is often seen to be "the same" as the \textit{Edge}. Also, current \ac{K8s} based solutions do not make use of it. 
 
 \paragraph{Geo-Distribution} characterises the aspect of the geographical propagation of the edge ressources. The goal is to provide computing power over wide areas, each close to the users. By establishing many of these locations in different regions, network latency can be significantly reduced from the user's perspective. However, the latency between the edge-nodes and the centralized cloud still remain.
-
-\paragraph{Challenges} that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
-
-\begin{itemize}
-    \item Variety - a lot of different locations, technologies as well as methods on how to control devices on the edge is challenging for both development and operation. The better these different factors can be abstracted and simplified, the more effectively the infrastructure can be used.
-    \item Integration - edge-computing evolves very quickly, thereby things could change quickly. The more important it is to keep the provided interfaces extensible. This way, new devices or application can be put in use swiftly. 
-    \item Awareness - the devices and/or end-user do not care about how their traffic is routed, or their data is processed. However, the architecture needs to take care of that to use the topology in the best possible way.
-    \item Resources - scaling Resources like \ac{CPU}, \ac{RAM} and disk space at the edge is by far more elaborate than in a datacenter or in the cloud.
-    \item \ac{QoS} - The service provided at the edge should be reliable and provide a good user experience. Availability and performance play a central role in this context. As the availability can not be guaranteed to some extent, an appropriate failover mechanism should be in place.
-    \item Security - physical access control as well as isolating applications from each other is a difficult task. Also, the data traffic must be separated accordingly. In general, \ac{IT} security is a hot topic, and especially at the edge, it requires appropriate consideration for hardening the environment.
-    \item Monitoring - another important factor is how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
-    \item Environment - Some locations may have to deal with difficult conditions regarding their surroundings. Increased dust exposure, poor internet connections or recurring power outages can be some of these factors. The system must be able to cushion or parry such failures accordingly.
-\end{itemize}
-The above-mentioned challenges provide a good starting point for defining the necessary tests to find the matching target architecture. Details about this test can be found in the chapter \textit{\hyperref[sec:dsrmethode]{Methodlogy}}.
 
 
 \section{Architecture}
@@ -225,45 +209,30 @@ Storage is an issue (latency: asynch)
 DNS issue
 Services Issues (not awar of location)
 KubeEdge solves alot of issues (not all)
-\begin{figure}[h]
-    \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
-    \caption{Default \ac{K8s} architeture}
-    \label{fig:default-k8s}
-\end{figure}
+\textcolor{red}{TODO: Picture Default}
 
 
 Target length: 2-4 S (incl. picture)
 \subsection{Distributed K8s}
 Cluster running indepented - KubeFed
 Completely different approach, no network necessary beween at all.
-\begin{figure}[h]
-    \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
-    \caption{Distributed \ac{K8s} architeture}
-    \label{fig:default-k8s}
-\end{figure}
 Target length: 2-4 S (incl. picture)
+\textcolor{red}{TODO: Picture Distributed}
 
+\section{Challenges} 
+Challenges that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
 
-\subsection{Service Mesh}
-Using the service-mesh for edge-computing (Smar-Nic!)
-Target length: 2-4 S (incl. picture)
-TODO:
-- same like Default Architecture
-- extends the existing \ac{CNI} but does not replace.
-- Service Mesh ist hosted itself inside the k8s cluster
-- some more funktions like: mtls, monitoring, tracing, proxying and label
-- extensible
-- disadvantage: overhead, complexity
-- how: sidecar proxy (can discover additional meta-data such as location, latecny, QoS) during runtime!! API-Gateway provide a similar solution for connecting from outside.
-- better resilence and monitoring when it comes to recovering.
-
-Additional Tools: DockerRouting Agent  (Latency-aware Optimization
-of the Existing Service Mesh
-in Edge Computing
-Environment) ZHEN SUN
-
+\begin{itemize}
+    \item Variety - a lot of different locations, technologies as well as methods on how to control devices on the edge is challenging for both development and operation. The better these different factors can be abstracted and simplified, the more effectively the infrastructure can be used.
+    \item Integration - edge-computing evolves very quickly, thereby things could change quickly. The more important it is to keep the provided interfaces extensible. This way, new devices or application can be put in use swiftly. 
+    \item Awareness - the devices and/or end-user do not care about how their traffic is routed, or their data is processed. However, the architecture needs to take care of that to use the topology in the best possible way.
+    \item Resources - scaling Resources like \ac{CPU}, \ac{RAM} and disk space at the edge is by far more elaborate than in a datacenter or in the cloud.
+    \item \ac{QoS} - The service provided at the edge should be reliable and provide a good user experience. Availability and performance play a central role in this context. As the availability can not be guaranteed to some extent, an appropriate failover mechanism should be in place.
+    \item Security - physical access control as well as isolating applications from each other is a difficult task. Also, the data traffic must be separated accordingly. In general, \ac{IT} security is a hot topic, and especially at the edge, it requires appropriate consideration for hardening the environment.
+    \item Monitoring - another important factor is how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
+    \item Environment - Some locations may have to deal with difficult conditions regarding their surroundings. Increased dust exposure, poor internet connections or recurring power outages can be some of these factors. The system must be able to cushion or parry such failures accordingly.
+\end{itemize}
+The above-mentioned challenges provide a good starting point for defining the necessary tests to find the matching target architecture. Details about this test can be found in the chapter \textit{\hyperref[sec:dsrmethode]{Methodlogy}}.
 
 
 
@@ -286,8 +255,7 @@ Target length: 0,5-1 S
 Target length: 3-4 S
 \subsection{distributed K8s}
 Target length: 3-4 S
-\subsection{Service Mesh}
-Target length: 3-4 S
+
 
 \section{Use-Cases}
 \subsection{Web-Application}
@@ -362,6 +330,13 @@ Sites:
 - shortest: 36 (zu wenig)
 -------------------
 
+Picture example:
+\begin{figure}[h]
+    \centering
+    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
+    \caption{Distributed \ac{K8s} architeture}
+    \label{fig:distributed-k8s}
+\end{figure}
 
 %
 % Hier beginnen die Verzeichnisse.

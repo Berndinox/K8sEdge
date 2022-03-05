@@ -54,6 +54,14 @@
   doi    = {10.1049/PBPC033E_ch1},
 }
 
+@WWW{minikube,
+  author = {The Kubernetes Authors},
+  date   = {2021-11-19},
+  editor = {Tian Yang},
+  title  = {Minikube Start},
+  url    = {https://minikube.sigs.k8s.io/docs/start/},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:
