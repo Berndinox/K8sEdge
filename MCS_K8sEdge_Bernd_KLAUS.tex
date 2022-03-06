@@ -149,7 +149,12 @@ The first chapter (\hyperref[chap:introduction]{Introduction}) gives a brief int
 \subsection{Kubernetes}
 To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent section \hyperref[sec:architecture]{Architecture}. In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
 
-\textcolor{red}{TODO: PIC Of K8S}
+\begin{figure}[h]
+    \centering
+    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}}
+    \caption{\ac{K8s} architeture overview \cite{pic-k8s-overview}}
+    \label{ }
+\end{figure}
 
 \paragraph{Master Nodes} run the so-called \textit{Control Plane} which is responsible for controlling the cluster itself and all the ressources within. The Control Plane consist of the following components \cite{k8scomp}.
 \begin{itemize}
@@ -187,10 +192,15 @@ network. The computing resources on the edge act as a layer between the user, wh
     \item \textit{Cloud} - centralized datacenter
     \item \textit{Fog} - distributed "smaller" datacenters
     \item \textit{Edge} - the closest unit to the end-user
-    \item \textit{\ac{IoT}} - device put into use
+    \item \textit{\ac{IoT}} - device at the edge put into use
 \end{enumerate}
 
-\textcolor{red}{TODO: PIC Of Edge-to-DC}
+\begin{figure}[h]
+    \centering
+    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/edge-overview.png}}
+    \caption{edge-computing overview \cite{edge-overview}}
+    \label{fig:distributed-k8s}
+\end{figure}
 
 The main focus of this work is to efficiently combine the two layers \textit{Cloud} and \textit{Edge} and orchestrate between them using \ac{K8s}. The layer \textit{Fog} is skipped because it is often seen to be "the same" as the \textit{Edge}. Also, current \ac{K8s} based solutions do not make use of it. 
 
@@ -200,6 +210,8 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 \section{Architecture}
 \label{sec:architecture}
 \subsection{Default}
+In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized \textit{Control Plane} hosted in the cloud and distributed worker nodes near the edge.
+
 Centralized Master and workers at the Edge (Default!) K8s architecture
 why is it called Default
 challanges
