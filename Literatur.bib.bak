@@ -48,7 +48,7 @@
 }
 
 @Book{intro-edge,
-  author = {Auday Al-Dulaimy, Yogesh Sharma, Michel Gokan-Khan and Javid Taheri},
+  author = {Auday, Al-Dulaimy and Yogesh, Sharma and Michel, Gokan-Khan and Javid, Taheri},
   date   = {2020-09-01},
   title  = {Introduction to edge computing},
   doi    = {10.1049/PBPC033E_ch1},
@@ -71,7 +71,7 @@
 }
 
 @WWW{pic-k8s-overview,
-  author = {Ashish Patel},
+  author = {Ashish, Patel},
   date   = {2021-08-12},
   title  = {Kubernetes — Architecture Overview},
   url    = {https://bit.ly/3sMQyEE},
@@ -83,6 +83,22 @@
   editor = {NoMore201},
   title  = {Wikipedia: Edge computing infrastructure},
   url    = {https://en.wikipedia.org/wiki/File:Edge_computing_infrastructure.png},
+}
+
+@WWW{k8s-cni,
+  author = {Mike Mackrory},
+  date   = {2021-06-07},
+  title  = {The Ultimate Guide To Using Calico, Flannel, Weave and Cilium},
+  url    = {https://platform9.com/blog/the-ultimate-guide-to-using-calico-flannel-weave-and-cilium},
+}
+
+@Report{kubedge,
+  author      = {Ying, Xiong and Ying, Xiong and Li, Xing and Ying, Huang},
+  date        = {2018-10-27},
+  institution = {Seattle Cloud Lab, Huawei R&D USA, Bellevue WA},
+  title       = {Extend Cloud to Edge with KubeEdge},
+  type        = {techreport},
+  url         = {https://ieeexplore.ieee.org/document/8567693},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

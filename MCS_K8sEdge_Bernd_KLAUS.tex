@@ -149,11 +149,11 @@ The first chapter (\hyperref[chap:introduction]{Introduction}) gives a brief int
 \subsection{Kubernetes}
 To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent section \hyperref[sec:architecture]{Architecture}. In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}}
     \caption{\ac{K8s} architeture overview \cite{pic-k8s-overview}}
-    \label{ }
+    \label{fig:k8s-architecture}
 \end{figure}
 
 \paragraph{Master Nodes} run the so-called \textit{Control Plane} which is responsible for controlling the cluster itself and all the ressources within. The Control Plane consist of the following components \cite{k8scomp}.
@@ -195,12 +195,6 @@ network. The computing resources on the edge act as a layer between the user, wh
     \item \textit{\ac{IoT}} - device at the edge put into use
 \end{enumerate}
 
-\begin{figure}[h]
-    \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/edge-overview.png}}
-    \caption{edge-computing overview \cite{edge-overview}}
-    \label{fig:distributed-k8s}
-\end{figure}
 
 The main focus of this work is to efficiently combine the two layers \textit{Cloud} and \textit{Edge} and orchestrate between them using \ac{K8s}. The layer \textit{Fog} is skipped because it is often seen to be "the same" as the \textit{Edge}. Also, current \ac{K8s} based solutions do not make use of it. 
 
@@ -210,18 +204,38 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 \section{Architecture}
 \label{sec:architecture}
 \subsection{Default}
-In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized \textit{Control Plane} hosted in the cloud and distributed worker nodes near the edge.
+In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized \textit{Control Plane} hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location aswell inside the cloud. The following graphic illustrates the architecture.
 
-Centralized Master and workers at the Edge (Default!) K8s architecture
-why is it called Default
+\begin{figure}[ht]
+    \centering
+    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
+    \caption{Default \ac{K8s} architeture}
+    \label{fig:k8s-default}
+\end{figure}
+
+Although the conventional components can also communicate with each other over long distances, there are still some challenges that need to be taken into account. An important role in this context is played by the \ac{CNI}. This part of \ac{K8s}, which can be selected in the form of a plugin, is responsible for the cluster-internal network traffic. Some of these plugin providers offer advanced features that facilitate geographical distribution. Some of the most used \ac{CNI} providers are \cite{k8s-cni}:
+
+\begin{itemize}
+    \item Calico
+    \item Canal
+    \item Cilium
+    \item Flannel
+    \item Weave
+\end{itemize}
+
+In contrast to the plugins mentioned above, KubeEdge was developed explicitly for deployments on the edge \cite{kubedge}. The main advantages are:
+
+\begin{itemize}
+    \item KubeBus - a custom network plugin working in private \ac{IP} address ranges behind \ac{NAT}. Thereby no dedicated public ip is necessary for edge locations making the architecture more flexible.
+    \item SyncService - Another important part of KubeEdge is the metadata sync service running on each worker node. This extension cyclically synchronises the data of the master. Thus, the quantity of data to be called up can be minimized and workload can continue to run in offline scenarios.
+    \item Lightweigt Agent - TODO
+\end{itemize}
+
 challanges
-Important Part: \ac{CNI}
-what it is, Calico, Canal, Flannel and so on
 Storage is an issue (latency: asynch)
 DNS issue
 Services Issues (not awar of location)
-KubeEdge solves alot of issues (not all)
-\textcolor{red}{TODO: Picture Default}
+
 
 
 Target length: 2-4 S (incl. picture)
@@ -231,7 +245,7 @@ Completely different approach, no network necessary beween at all.
 Target length: 2-4 S (incl. picture)
 \textcolor{red}{TODO: Picture Distributed}
 
-\section{Challenges} 
+\section{General Challenges} 
 Challenges that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
 
 \begin{itemize}
@@ -321,6 +335,7 @@ Clustering node-groups based on latency.
 \section{Latency-aware Optimization of the Existing Service Mesh in edge-computing Environment}
 RoutingAgent (Docker Image) extending Isito Service mesh with dynamic weight based routing.
 "With the RoutingAgent running in the system, the weights of the target routing clusters will be dyamically changed based on the detected inter-cluster network latency"
+TODO: Service Mesh ggf entfernen.
 
 \chapter{Results}
 \label{chap:results}
@@ -343,7 +358,7 @@ Sites:
 -------------------
 
 Picture example:
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
     \caption{Distributed \ac{K8s} architeture}
@@ -385,6 +400,8 @@ Picture example:
     \acro{CPU}[CPU]{Central Processing Unit}
     \acro{RAM}[RAM]{Random Access Memory}
     \acro{CNI}[CNI]{Container Network Interface}
+    \acro{IP}[IP]{Internet Procotcol}
+    \acro{NAT}[NAT]{Network Address Translation}
 \end{acronym}
 
 %
