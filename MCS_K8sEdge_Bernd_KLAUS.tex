@@ -138,20 +138,20 @@ The main goal of this thesis is to highlight the pros and cons for each of the \
 
 \section{Methodology}
 \label{sec:methodology}
-In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. In the second part a catalog with main criteria necessary for decision-making is defined. Part of this catalog will also be a decision-tree, mentioned in the previous chapter, to easily find the proper architecture. The last chapter (\hyperref[sec:dsranalysis]{Analysis}) deals with testing the defined criteria against real world examples making use of the \ac{DSR} methodology. The last chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
+In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. The goal is to create a catalog with main criteria necessary for decision-making. Part of this catalog will also be a decision-tree, mentioned in the previous chapter, to easily find the proper architecture. The \ac{DSR} method serves as a scientific method and to test the characteristics recorded in the catalogue. This chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
 
 
 \chapter{State of the Art}
 \label{chap:current}
-The first chapter (\hyperref[chap:introduction]{Introduction}) gives a brief introduction to the main technologies used respectively examined in the later part of the document. If anyone is already familiar with the subject may you jump over to the \hyperref[sec:architecture]{Architecture} chapter.
 \section{Technology}
+The present chapter provides an introduction to the general thematic. The main components and objects of \ac{K8s} are explained aswell as the layers of edge-computing are highlighted. If anyone is already familiar with the subjects, may you jump over to the \hyperref[sec:architecture]{Architecture} chapter to read further.
 \label{sec:technology}
 \subsection{Kubernetes}
 To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent section \hyperref[sec:architecture]{Architecture}. In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}}
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}}
     \caption{\ac{K8s} architeture overview \cite{pic-k8s-overview}}
     \label{fig:k8s-architecture}
 \end{figure}
@@ -203,17 +203,19 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 
 \section{Architecture}
 \label{sec:architecture}
+This chapter focuses on the two different architecture approaches which can be used for edge computing. After an overview the advantages and disadvantages as well as possible solutions are examinated.
+
 \subsection{Default}
 In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized \textit{Control Plane} hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location aswell inside the cloud. The following graphic illustrates the architecture.
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
     \caption{Default \ac{K8s} architeture}
     \label{fig:k8s-default}
 \end{figure}
 
-Although the conventional components can also communicate with each other over long distances, there are still some challenges that need to be taken into account. An important role in this context is played by the \ac{CNI}. This part of \ac{K8s}, which can be selected in the form of a plugin, is responsible for the cluster-internal network traffic. Some of these plugin providers offer advanced features that facilitate geographical distribution. Some of the most used \ac{CNI} providers are \cite{k8s-cni}:
+Although the conventional components can also communicate with each other over long distances, there are still some challenges that need to be taken into account. An important role in this context is played by the \ac{CNI}. This part of \ac{K8s}, which can be selected in the form of a plugin, is responsible for the cluster-internal network traffic. Most of these plugin providers offer advanced features that facilitate geographical distribution. Some of the most used \ac{CNI} providers are \cite{k8s-cni}:
 
 \begin{itemize}
     \item Calico
@@ -223,40 +225,61 @@ Although the conventional components can also communicate with each other over l
     \item Weave
 \end{itemize}
 
-In contrast to the plugins mentioned above, KubeEdge was developed explicitly for deployments on the edge \cite{kubedge}. The main advantages are:
+Other issues, which must be observed, are the replication of the storage and metadata hold by the control planes. Because of the higher latency and-or unstable connection at the edge site data may cannot always be reliably retrieved. To circumvent this problem, asynchronous replication can be used for storage replication. Another solution is to make services at the edge stateless, thereby no big data chunks are requested at all. The important part of the metadata store are \ac{DNS} entries, because \ac{K8s} heavily relies on them for service discovery. NodeLocal DNS is the recommand way \cite{k8sdnslocal} to hold a copy on the worker nodes. In contrast to this forwarding data to the cloud is not an issue in most of the times when using suitable message queues.  
+
+In addition there is no awarness of where workloads are running and the level of latency between nodes when using vanilla kubernetes. There are some developments in this area, but they have not really caught on yet \cite{k8s-sharping-edge}\cite{tk-k8s-edge-scheduler}\cite{5g-k8s-scheduler}.
+
+\paragraph{KubeEdge} is an open-source \ac{CNCF} project \cite{hal-kubeedge} that already comes with many of these functions respectively requirements pre-charged. Likewise, this tool was explicit developt for edge-computing.  Worker nodes can therefore be distributed across the hole globe without any major adjustments. To make this possible, some components were added or exchanged \cite{kubedge}.
 
 \begin{itemize}
-    \item KubeBus - a custom network plugin working in private \ac{IP} address ranges behind \ac{NAT}. Thereby no dedicated public ip is necessary for edge locations making the architecture more flexible.
-    \item SyncService - Another important part of KubeEdge is the metadata sync service running on each worker node. This extension cyclically synchronises the data of the master. Thus, the quantity of data to be called up can be minimized and workload can continue to run in offline scenarios.
-    \item Lightweigt Agent - TODO
+    \item \textit{KubeBus} - a custom network plugin working in private \ac{IP} address ranges behind \ac{NAT}. Thereby no dedicated public ip is necessary for edge locations making the architecture more flexible.
+    \item \textit{SyncService} - Another important part of KubeEdge is the metadata sync service running on each worker node. This extension cyclically synchronises the data of the master. Thus, the quantity of data to be called up can be minimized and workload can continue to run in offline scenarios.
+    \item \textit{EdgeCore} - Kubelet is replaced with a lightweight custom agent, the EdgeCore. Thereby also devices with very limited ressources, e.g. a Raspberry Pi, can be used for running workloads.
 \end{itemize}
 
-challanges
-Storage is an issue (latency: asynch)
-DNS issue
-Services Issues (not awar of location)
+In addition a component for device management and seemles integration with \ac{MQTT} is built-in to KubeEdge\cite{hal-kubeedge}. However, because this thesis focuses on the geo-distribution aspect, this part is not researched further.
 
 
-
-Target length: 2-4 S (incl. picture)
 \subsection{Distributed K8s}
-Cluster running indepented - KubeFed
-Completely different approach, no network necessary beween at all.
-Target length: 2-4 S (incl. picture)
-\textcolor{red}{TODO: Picture Distributed}
+In this case, a different approach is chosen and, in contrast to the previous architecture, fully-fledged clusters are also operated at the edge. The obvious advantage is that they can be operated autonomously. There is basically no dependence on the other nodes.
+
+\begin{figure}[ht]
+    \centering
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
+    \caption{Distributed \ac{K8s} architeture}
+    \label{fig:distributed-k8s}
+\end{figure}
+
+However, this also creates new challenges such as the distribution and coordination of workloads. Without additional functionality added, the workload running on the clusters does not know about their neighbours. To overcome this gap, the division  "multi-cluster deployment" has excelled in recent years. Even Google, the original developer of \ac{K8s}, offers such a service \cite{google-mcs} in their public cloud. Due to the increased demand, the \ac{KubeFed} tool is officially being maintained and further developed by the \ac{K8s} project\cite{kubefed-github}. Although the tool is still in beta, it is a very good choice for our field of application. One possible alternative would the \ac{K8s} manager by Rancher Labs.
+
+\paragraph{\ac{KubeFed}} consists of a central hosting cluster which controls subordinate clusters via \ac{API} delegation. Within \ac{KubeFed} you can define which configuration should be managed by the hosting cluster. The methodes used are intentionally low-level and can thus be expanded well for different edge-deployment variants. Two different types of information is used to configure \ac{KubeFed}\cite{kubefed-github}:
+
+\begin{itemize}
+    \item \textit{Type configuration} - determines which \ac{API} types are handeld.
+    \item \textit{Cluster configuration} - determines which clusters should be targeted.
+\end{itemize}
+
+The type configuration itself consist of three main parts:
+
+\begin{itemize}
+    \item \textit{Temaplates} - defines a reprenentation of common ressources across the clusters.
+    \item \textit{Placement} - defines which destination-cluster the workload should run on.
+    \item \textit{Overrides} - defines varation of the templates on a per cluster level.
+\end{itemize}
 
 \section{General Challenges} 
+\label{sec:generalchallanges}
 Challenges that appear when creating respectively operating such infrastructures are diverse, as can be seen in the following list \cite{intro-edge}.
 
 \begin{itemize}
-    \item Variety - a lot of different locations, technologies as well as methods on how to control devices on the edge is challenging for both development and operation. The better these different factors can be abstracted and simplified, the more effectively the infrastructure can be used.
-    \item Integration - edge-computing evolves very quickly, thereby things could change quickly. The more important it is to keep the provided interfaces extensible. This way, new devices or application can be put in use swiftly. 
-    \item Awareness - the devices and/or end-user do not care about how their traffic is routed, or their data is processed. However, the architecture needs to take care of that to use the topology in the best possible way.
-    \item Resources - scaling Resources like \ac{CPU}, \ac{RAM} and disk space at the edge is by far more elaborate than in a datacenter or in the cloud.
-    \item \ac{QoS} - The service provided at the edge should be reliable and provide a good user experience. Availability and performance play a central role in this context. As the availability can not be guaranteed to some extent, an appropriate failover mechanism should be in place.
-    \item Security - physical access control as well as isolating applications from each other is a difficult task. Also, the data traffic must be separated accordingly. In general, \ac{IT} security is a hot topic, and especially at the edge, it requires appropriate consideration for hardening the environment.
-    \item Monitoring - another important factor is how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
-    \item Environment - Some locations may have to deal with difficult conditions regarding their surroundings. Increased dust exposure, poor internet connections or recurring power outages can be some of these factors. The system must be able to cushion or parry such failures accordingly.
+    \item \textit{Variety} - a lot of different locations, technologies as well as methods on how to control devices on the edge is challenging for both development and operation. The better these different factors can be abstracted and simplified, the more effectively the infrastructure can be used.
+    \item \textit{Integration} - edge-computing evolves very quickly, thereby things could change quickly. The more important it is to keep the provided interfaces extensible. This way, new devices or application can be put in use swiftly. 
+    \item \textit{Awareness} - the devices and/or end-user do not care about how their traffic is routed, or their data is processed. However, the architecture needs to take care of that to use the topology in the best possible way.
+    \item \textit{Resources} - scaling Resources like \ac{CPU}, \ac{RAM} and disk space at the edge is by far more elaborate than in a datacenter or in the cloud.
+    \item \textit{\ac{QoS}} - The service provided at the edge should be reliable and provide a good user experience. Availability and performance play a central role in this context. As the availability can not be guaranteed to some extent, an appropriate failover mechanism should be in place.
+    \item \textit{Security} - physical access control as well as isolating applications from each other is a difficult task. Also, the data traffic must be separated accordingly. In general, \ac{IT} security is a hot topic, and especially at the edge, it requires appropriate consideration for hardening the environment.
+    \item \textit{Monitoring} - another important factor is how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
+    \item \textit{Environment} - Some locations may have to deal with difficult conditions regarding their surroundings. Increased dust exposure, poor internet connections or recurring power outages can be some of these factors. The system must be able to cushion or parry such failures accordingly.
 \end{itemize}
 The above-mentioned challenges provide a good starting point for defining the necessary tests to find the matching target architecture. Details about this test can be found in the chapter \textit{\hyperref[sec:dsrmethode]{Methodlogy}}.
 
@@ -264,38 +287,67 @@ The above-mentioned challenges provide a good starting point for defining the ne
 
 \chapter{Design Science Research}
 \label{chap:dsr}
+"A common topic when performing research in technical disciplines is to design some kind of artefact, such as a model, an information system, or a method for performing a certain task. To address this topic in a systematic and scientific way, Design Science Research (DSR) has stablished itself as an appropriate research method." \cite{dsr-method}
 
 \section{Methodology}
 \label{sec:dsrmethode}
-\subsection{Performed Tests}
-Target length: 2 S
+According to the description in the introduction before, \ac{DSR} is used as a scientific method to construct the \ac{PoC}. For this purpose two real world exmaples are build, which are then gradually refined. Those exmaples are descripte in detail in the following chapter \hyperref[sec:dsrenv]{environment}. The same \hyperref[sec:dsrusecase]{use-cases} are then deployed onto each of these environments. Afterwards, Tests are then defined and carried out on the basis of the issues listed in section \hyperref[sec:generalchallanges]{genereal challenges}. Based on the results, a preferred environment per property can finally be determined.
 
 \section{Environment}
-\label{sec:env}
-describe the test-environemtn
-Target length: 0,5-1 S
+\label{sec:dsrenv}
+\subsection{Generel}
+The main goal is to create both of the aimed architectures in a similar environment. The target environment should provide good coverage of the diversity encountered in an edge environment. For that poropse the \ac{PoC} is build across \hyperref{https://www.hetzner.com/cloud}{}{}{Hetzner Cloud} and a local site connected via 4G mobile internet.
 
-\section{Architecture}
-\label{sec:dsrarchitecture}
-\subsection{Default}
-Target length: 3-4 S
-\subsection{distributed K8s}
-Target length: 3-4 S
+\paragraph{Coverage} This combination allows a wide range of possibilities to be achieved:
+
+\begin{itemize}
+    \item \textit{Geographical distribution} - Hetzner Cloud offers location in Germany, Finland and the U.S for deployments. This allows communication to take place over long distances.
+    \item \textit{Scalability} - On the Hetzner Cloud scaling nodes can be realised quickly via \ac{API}.
+    \item \textit{\ac{NAT}} - At the local site, nearby vienna, no public IP is availabe for each of the nodes. Therefore, \ac{NAT} is used to map a dynamic changing IP to the nodes downstream.
+    \item \textit{\ac{ARM}} - Also at the local site, a Raspberry Pi is used as an edge-node to emulate devices with minial ressources.
+    \item \textit{Unstable} - The connection at the local site may be unstable from time to time because the connection is established over the public 4G network using mobile technology.
+\end{itemize}
+
+\paragraph{Locations} Subsequent, a tabular lists all of the nodes that are used, followed by a graphic showing the locations on a map.
+
+\begin{table}[ht]
+    \begin{center}
+        \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{
+        \begin{tabular}{l|l|l|l|l}
+            Node & Location & CPU & IP & Latency \\
+            \hline
+            Master & Nürnberg, DE & dedicated & AMD64 & x \\
+            Edge-1 & Ashburn, US & dedicated & AMD64 & 95ms \\
+            Edge-2 & Helsinki, FI &  dedicated & AMD64 & 24ms \\
+            Raspberry & Kirchberg, AT & dynamic & ARM32 & 40ms \\
+        \end{tabular}}
+        \caption{\ac{PoC} nodes table}
+        \label{tab:poc-nodes}
+    \end{center}
+\end{table}
+
+\begin{figure}[ht]
+    \centering
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.80\textwidth]{PICs/poc-map.png}}
+    \caption{Map of the \ac{PoC}}
+    \label{fig:poc-map}
+\end{figure}
+
+\subsection{KubeEdge}
+\subsection{KubeFed}
 
 
 \section{Use-Cases}
+\label{sec:dsrusecase}
 \subsection{Web-Application}
-Target length: 1
 \subsection{Enterprise VPN}
-Target length: 1
 \subsection{Distributed Database}
-Target length: 1
+
+\section{Performed Tests}
 
 \section{Analysis}
 \label{sec:dsranalysis}
-Target length: 4 S
 \subsection{Relevant Magnitudes}
-\subsection{Performed Tests}
 \subsection{Outcome}
 \subsection{Paraphrase}
 
@@ -306,8 +358,6 @@ Target length: 4 S
 
 \section{Decision Variables}
 \label{sec:variables}
- 
-Target length: 1-2 S
 
 \section{Decision Tree}
 \label{sec:tree}
@@ -332,10 +382,7 @@ Make Kubernetes aware of the latency between the nodes at the Edge.
 \section{Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes}
 Similar to the paper before. Latecny awar pod deploymentm, but you also can deploy to regions and an custom re-scheduler is implementated taking care of redeploying when one node fails.
 Clustering node-groups based on latency.
-\section{Latency-aware Optimization of the Existing Service Mesh in edge-computing Environment}
-RoutingAgent (Docker Image) extending Isito Service mesh with dynamic weight based routing.
-"With the RoutingAgent running in the system, the weights of the target routing clusters will be dyamically changed based on the detected inter-cluster network latency"
-TODO: Service Mesh ggf entfernen.
+
 
 \chapter{Results}
 \label{chap:results}
@@ -350,20 +397,8 @@ Target length: 3 S (all together)
 \section{Discussion and further research}
 \label{sec:discuss}
 
-\paragraph{Notes}
----to-be-removed---
-Sites:
-- longest: 50 (may i need even more)
-- shortest: 36 (zu wenig)
--------------------
 
-Picture example:
-\begin{figure}[ht]
-    \centering
-    \tcbox[sharp corners, boxsep=4mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
-    \caption{Distributed \ac{K8s} architeture}
-    \label{fig:distributed-k8s}
-\end{figure}
+
 
 %
 % Hier beginnen die Verzeichnisse.
@@ -402,6 +437,13 @@ Picture example:
     \acro{CNI}[CNI]{Container Network Interface}
     \acro{IP}[IP]{Internet Procotcol}
     \acro{NAT}[NAT]{Network Address Translation}
+    \acro{DNS}[DNS]{Domain Name System}
+    \acro{MQTT}[MQTT]{Message Queuing Telemetry Transport}
+    \acro{CNCF}[CNCF]{Cloud Native Computin Foundation}
+    \acro{KubeFed}[KubeFed]{Kubernetes Cluster Federation}
+    \acro{API}[API]{Application Programming Interface}
+    \acro{PoC}[PoC]{Proof-of-Concept}
+    \acro{ARM}[ARM]{Advanced RISC Machines}
 \end{acronym}
 
 %
