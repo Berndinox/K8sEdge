@@ -17,7 +17,7 @@
     numberbychapter=false,
     caption=\lstname,
     frame=single,
-    numbers=left,
+    numbers=none,
     stepnumber=1,
     numbersep=2pt,
     xleftmargin=15pt,
@@ -296,7 +296,7 @@ According to the description in the introduction before, \ac{DSR} is used as a s
 \section{Environment}
 \label{sec:dsrenv}
 \subsection{Generel}
-The main goal is to create both of the aimed architectures in a similar environment. The target environment should provide good coverage of the diversity encountered in an edge environment. For that poropse the \ac{PoC} is build across \hyperref{https://www.hetzner.com/cloud}{}{}{Hetzner Cloud} and a local site connected via 4G mobile internet.
+The main goal is to create both of the aimed architectures in a similar environment. The target environment should provide good coverage of the diversity encountered in edge environments. For that poropse the \ac{PoC} is build across \hyperref{https://www.hetzner.com/cloud}{}{}{Hetzner Cloud} and a local site connected via 4G mobile internet.
 
 \paragraph{Coverage} This combination allows a wide range of possibilities to be achieved:
 
@@ -312,16 +312,17 @@ The main goal is to create both of the aimed architectures in a similar environm
 
 \begin{table}[ht]
     \begin{center}
-        \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{
-        \begin{tabular}{l|l|l|l|l}
-            Node & Location & CPU & IP & Latency \\
+        \begin{tabular}{|l|l|l|l|l|l|l|}
             \hline
-            Master & Nürnberg, DE & dedicated & AMD64 & x \\
-            Edge-1 & Ashburn, US & dedicated & AMD64 & 95ms \\
-            Edge-2 & Helsinki, FI &  dedicated & AMD64 & 24ms \\
-            Raspberry & Kirchberg, AT & dynamic & ARM32 & 40ms \\
-        \end{tabular}}
-        \caption{\ac{PoC} nodes table}
+            Node & Location & IP & CPU & Cores & RAM & Latency \\
+            \hline
+            Master & Nürnberg, DE & dedicated & AMD64 & 2 & 4GB & 0ms \\
+            Edge-1 & Ashburn, US & dedicated & AMD64 & 2 & 2GB & 95ms \\
+            Edge-2 & Helsinki, FI &  dedicated & AMD64 & 2 & 2GB & 24ms \\
+            Raspberry & Kirchberg, AT & dynamic & ARM64 & 4 & 4GB & 40ms \\
+            \hline
+        \end{tabular}
+        \caption{\ac{PoC} nodes specification}
         \label{tab:poc-nodes}
     \end{center}
 \end{table}
@@ -329,13 +330,32 @@ The main goal is to create both of the aimed architectures in a similar environm
 \begin{figure}[ht]
     \centering
     \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.80\textwidth]{PICs/poc-map.png}}
-    \caption{Map of the \ac{PoC}}
+    \caption{Map of the \ac{PoC}\cite{googlemaps}}
     \label{fig:poc-map}
 \end{figure}
 
-\subsection{KubeEdge}
-\subsection{KubeFed}
+\paragraph{OS} The \ac{OS} used on all cloud nodes is Ubuntu 20.04.3 LTS. For the local site on the Raspberry Pi the \ac{OS} Raspberry Pi Lite, without \ac{GUI}, is used.
 
+\paragraph{K3s} For simplicity, the tool of choice for installing \ac{K8s} is \hyperref{https://k3s.io/}{}{}{K3s}. This is a lightweight \ac{K8s} distribution optimized for \ac{IoT} and deployments at the edge. All necessary features are supported, only the dependencies have been reduced to the essentials. In actual use, insofar as resources in the cloud only play a subordinate role, the standard \ac{K8s} can also be used analogously. However, at the edge K3s if a perfect match. To illustrate the simplicity, the installation command used is shown below.  
+
+\begin{lstlisting}[caption={K3s installation},captionpos=b]
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-cloud-controller" sh -s -
+\end{lstlisting}
+
+\paragraph{VPN} No \ac{VPN} is used for either environment. Although a VPN can increase security accordingly and services can communicate more easily, its use in a widely distributed edge environment with many nodes is problematic. VPNs are simply not designed for unstable connections with high latency and possibly rapidly changing \ac{IP} addresses. The two tools used therefore use alternative approaches via HTTPs and RPC respectively.
+
+\subsection{KubeEdge}
+\label{sec:dsrenvke}
+For the KubeEdge variant, only a \ac{K8s} installation is required on the master. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the k-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. 
+
+\paragraph{CloudStream} While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
+
+\paragraph{Raspberry} On the \ac{ARM} devices additional steps where required to configure cgroups appropriately. Otherwise the installation steps are exactly the same as on the cloud nodes.
+
+\paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-install.md}{}{}{Berndinox/K8sEdge}
+
+\subsection{KubeFed}
+\label{sec:dsrenvkf}
 
 \section{Use-Cases}
 \label{sec:dsrusecase}
@@ -358,6 +378,8 @@ The main goal is to create both of the aimed architectures in a similar environm
 
 \section{Decision Variables}
 \label{sec:variables}
+\subsection{Installation complexity}
+The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the section \hyperref[sec:dsrenv]{environment}, very different steps and necessary tools were discovered.
 
 \section{Decision Tree}
 \label{sec:tree}
@@ -444,6 +466,9 @@ Target length: 3 S (all together)
     \acro{API}[API]{Application Programming Interface}
     \acro{PoC}[PoC]{Proof-of-Concept}
     \acro{ARM}[ARM]{Advanced RISC Machines}
+    \acro{OS}[OS]{Operating System}
+    \acro{GUI}[GUI]{Graphical User Interface}
+    \acro{VPN}[VPN]{Virtual Private Network}
 \end{acronym}
 
 %
