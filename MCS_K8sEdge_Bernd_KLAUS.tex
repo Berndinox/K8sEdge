@@ -126,7 +126,7 @@ Problems arise when trying to find the proper architecture for a specific use-ca
 \label{sec:rq}
 This paper is going to answer the subsequent research questions:
 \begin{enumerate}
-    \item What are the main differences of the in chapter \hyperref[item:architecture]{one} mentioned architectures regarding functionality, scalability, costs and security?
+    \item What are the main differences of the in \autoref{item:architecture} mentioned architectures regarding functionality, scalability, costs and security?
     \item Which decision criteria must be defined respectively examined to create a catalog capable
     of choosing the proper architecture easier for \ac{IT} managers as well as administrators?
     \item Is there a trend in which technology is most likely to be used?
@@ -144,10 +144,10 @@ In the first part of the present work existing literature will be inspected. Rel
 \chapter{State of the Art}
 \label{chap:current}
 \section{Technology}
-The present chapter provides an introduction to the general thematic. The main components and objects of \ac{K8s} are explained aswell as the layers of edge-computing are highlighted. If anyone is already familiar with the subjects, may you jump over to the \hyperref[sec:architecture]{Architecture} chapter to read further.
+The present chapter provides an introduction to the general thematic. The main components and objects of \ac{K8s} are explained aswell as the layers of edge-computing are highlighted. If anyone is already familiar with the subjects, may you jump over to the \autoref{sec:architecture} "architecture" to read further.
 \label{sec:technology}
 \subsection{Kubernetes}
-To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent section \hyperref[sec:architecture]{Architecture}. In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
+To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent \autoref{sec:architecture} "architecture". In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
 
 \begin{figure}[ht]
     \centering
@@ -160,7 +160,7 @@ To promote modern development and be able to implement continuous deployment pip
 \begin{itemize}
     \item \textit{kube-apiserver} acts as frontend web-interface responsible for controlling the \ac{K8s} cluster as well as the objects inside the cluster. Tools like kubectl abstract the \textit{OpenAPI v2} endpoint and provide access in form of a simply understandable and usable \ac{CLI}. 
     \item \textit{etcd} represents a high-available and consistent key value store responsible for storing the actual state as well as the desired configuration of the cluster.
-    \item \textit{kube-scheduler} is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However, the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the pods communicating with each other. As discovered in the following chapters, this appears to be an important variable for edge-deployments. However, some available white-papers already try to address those issues and show possible solutions by adopting a custom scheduler taking care of those values. More details on this can be found in the chapter \hyperref[chap:related]{Related Work}.
+    \item \textit{kube-scheduler} is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However, the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the pods communicating with each other. As discovered in the following chapters, this appears to be an important variable for edge-deployments. However, some available white-papers already try to address those issues and show possible solutions by adopting a custom scheduler taking care of those values. More details on this can be found in the \autoref{chap:related} "related work".
     \item \textit{kube-controller-manager} consists of a single compiled binary controling the status of nodes, jobs, service-accounts and endpoints as well as creating or removing them.
     \item \textit{cloud-controller-manager} represents the interface to the underlying cloud-platform. This allows kubernetes to create and/or configure load-balancers, routes and persistent-volumes on the underlying cloud-infrastructure. In a local environment e.g. minikube \cite{minikube} provide the \textit{cloud-controller-manager} becomes an optional component and is not required. The same may apply to edge-locations as those areas are outside the cloud most of the time.
 \end{itemize}
@@ -241,6 +241,7 @@ In addition a component for device management and seemles integration with \ac{M
 
 
 \subsection{Distributed K8s}
+\label{sec:disk8s}
 In this case, a different approach is chosen and, in contrast to the previous architecture, fully-fledged clusters are also operated at the edge. The obvious advantage is that they can be operated autonomously. There is basically no dependence on the other nodes.
 
 \begin{figure}[ht]
@@ -281,7 +282,7 @@ Challenges that appear when creating respectively operating such infrastructures
     \item \textit{Monitoring} - another important factor is how to capture metrics and events (logs) from the edge. They need to be indexed on a centralized instance in order to get a general overview on what's happening. Because of the dynamic and rapid changes some kind of automatic discovery should be used for that purpose.
     \item \textit{Environment} - Some locations may have to deal with difficult conditions regarding their surroundings. Increased dust exposure, poor internet connections or recurring power outages can be some of these factors. The system must be able to cushion or parry such failures accordingly.
 \end{itemize}
-The above-mentioned challenges provide a good starting point for defining the necessary tests to find the matching target architecture. Details about this test can be found in the chapter \textit{\hyperref[sec:dsrmethode]{Methodlogy}}.
+The above-mentioned challenges provide a good starting point for defining the necessary tests to find the matching target architecture. Details about this test can be found in the \autoref{sec:dsrmethode} "methodlogy".
 
 
 
@@ -291,7 +292,7 @@ The above-mentioned challenges provide a good starting point for defining the ne
 
 \section{Methodology}
 \label{sec:dsrmethode}
-According to the description in the introduction before, \ac{DSR} is used as a scientific method to construct the \ac{PoC}. For this purpose two real world exmaples are build, which are then gradually refined. Those exmaples are descripte in detail in the following chapter \hyperref[sec:dsrenv]{environment}. The same \hyperref[sec:dsrusecase]{use-cases} are then deployed onto each of these environments. Afterwards, Tests are then defined and carried out on the basis of the issues listed in section \hyperref[sec:generalchallanges]{genereal challenges}. Based on the results, a preferred environment per property can finally be determined.
+According to the description in the introduction before, \ac{DSR} is used as a scientific method to construct the \ac{PoC}. For this purpose two real world exmaples are build, which are then gradually refined. Those exmaples are descripte in detail in the following \autoref{sec:dsrenv} "environment". The same \hyperref[sec:dsrusecase] are then deployed onto each of these environments. Afterwards, Tests are then defined and carried out on the basis of the issues listed in section \autoref{sec:generalchallanges} "genereal challenges". Based on the results, a preferred environment per property can finally be determined.
 
 \section{Environment}
 \label{sec:dsrenv}
@@ -356,6 +357,15 @@ For the KubeEdge variant, only a \ac{K8s} installation is required on the master
 
 \subsection{KubeFed}
 \label{sec:dsrenvkf}
+In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies on individually acting clusters that are controlled by a central instance. Because of this, each node must be equipped with a fully functional \ac{K8s} cluster. Usually, the installation is associated with greater effort, but K3s simplifies this process enormously, as descripted in \autoref{sec:dsrenv}.
+
+\paragraph{Hosting Cluster} The challenges arise when it comes to connecting all instances from the central cluster. The kubeconfig for each of them must be modified, to include the puclic ip of the node, and transmitted to the central hosting cluster. There, the configuration must be added as an additional context. Finally, a custom binary is used to add each of the defined contexts to \ac{KubeFed}, as shown below.
+
+\begin{lstlisting}[caption={KubeFed join context},captionpos=b]
+kubefedctl join edge1 --cluster-context edge1 --host-cluster-context default --v=2
+\end{lstlisting}
+
+\paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge}
 
 \section{Use-Cases}
 \label{sec:dsrusecase}
@@ -379,21 +389,20 @@ For the KubeEdge variant, only a \ac{K8s} installation is required on the master
 \section{Decision Variables}
 \label{sec:variables}
 \subsection{Installation complexity}
-The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the section \hyperref[sec:dsrenv]{environment}, very different steps and necessary tools were discovered.
+The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered.
 
 \section{Decision Tree}
 \label{sec:tree}
-Target length: 1 S
+
 
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
-Target length: 1 S
+
 
 
 
 \chapter{Related Work}
 \label{chap:related}
-Target length: 3 S (all subsections)
 \section{Kubernetes and the Edge?}
 Some introdution to K8s at the Edge, highlighting the main Architectures.
 \section{Extend Cloud to Edge with KubeEdge}
@@ -409,7 +418,6 @@ Clustering node-groups based on latency.
 \chapter{Results}
 \label{chap:results}
 
-Target length: 3 S (all together)
 \section{Findings}
 \label{sec:findings}
 
