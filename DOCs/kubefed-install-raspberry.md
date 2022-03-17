@@ -19,4 +19,7 @@ init 6
 cat /etc/rancher/k3s/k3s.yaml
 # Replace IP with DynDNS
 server: https://127.0.0.1:6443
+# Also Cert check needs to be removed (Optional Cert recreatin)
+insecure-skip-tls-verify: true
+# Remove certificate-authority-data:
 ```
