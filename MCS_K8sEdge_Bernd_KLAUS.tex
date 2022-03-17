@@ -88,7 +88,7 @@
 \studentnumber{2010303012}
 \supervisor{Dipl.-Ing. Hubert Kraut}
 \secondsupervisor{Dipl.-Ing. Andreas Happe}
-\place{Wien}
+\place{Vienna}
 
 \kurzfassung{
 Kubernetes wird als Schweizer Armemesser der Container-Orchestrierung bezeichnet. Auch im Bereich edge-computing bietet der Dienst eine Vielzahl an unterschiedlichen Werkzeugen und Tools an, welche Teils unterschiedliche Strategien und Ansätze verfolgen. Die Auswahl reicht von einem zentralen Kubernetes-Cluster der verteilte Geräte, sogenannte „Leafs“, steuert bis hin zu vielen einzelnen und verteilten kleinen Clustern an der Edge, welche zentral gesteuert werden. Entscheidend ist es den richtigen Anwendungsfall zu erheben, um sich für die optimale Lösung entscheiden zu können. Ebenfalls spielen sicherheitstechnische Aspekte bei derart komplexen Umgebungen eine wichtige Rolle. Die vorliegende Arbeit gibt Einblicke und Entscheidungsgrundlagen sowie Empfehlungen hinsichtlich der IT-Security. Belegt werden die Angaben durch Implementierung eines Proof-of-Concepts
@@ -99,7 +99,7 @@ Kubernetes wird als Schweizer Armemesser der Container-Orchestrierung bezeichnet
 \outline{
 Kubernetes is the de facto swiss-army-knife for orchestrating container-platforms. In addition, Kubernetes can also be used for deploying devices as well as applications on top of it on the edge of the network. However, there are different methods for archiving comparable results. On the one hand a possible solution is to build a central instance managing small distributed and independent clusters, on the other hand a centralized cluster with just leafs on the edge may be a better fit. This results in the challenge to find the best solution for the desired environment respectively use-case. The following thesis is making use of "Design Science Research" to give introductions on how to choose the proper architecture for the aimed environment.
 }
-\keywords{Kubernetes, edge-computing, distributed System, Proof-of-Concept}
+\keywords{Kubernetes, edge-computing, geo-distribution, proof-of-concept}
 
 %
 % Start the Thesis
@@ -206,7 +206,7 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 This chapter focuses on the two different architecture approaches which can be used for edge computing. After an overview the advantages and disadvantages as well as possible solutions are examinated.
 
 \subsection{Default}
-In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized \textit{Control Plane} hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location aswell inside the cloud. The following graphic illustrates the architecture.
+In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized control plane hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location aswell inside the cloud. The following graphic illustrates the architecture.
 
 \begin{figure}[ht]
     \centering
@@ -309,7 +309,7 @@ The main goal is to create both of the aimed architectures in a similar environm
     \item \textit{Unstable} - The connection at the local site may be unstable from time to time because the connection is established over the public 4G network using mobile technology.
 \end{itemize}
 
-\paragraph{Locations} Subsequent, a tabular lists all of the nodes that are used, followed by a graphic showing the locations on a map.
+\paragraph{Locations} Subsequent, a tabular lists all of the nodes that are used for each of the both test environments, followed by a graphic showing the locations on a map.
 
 \begin{table}[ht]
     \begin{center}
@@ -347,7 +347,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-clo
 
 \subsection{KubeEdge}
 \label{sec:dsrenvke}
-For the KubeEdge variant, only a \ac{K8s} installation is required on the master. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the k-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. 
+For the KubeEdge variant, only a \ac{K8s} installation is required on the master. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the k-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. The most important steps and challenges encountered during the installation are listed below.
 
 \paragraph{CloudStream} While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
 
@@ -357,13 +357,15 @@ For the KubeEdge variant, only a \ac{K8s} installation is required on the master
 
 \subsection{KubeFed}
 \label{sec:dsrenvkf}
-In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies on individually acting clusters that are controlled by a central instance. Because of this, each node must be equipped with a fully functional \ac{K8s} cluster. Usually, the installation is associated with greater effort, but K3s simplifies this process enormously, as descripted in \autoref{sec:dsrenv}.
+In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies on individually acting clusters that are controlled by a central instance. Because of this, each node must be equipped with a fully functional \ac{K8s} cluster. Usually, the installation is associated with greater effort, but K3s simplifies this process enormously, as descripted in \autoref{sec:dsrenv}. The most important steps and challenges encountered during the installation are listed below.
 
-\paragraph{Hosting Cluster} The challenges arise when it comes to connecting all instances from the central cluster. The kubeconfig for each of them must be modified, to include the puclic ip of the node, and transmitted to the central hosting cluster. There, the configuration must be added as an additional context. Finally, a custom binary is used to add each of the defined contexts to \ac{KubeFed}, as shown below.
+\paragraph{Hosting Cluster} The challenges arise when it comes to connecting all instances from the central cluster. The kubeconfig for each of them must be modified, to include the puclic ip or \ac{FQDN} of the node, and transmitted to the central hosting cluster. There, the configuration must be added as an additional context. Finally, a custom binary is used to add each of the defined contexts to \ac{KubeFed}, as shown below.
 
 \begin{lstlisting}[caption={KubeFed join context},captionpos=b]
 kubefedctl join edge1 --cluster-context edge1 --host-cluster-context default --v=2
 \end{lstlisting}
+
+\paragraph{Dynamic IP} Because the central hosting cluster is initialising the connection to the  nodes at the edge, these nodes must be reachable over a static adress. In most cases, especially in the cloud, the use of static ips is not a problem. In some cases, however, it may also be necessary to include nodes with dynamic changing ip-addresses. To circumvent this problem, a so-called dynamic \ac{DNS} service is used to establish the connection. Although such a service can be set up relatively quickly, it does mean that an additional component has to be installed and maintained. In contrast, \hyperref[sec:dsrenvke]{KubeEdge} works without such a workaround.
 
 \paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge}
 
@@ -459,24 +461,25 @@ Clustering node-groups based on latency.
     \acro{WWW}[WWW]{world wide web}
     \acro{K8s}[K8s]{Kubernetes}
     \acro{IoT}[IoT]{internet-of-things}
-    \acro{DSR}[DSR]{Design Science Research}
-    \acro{CLI}[CLI]{Command Line Interface}
-    \acro{QoS}[QoS]{Quality of Service}
-    \acro{CPU}[CPU]{Central Processing Unit}
-    \acro{RAM}[RAM]{Random Access Memory}
-    \acro{CNI}[CNI]{Container Network Interface}
-    \acro{IP}[IP]{Internet Procotcol}
-    \acro{NAT}[NAT]{Network Address Translation}
-    \acro{DNS}[DNS]{Domain Name System}
-    \acro{MQTT}[MQTT]{Message Queuing Telemetry Transport}
-    \acro{CNCF}[CNCF]{Cloud Native Computin Foundation}
-    \acro{KubeFed}[KubeFed]{Kubernetes Cluster Federation}
-    \acro{API}[API]{Application Programming Interface}
-    \acro{PoC}[PoC]{Proof-of-Concept}
-    \acro{ARM}[ARM]{Advanced RISC Machines}
-    \acro{OS}[OS]{Operating System}
-    \acro{GUI}[GUI]{Graphical User Interface}
-    \acro{VPN}[VPN]{Virtual Private Network}
+    \acro{DSR}[DSR]{design science research}
+    \acro{CLI}[CLI]{command line interface}
+    \acro{QoS}[QoS]{quality of service}
+    \acro{CPU}[CPU]{central processing unit}
+    \acro{RAM}[RAM]{random access memory}
+    \acro{CNI}[CNI]{container network interface}
+    \acro{IP}[IP]{internet procotcol}
+    \acro{NAT}[NAT]{network address translation}
+    \acro{DNS}[DNS]{domain name system}
+    \acro{MQTT}[MQTT]{message queuing telemetry transport}
+    \acro{CNCF}[CNCF]{Cloud Native Computing Foundation}
+    \acro{KubeFed}[KubeFed]{Kubernetes cluster federation}
+    \acro{API}[API]{application programming interface}
+    \acro{PoC}[PoC]{proof-of-concept}
+    \acro{ARM}[ARM]{advanced RISC machines}
+    \acro{OS}[OS]{operating system}
+    \acro{GUI}[GUI]{graphical user interface}
+    \acro{VPN}[VPN]{virtual private network}
+    \acro{FQDN}[FQDN]{full qualified domain name}
 \end{acronym}
 
 %
@@ -484,7 +487,5 @@ Clustering node-groups based on latency.
 %
 \clearpage
 \appendix
-\chapter{Appendix}
-\clearpage
 \chapter{Appendix}
 \end{document}
