@@ -337,7 +337,7 @@ The main goal is to create both of the aimed architectures in a similar environm
 
 \paragraph{OS} The \ac{OS} used on all cloud nodes is Ubuntu 20.04.3 LTS. For the local site on the Raspberry Pi the \ac{OS} Raspberry Pi Lite, without \ac{GUI}, is used.
 
-\paragraph{K3s} For simplicity, the tool of choice for installing \ac{K8s} is \hyperref{https://k3s.io/}{}{}{K3s}. This is a lightweight \ac{K8s} distribution optimized for \ac{IoT} and deployments at the edge. All necessary features are supported, only the dependencies have been reduced to the essentials. In actual use, insofar as resources in the cloud only play a subordinate role, the standard \ac{K8s} can also be used analogously. However, at the edge K3s if a perfect match. To illustrate the simplicity, the installation command used is shown below.  
+\paragraph{\ac{K8s}} For simplicity, the tool of choice for installing \ac{K8s} is \hyperref{https://k3s.io/}{}{}{K3s}. This is a lightweight \ac{K8s} distribution optimized for \ac{IoT} and deployments at the edge. All necessary features are supported, only the dependencies have been reduced to the essentials. In actual use, insofar as resources in the cloud only play a subordinate role, the standard \ac{K8s} can also be used analogously. However, at the edge K3s if a perfect match. To illustrate the simplicity, the installation command used is shown below.  
 
 \begin{lstlisting}[caption={K3s installation},captionpos=b]
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-cloud-controller" sh -s -
@@ -347,26 +347,33 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-clo
 
 \subsection{KubeEdge}
 \label{sec:dsrenvke}
-For the KubeEdge variant, only a \ac{K8s} installation is required on the master. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the k-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. The most important steps and challenges encountered during the installation are listed below.
+For the default architecture resrespectively KubeEdge variant, only a \ac{K8s} installation on the master node is required. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the k-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. 
 
-\paragraph{CloudStream} While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
+\paragraph{Challenges} The most important steps and challenges encountered during the installation are listed below.
 
-\paragraph{Raspberry} On the \ac{ARM} devices additional steps where required to configure cgroups appropriately. Otherwise the installation steps are exactly the same as on the cloud nodes.
+\begin{itemize}
+    \item \textit{CloudStream} - While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
+\end{itemize}
 
 \paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-install.md}{}{}{Berndinox/K8sEdge}
 
 \subsection{KubeFed}
 \label{sec:dsrenvkf}
-In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies on individually acting clusters that are controlled by a central instance. Because of this, each node must be equipped with a fully functional \ac{K8s} cluster. Usually, the installation is associated with greater effort, but K3s simplifies this process enormously, as descripted in \autoref{sec:dsrenv}. The most important steps and challenges encountered during the installation are listed below.
+In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies on individually acting clusters that are controlled by a central instance. Because of this, each node must be equipped with a fully functional \ac{K8s} cluster. Usually, the installation is associated with greater effort, but K3s simplifies this process enormously, as descripted in \autoref{sec:dsrenv}. 
 
-\paragraph{Hosting Cluster} The challenges arise when it comes to connecting all instances from the central cluster. The kubeconfig for each of them must be modified, to include the puclic ip or \ac{FQDN} of the node, and transmitted to the central hosting cluster. There, the configuration must be added as an additional context. Finally, a custom binary is used to add each of the defined contexts to \ac{KubeFed}, as shown below.
+\paragraph{Challenges} The most important steps and challenges encountered during the installation are listed below.
 
-\begin{lstlisting}[caption={KubeFed join context},captionpos=b]
-kubefedctl join edge1 --cluster-context edge1 --host-cluster-context default --v=2
-\end{lstlisting}
+\begin{itemize}
+    \item \textit{Hosting Cluster} - The challenges arise when it comes to connecting all instances from the central cluster. The kubeconfig for each of them must be modified, to include the puclic ip or \ac{FQDN} of the node, and transmitted to the central hosting cluster. There, the configuration must be added as an additional context. Finally, a custom binary is used to add each of the defined contexts to \ac{KubeFed}, as shown below.
 
-\paragraph{Dynamic IP} Because the central hosting cluster is initialising the connection to the  nodes at the edge, these nodes must be reachable over a static adress. In most cases, especially in the cloud, the use of static ips is not a problem. In some cases, however, it may also be necessary to include nodes with dynamic changing ip-addresses. To circumvent this problem, a so-called dynamic \ac{DNS} service is used to establish the connection. Although such a service can be set up relatively quickly, it does mean that an additional component has to be installed and maintained. In contrast, \hyperref[sec:dsrenvke]{KubeEdge} works without such a workaround.
+    \begin{lstlisting}[caption={KubeFed join context},captionpos=b]
+    kubefedctl join edge1 --cluster-context edge1 --host-cluster-context default --v=2
+    \end{lstlisting}
 
+    \item \textit{Dynamic IP} - Because the central hosting cluster is initialising the connection to the  nodes at the edge, these nodes must be reachable over a static adress. In most cases the use of static ips is not a problem. However, especially in edge-environments, the use of dynamic ip-addresses may be necessary. To circumvent this problem, a so-called dynamic \ac{DNS} service is used to establish the connection. Although such a service can be set up relatively quickly, it does mean that an additional component has to be installed and maintained. In contrast, \hyperref[sec:dsrenvke]{KubeEdge} works without such a workaround.
+    
+    \item \textit{dNAT} - As long as the target node is behind a router and connected with a private ip, destination \ac{NAT} must be configured to forward the necessary port. Alternatively, a reverse-proxy can be used to publish the internal service. This step is also only required for the KubeFed variant. 
+\end{itemize}
 \paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge}
 
 \section{Use-Cases}
@@ -391,7 +398,58 @@ kubefedctl join edge1 --cluster-context edge1 --host-cluster-context default --v
 \section{Decision Variables}
 \label{sec:variables}
 \subsection{Installation complexity}
-The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered.
+The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered. 
+\paragraph{Dependencies} The first important variable we look at in this appendix are the dependencies.
+
+\begin{itemize}
+    \item \textit{Connectivity} - While KubeEdge works with literaly any connection, even behind carrier-grade \ac{NAT}\cite{cg-nat}, important conditions must be checked for KubeFed, as descripted in \autoref{sec:dsrenvkf} under the paragraph "challenges". For the sake of completeness, the requirements for KubeFed are listed subsequent.
+    \begin{itemize}
+        \item Static \ac{IP} or dyn \ac{DNS} agent if dynamic assigned
+        \item \ac{NAT} rule if the device is located behind a router
+    \end{itemize}
+    \item \textit{Device Support} - Both solutions offer a wide selection of different types of devices supported, like: ARM64, ARMv7, x86, or x64 based systems. However, because \ac{KubeFed} relies on a full functional \ac{K8s} cluster those extensive support is provided by the use of K3s and the container-runtime packaged within. In contrast, KubeEdge only requires on one of the supported container-runtimes as well as the KubeEdge binary. Because KubeEdge is taking special care of implementing lightweight agents compatible with \ac{CRI}\cite{k8scri}\cite{ke-cri-gh}, an even wider range of devices can be supported. Due to the design, even edge-devices with fewer resources can be used effectively. In summary, both solutions support a wide range of devices. KubeEdge, however, goes one step further and is therefore slightly in the lead.
+    \item \textit{Other dependencies} - Other requirements such as bandwidth, connection quality and e.g. storage space have little or no influence on the installation itself and are therefore only considered in the following operational part.
+\end{itemize}
+
+\paragraph{Installation routine} The second step is to examine the installation routine itself.
+\begin{itemize}
+    \item \textit{Required Tools} - One important part is the number of tools and binaries used respectivley required to be able to run the environments. The fewer components are used, the less complex the installation and operation. The fewer components used, the greater the tendency to keep the environment simple. Although individual components can also involve quite a high degree of complexity, this variable must not be disregarded. The individual configuration steps are evaluated in the following sections. All tools are listed for each environment subsequent.
+    \begin{itemize} 
+        \item \textit{KubeEdge}
+        \begin{itemize}
+            \item \ac{CRI}
+            \item KubeEdge binaries
+            \item K3s (Master only)
+        \end{itemize}
+        \item \textit{KubeFed}
+        \begin{itemize}
+            \item K3s
+            \item KubeFed binaries (Master only)
+            \item Helm (Master only)
+        \end{itemize}
+    \end{itemize}
+    It should be noted that K3s includes or builds on \ac{CRI}. 
+    \item \textit{Configuration steps} - This property describes the necessary steps that were required during the installation without additional tools. For KubeEdge the basic installation, without any logging capability, is only done by using the binary. However, if logging is necessary (in almost all cases it should be), some adaptations must be made. For Kubefed, in contrast, the respective kubeconfig must be transferred to the master and added there as a custom context. Minor adaptation with little effort is necessary for both environments, yet the comparison is not balanced because KubeFed does not offer out-of-the-box the possibility to collect all logs of the edge devices.
+    \item \textit{Documentation}  - Both documentations appear well maintained and kept up to date. The KubeEdge updates seem a little more recent according to the Github history. The KubeFed documentation can only be read in the form of markdown files within Github, but there is a separate web page for KubeEdge.
+\end{itemize}
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|l|l|}
+            \hline
+            Node & Location & IP & CPU & Cores & RAM & Latency \\
+            \hline
+            Master & Nürnberg, DE & dedicated & AMD64 & 2 & 4GB & 0ms \\
+            Edge-1 & Ashburn, US & dedicated & AMD64 & 2 & 2GB & 95ms \\
+            Edge-2 & Helsinki, FI &  dedicated & AMD64 & 2 & 2GB & 24ms \\
+            Raspberry & Kirchberg, AT & dynamic & ARM64 & 4 & 4GB & 40ms \\
+            \hline
+        \end{tabular}
+        \caption{\ac{PoC} nodes specification}
+        \label{tab:poc-nodes}
+    \end{center}
+\end{table}
+
 
 \section{Decision Tree}
 \label{sec:tree}
@@ -480,6 +538,7 @@ Clustering node-groups based on latency.
     \acro{GUI}[GUI]{graphical user interface}
     \acro{VPN}[VPN]{virtual private network}
     \acro{FQDN}[FQDN]{full qualified domain name}
+    \acro{CRI}[CRI]{container runtime interface}
 \end{acronym}
 
 %

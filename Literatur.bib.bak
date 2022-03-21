@@ -178,7 +178,32 @@
 @WWW{googlemaps,
   date  = {2022-03-12},
   title = {Google Maps},
-  url   = {maps.google.com},
+  url   = {https://maps.google.com},
+}
+
+@Report{cg-nat,
+  author      = {Philipp, Richter and Florian, Wohlfart and Narseo, Vallina-Rodriguez and Mark, Allman and Randy, Bush and Anja, Feldmann and Christian, Kreibich and Nicholas, Weaver and Vern, Paxson},
+  date        = {2016-05-01},
+  institution = {TU Berlin},
+  title       = {A Multi-perspective Analysis ofCarrier-Grade NAT Deployment},
+  type        = {resreport},
+  url         = {https://www.researchgate.net/publication/303330116_A_Multi-perspective_Analysis_of_Carrier-Grade_NAT_Deployment},
+}
+
+@WWW{k8scri,
+  author = {The Kubernetes Authors},
+  date   = {2022-01-10},
+  editor = {The Kubernetes Authors},
+  title  = {Container Runtime Interface (CRI)},
+  url    = {https://kubernetes.io/docs/concepts/architecture/cri/},
+}
+
+@WWW{ke-cri-gh,
+  author = {Gpinaik},
+  date   = {2021-09-02},
+  editor = {Looong, Dai and Kevin, Wang and Armin, Schlegel and Joy},
+  title  = {CRI Support in edged},
+  url    = {https://github.com/kubeedge/kubeedge/blob/master/docs/proposals/cri.md},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}
