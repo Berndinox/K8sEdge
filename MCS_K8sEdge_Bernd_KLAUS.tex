@@ -11,6 +11,12 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{amsmath}
+
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 
 \lstset{
     captionpos=b,
@@ -52,6 +58,7 @@
 %ARCH Linux fix
 \usepackage[backend=biber,style=numeric,sortcites,natbib=true,sorting=none]{biblatex}
 \addbibresource{Literatur.bib}
+
 
 %Formatieren des Quellcodeverzeichnisses
 \makeatletter
@@ -134,11 +141,11 @@ This paper is going to answer the subsequent research questions:
 
 \section{Goal}
 \label{sec:goal}
-The main goal of this thesis is to highlight the pros and cons for each of the \hyperref[item:architecture]{architectures} defined in the \hyperref[chap:introduction]{Introduction}. The focus will be mainly on the geo-distribution aspect. Although \ac{IoT} is playing a major role in pushing the development forward, however it is not considered further in the present work. To find the proper architecture, or at least recommendations what could fit best for different desired use-cases, a catalog will be defined. An important part will become the decision tree helping people making comprehensible decisions based on scientific research. The main characteristics which are taken into account are scalability, state-of-the-art, handling, costs as well as security.
+The main goal of this thesis is to highlight the pros and cons for each of the \hyperref[item:architecture]{architectures} defined in the \hyperref[chap:introduction]{Introduction}. The focus will be mainly on the geo-distribution aspect. Although \ac{IoT} is playing a major role in pushing the development forward, however it is not considered further in the present work. To find the proper architecture, or at least recommendations what could fit best for different desired use-cases, a catalog will be defined. An important part will become the decision criteria catalogue helping people making comprehensible decisions based on scientific research. The main characteristics which are taken into account are scalability, state-of-the-art, handling, costs as well as security.
 
 \section{Methodology}
 \label{sec:methodology}
-In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. The goal is to create a catalog with main criteria necessary for decision-making. Part of this catalog will also be a decision-tree, mentioned in the previous chapter, to easily find the proper architecture. The \ac{DSR} method serves as a scientific method and to test the characteristics recorded in the catalogue. This chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
+In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. The goal is to create a list with main criteria necessary for decision-making. As a result, a catalogue of criteria is drawn up in order to be able to decide on the right architecture. The \ac{DSR} method serves as a scientific method and to test the characteristics recorded in the catalogue. This chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
 
 
 \chapter{State of the Art}
@@ -399,7 +406,7 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 \label{sec:variables}
 \subsection{Installation complexity}
 The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered. 
-\paragraph{Dependencies} The first important variable we look at in this appendix are the dependencies.
+\paragraph{Dependencies} The first important variable we look at in this appendix are the dependencies. This paragraph considers requirements that must be met in order for the installation to proceed successfully.
 
 \begin{itemize}
     \item \textit{Connectivity} - While KubeEdge works with literaly any connection, even behind carrier-grade \ac{NAT}\cite{cg-nat}, important conditions must be checked for KubeFed, as descripted in \autoref{sec:dsrenvkf} under the paragraph "challenges". For the sake of completeness, the requirements for KubeFed are listed subsequent.
@@ -433,27 +440,60 @@ The first decision variable that is examined is the effort required for the inst
     \item \textit{Documentation}  - Both documentations appear well maintained and kept up to date. The KubeEdge updates seem a little more recent according to the Github history. The KubeFed documentation can only be read in the form of markdown files within Github, but there is a separate web page for KubeEdge.
 \end{itemize}
 
+\paragraph{Summarised assessment} The following table presents the above facts in a clear form.  
 \begin{table}[ht]
     \begin{center}
-        \begin{tabular}{|l|l|l|l|l|l|l|}
+        \begin{tabular}{|l|l|l|l|l|}
             \hline
-            Node & Location & IP & CPU & Cores & RAM & Latency \\
+            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
             \hline
-            Master & Nürnberg, DE & dedicated & AMD64 & 2 & 4GB & 0ms \\
-            Edge-1 & Ashburn, US & dedicated & AMD64 & 2 & 2GB & 95ms \\
-            Edge-2 & Helsinki, FI &  dedicated & AMD64 & 2 & 2GB & 24ms \\
-            Raspberry & Kirchberg, AT & dynamic & ARM64 & 4 & 4GB & 40ms \\
+            dependency & connectivity  & w/o static \ac{IP} & \cmark & \xmark \\
+            dependency & connectivity  & w/o dNAT & \cmark & \xmark \\
+            dependency & device support & extensive support & \cmark & \cmark \\
+            dependency & device support & ressources efficiency & \textbf{high} & \textbf{moderate} 
+            \\
+            installation & required tools & master/edge & \textbf{3/2} & \textbf{4/2} \\
+            installation & configuration & necessary effort & \textbf{moderate} & \textbf{moderate} \\
+            installation & documentation & clarity/actuality & \textbf{good} & \textbf{good} \\
             \hline
         \end{tabular}
-        \caption{\ac{PoC} nodes specification}
+        \caption{Installation complexitiy overview}
         \label{tab:poc-nodes}
     \end{center}
 \end{table}
 
+\subsection{Support and community}
 
-\section{Decision Tree}
-\label{sec:tree}
+\section{Criteria catalogue}
+\label{sec:cc}
+The following catalogue of criteria can be compiled on the basis of the data obtained in \autoref{sec:variables}. Zangemeister defines the method as follows: "Utility analysis is the analysis of a set of complex alternative actions with the purpose of ordering the elements of this set according to the preferences of the decision maker with respect to a multidimensional goal system"\cite{nwa}. By awarding points for each sub-area, the target environment with the highest effectiveness can be selected. The multiattribute value function is used for this purpose. The sum of the calculated individual attributes results in the total value per solution.
 
+\begin{equation*}
+v(a) = \sum \limits_{r=0}^{m}w_{r} v_{r} (a_{r})
+\end{equation*}
+
+w(r) must be greater than 0 and the condition of validity of the value function must be fulfilled.
+
+\begin{equation*}
+\sum \limits_{r=0}^{m} w_{r} = 1
+\end{equation*}
+
+Example:
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|l|l|l|}
+            \hline
+            \multicolumn{2}{|l|}{Category} & \multicolumn{2}{l|}{Criteria} & \multicolumn{2}{l|}{Rating} & \multicolumn{2}{l|}{Weighted rating} \\
+            \hline
+            Name & Weight & Criteria & Weight & KubeEdge & KubeFed & KubeEdge & KubeFed \\
+            \hline
+            Installation & 30\% & connectivity & 10\% & 5 & 1 & 0,5 & 0,1 \\
+            & & device support & 10\% & 5 & 4 & 0,5 & 0,4
+        \end{tabular}
+        \caption{Installation complexitiy rating}
+        \label{tab:poc-nodes}
+    \end{center}
+\end{table}
 
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
