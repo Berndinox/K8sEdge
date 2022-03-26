@@ -418,7 +418,7 @@ The first decision variable that is examined is the effort required for the inst
     \item \textit{Other dependencies} - Other requirements such as bandwidth, connection quality and e.g. storage space have little or no influence on the installation itself and are therefore only considered in the following operational part.
 \end{itemize}
 
-\paragraph{Installation routine} The second step is to examine the installation routine itself.
+\paragraph{Configuration} The second step is to examine the installation routine respectively the configuration steps itself.
 \begin{itemize}
     \item \textit{Required Tools} - One important part is the number of tools and binaries used respectivley required to be able to run the environments. The fewer components are used, the less complex the installation and operation. The fewer components used, the greater the tendency to keep the environment simple. Although individual components can also involve quite a high degree of complexity, this variable must not be disregarded. The individual configuration steps are evaluated in the following sections. All tools are listed for each environment subsequent.
     \begin{itemize} 
@@ -452,17 +452,49 @@ The first decision variable that is examined is the effort required for the inst
             dependency & device support & extensive support & \cmark & \cmark \\
             dependency & device support & ressources efficiency & \textbf{high} & \textbf{moderate} 
             \\
-            installation & required tools & master/edge & \textbf{3/2} & \textbf{4/2} \\
-            installation & configuration & necessary effort & \textbf{moderate} & \textbf{moderate} \\
-            installation & documentation & clarity/actuality & \textbf{good} & \textbf{good} \\
+            configuration & required tools & master/edge & \textbf{3/2} & \textbf{4/2} \\
+            configuration & handling & necessary effort & \textbf{moderate} & \textbf{moderate} \\
+            configuration & documentation & clarity/actuality & \textbf{good} & \textbf{good} \\
             \hline
         \end{tabular}
         \caption{Installation complexitiy overview}
-        \label{tab:poc-nodes}
+        \label{tab:install-overview}
     \end{center}
 \end{table}
 
-\subsection{Support and community}
+\subsection{Community and support}
+Another important factor is the support and the community for the respective application. Especially with relatively new and intuitive software, it is important to either have access to the community to exchange ideas and discuss problems, or to have a manufacturer who can provide support if needed. This is even more true if you want to use the environment productively and commercially.
+
+\paragraph{Community} Both products offer an active community with regular meetings, an mailing list and Slack channel. The open source approach promotes the formation of these open communities. KubeEdge is somewhat more active in research than KubeFed, but this does not necessarily mean that you will be better with one or the other.
+
+\paragraph{Support} At time of writing, we could not find any official company offering commercial support for the products. This is also, as mentioned above, due to the opensource approach. For KubeEdge, however, there is a list of companies that already use the product and support it accordingly. Among them are well-known companies such as Huawei, Orange and ARM. For KubeFed such a list is not disclosed. In compensation, the project is managed by Jeremy Olmsted-Thompson (Google) and Paul Morie (Apple) for this purpose. For both projects, issues can be submitted via Github.
+
+\paragraph{Activity} During the investigation of the topic, KubeEdge seems to be a bit more in the hype than KubeFed. This indirectly also leads to getting the necessary support faster. Details on the topicality can be found in the next subsection "future proof".
+
+\paragraph{Summarised assessment} The properties revealed above are tabulated below.  
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            community & communication-channel  & Slack & \cmark & \cmark \\
+            community & communication-channel  & mailing-list & \cmark & \cmark \\
+            community & communication-channel & regular meeting & \cmark & \cmark \\
+            support & commercial & maintenance & \xmark & \xmark \\
+            support & non-commercial & Github issues & \cmark & \cmark \\
+            support & sponsors & official list & \cmark & \xmark \\
+            activity & hype & movement & \textbf{high} & \textbf{medium} \\
+            \hline
+        \end{tabular}
+        \caption{Community and support overview}
+        \label{tab:cs-overview}
+    \end{center}
+\end{table}
+
+\subsection{Future proof}
+Another important element when deciding between the two options is how promising each is for the future. Especially, as in our case, when the project is mainly supported and developed by the community. In the following, the background of the projects, the topicality of the software updates as well as the media impact will be examined. The companies that use or support the project also play an important role in this context.
+
 
 \section{Criteria catalogue}
 \label{sec:cc}
@@ -478,26 +510,35 @@ w(r) must be greater than 0 and the condition of validity of the value function 
 \sum \limits_{r=0}^{m} w_{r} = 1
 \end{equation*}
 
-Example:
 \begin{table}[ht]
     \begin{center}
-        \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \resizebox{\textwidth}{!}{\begin{tabular}{|l|l|l|l|l|l|l|l|}
             \hline
             \multicolumn{2}{|l|}{Category} & \multicolumn{2}{l|}{Criteria} & \multicolumn{2}{l|}{Rating} & \multicolumn{2}{l|}{Weighted rating} \\
             \hline
             Name & Weight & Criteria & Weight & KubeEdge & KubeFed & KubeEdge & KubeFed \\
             \hline
             Installation & 30\% & connectivity & 10\% & 5 & 1 & 0,5 & 0,1 \\
-            & & device support & 10\% & 5 & 4 & 0,5 & 0,4
-        \end{tabular}
-        \caption{Installation complexitiy rating}
-        \label{tab:poc-nodes}
+            & & device support & 10\% & 5 & 4 & 0,5 & 0,4 \\
+            & & required tools & 2\% & 4 & 3 & 0,08 & 0,06 \\
+            & & configuration & 2\% & 3 & 3 & 0,06 & 0,06 \\
+            & & documentation & 6\% & 4 & 4 & 0,24 & 0,24 \\
+            \hline
+            Commuity & 6\% & communication channels & 3\% & 5 & 5 & 0,15 & 0,15 \\
+            & & actual hype & 3\% & 4 & 3 & 0,12 & 0,09 \\
+            \hline
+            Support & 10\% & commercial maintenance & 5\% & 0 & 0 & 0 & 0 \\
+            & & bug reporting & 4\% & 5 & 5 & 0,2 & 0,2 \\
+            & & sponsor-list & 1\% & 5 & 0 & 0,05 & 0 \\
+            \hline
+        \end{tabular}}
+        \caption{Criteria catalog table}
+        \label{tab:cct}
     \end{center}
 \end{table}
-
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
-
+TODO: If somethin is really a requirement. How to mark it at the catalog?
 
 
 
