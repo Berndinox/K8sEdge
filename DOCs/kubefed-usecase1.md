@@ -44,7 +44,7 @@ apiVersion: types.kubefed.io/v1beta1
 kind: FederatedDeployment
 metadata:
   name: nginx1
-  namespace: stars
+  namespace: test1
 spec:
   template:
     metadata:
@@ -69,10 +69,12 @@ spec:
             - containerPort: 80
   placement:
     clusters:
-    - name: master
-    - name: slave
+    - name: default
+    - name: edg1
+    - name: edg2
+    - name: edg3
   overrides:
-    - clusterName: master
+    - clusterName: default
       clusterOverrides:
       - path: "/spec/replicas"
         value: 2
