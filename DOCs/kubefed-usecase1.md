@@ -121,3 +121,4 @@ deployment.apps/nginx1   2/2     2            2           9m36s
 NAME                               DESIRED   CURRENT   READY   AGE
 replicaset.apps/nginx1-996c49d8f   2         2         2       9m36s
 ```
+Multi-Arch is not an issue because the image used is build for different cpu types: https://hub.docker.com/r/nginxdemos/hello/tags
