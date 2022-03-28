@@ -522,7 +522,29 @@ It should be noted that the table shown above is only a snapshot. The values may
 
 \paragraph{Membership} KubeEdge is listed as a \ac{CNCF} project in the incubation phase. \ac{CNCF} is a central home for the fastest growing projects in the cloud native category. Even \ac{K8s} itself was part of it. In contrast, KubeFed is supported and further developed by the \ac{K8s} oriented \ac{SIG}. It stands out that due to the group membership clear rules concerning the further development have to be observed.
 
-\paragraph{Sponsors} As already mentioned in section "community and support", KubeEdge is officially sponsored by companies. TODO: DESCRIBE MORE
+\paragraph{Sponsors} As already mentioned in section "community and support", KubeEdge is officially sponsored by some well-known companies. It should be noted, however, that these are mainly Chinese companies.
+
+\paragraph{Independencie} A final important characteristic with regard to future-proofing is the extent to which a solution can be used without further development of the respective application. Although this assumption represents a worst-case scenario that seems rather unlikely in the foreseeable future, it should nevertheless be taken into account. KubeEdge uses a completely self-developed solution on the worker nodes. To replace it, all nodes must be reinstalled with the vanilla component of \ac{K8s}. Besides the effort involved, important functions concerning edge-computing are lost. \ac{KubeFed} offers a better solution here, due to its different architecture. Each node on the edge is a complete and independent worker. If KubeFed is no longer used, applications continue to run for the time being; no new installation is necessary on the nodes. The control could be taken over by alternative approaches, e.g. via \ac{CI/CD} pipelines. KubeFed thus offers better independence.
+
+\paragraph{Summarised assessment} The characteristics relating to future viability are summarised below.  
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            future-proof & releases  & frequency & \textbf{very-high} & \textbf{high} \\
+            future-proof & Github  & stars & \textbf{5k} & \textbf{2k} \\
+            future-proof & Github & activities & \textbf{high} & \textbf{moderate} \\
+            future-proof & membership & development programm & \textbf{CNCF} & \textbf{SIG} \\
+            future-proof & sponsors & companies & \cmark & \xmark \\
+            future-proof & independencie & alternative option & \xmark & \cmark \\
+            \hline
+        \end{tabular}
+        \caption{future-proof overview}
+        \label{tab:cs-overview}
+    \end{center}
+\end{table}
 
 \section{Criteria catalogue}
 \label{sec:cc}
@@ -558,6 +580,11 @@ w(r) must be greater than 0 and the condition of validity of the value function 
             Support & 10\% & commercial maintenance & 5\% & 0 & 0 & 0 & 0 \\
             & & bug reporting & 4\% & 5 & 5 & 0,2 & 0,2 \\
             & & sponsor-list & 1\% & 5 & 0 & 0,05 & 0 \\
+            \hline
+            Future-proof & 10\% & Github stats & 3\% & 4 & 3 & 0,12 & 0,09 \\
+            & & release cycles & 3\% & 4 & 3 & 0,12 & 0,09 \\
+            & & independencie & 3\% & 1 & 4 & 0,03 & 0,09 \\
+            & & commercial sponsors & 1\% & 5 & 0 & 0,05 & 0 \\
             \hline
         \end{tabular}}
         \caption{Criteria catalog table}
@@ -649,6 +676,7 @@ Clustering node-groups based on latency.
     \acro{FQDN}[FQDN]{full qualified domain name}
     \acro{CRI}[CRI]{container runtime interface}
     \acro{SIG}[SIG]{special interessts group}
+    \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
 \end{acronym}
 
 %
