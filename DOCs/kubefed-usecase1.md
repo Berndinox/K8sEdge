@@ -38,5 +38,42 @@ kube-federation-system   Active   27m
 test1                    Active   3s
 ```
 "test1" appears
-
-
+## Master: create deployment
+```
+apiVersion: types.kubefed.io/v1beta1
+kind: FederatedDeployment
+metadata:
+  name: nginx1
+  namespace: stars
+spec:
+  template:
+    metadata:
+      name: nginx1
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: nginx1
+          version: v1
+      template:
+        metadata:
+          labels:
+            app: nginx1
+            version: v1
+        spec:
+          containers:
+          - image: nginxdemos/hello
+            imagePullPolicy: IfNotPresent
+            name: nginx1
+            ports:
+            - containerPort: 80
+  placement:
+    clusters:
+    - name: master
+    - name: slave
+  overrides:
+    - clusterName: master
+      clusterOverrides:
+      - path: "/spec/replicas"
+        value: 2
+```
