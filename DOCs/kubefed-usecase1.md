@@ -70,12 +70,37 @@ spec:
   placement:
     clusters:
     - name: default
-    - name: edg1
-    - name: edg2
-    - name: edg3
+    - name: edge1
+    - name: edge2
+    - name: edge3
   overrides:
     - clusterName: default
       clusterOverrides:
       - path: "/spec/replicas"
         value: 2
 ```
+and the Service
+```
+apiVersion: types.kubefed.io/v1beta1
+kind: FederatedService
+metadata:
+  name: nginx1-svc
+  namespace: test1
+spec:
+  template:
+    metadata:
+      name: nginx1-svc
+      labels:
+        app: nginx1
+    spec:
+      ports:
+      - name: http
+        port: 8000
+        targetPort: 80
+      selector:
+        app: nginx1
+    clusters:
+    - name: default
+    - name: edge1
+    - name: edge2
+    - name: edge3
