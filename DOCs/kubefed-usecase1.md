@@ -26,4 +26,17 @@ spec:
     - name: edg2
     - name: edg3
 ```
+## Edge-Nodes: verify
+```
+kubectl get ns
+NAME                     STATUS   AGE
+default                  Active   10d
+kube-system              Active   10d
+kube-public              Active   10d
+kube-node-lease          Active   10d
+kube-federation-system   Active   27m
+test1                    Active   3s
+```
+"test1" appears
+
 
