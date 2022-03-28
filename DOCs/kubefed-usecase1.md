@@ -1,4 +1,4 @@
-# Web-Applicatio
+# Web-Application
 distributed via KubeFed
 
 ## Master: enable ressource federation for the required kubernetes objects
