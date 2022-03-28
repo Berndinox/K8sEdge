@@ -23,3 +23,15 @@ server: https://127.0.0.1:6443
 insecure-skip-tls-verify: true
 # Remove certificate-authority-data:
 ```
+## DDNS & Port-Forwaring 
+If the Raspberry PI is behind a router: dNAT must be configured (for K3s its Port 6443 per default)
+If the Connection does not come with a fixed IP a Dynamic DNS Provider must be used.
+Verify the connection with:
+```
+curl https://my-ddns-hostname.com:6443 --insecure
+```
+
+## Add Node on Master!
+```
+kubefedctl join edge-raspy --cluster-context edge-raspy --host-cluster-context default --v=2
+```
