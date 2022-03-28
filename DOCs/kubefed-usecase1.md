@@ -74,7 +74,7 @@ spec:
     - name: edge2
     - name: edge3
   overrides:
-    - clusterName: default
+    - clusterName: edge3
       clusterOverrides:
       - path: "/spec/replicas"
         value: 2
@@ -104,3 +104,20 @@ spec:
     - name: edge1
     - name: edge2
     - name: edge3
+```
+## Verify on the edge-nodes
+```
+root@kubefed:/home/pi# kubectl get all -n=test1
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/nginx1-996c49d8f-2hg2k   1/1     Running   0          9m36s
+pod/nginx1-996c49d8f-q6fdb   1/1     Running   0          74s
+
+NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+service/nginx1-svc   ClusterIP   10.43.185.3   <none>        8000/TCP   6m25s
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx1   2/2     2            2           9m36s
+
+NAME                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx1-996c49d8f   2         2         2       9m36s
+```
