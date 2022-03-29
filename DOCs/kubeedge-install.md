@@ -5,13 +5,15 @@ Install KubeEdge: https://kubeedge.io
 ```
 # Update
 apt-get update && apt-get upgrade -y
-# Install K3s (Lighweiht K8s)
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-cloud-controller" sh -s -
+# Install K3s (Lighweiht K8s) - KubeEdge support v1.21.4 (newest)
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.21.4+k3s1" INSTALL_K3S_EXEC="--disable traefik --disable-cloud-controller" sh -s -
 cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 kubectl get nodes
 # Install KubeEdge
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.1/keadm-v1.9.1-linux-amd64.tar.gz
-tar xvf keadm-v1.9.1-linux-amd64.tar.gz
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/keadm-v1.9.2-linux-amd64.tar.gz
+tar xvf keadm-v1.9.2-linux-amd64.tar.gz
+cd keadm-v1.9.2-linux-amd64/keadm/
+chmod +x keadm && cp keadm /usr/local/bin/
 keadm init --advertise-address=49.12.197.172
 netstat -tulpn
 # Output
@@ -23,8 +25,7 @@ keadm gettoken
 ## Edge
 ```
 # Get KudeEdge
-wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.1/keadm-v1.9.1-linux-amd64.tar.gz
-tar xvf keadm-v1.9.1-linux-amd64.tar.gz
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.9.2/keadm-v1.9.2-linux-amd64.tar.gz
 #Install Requirements: Docker
 apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
