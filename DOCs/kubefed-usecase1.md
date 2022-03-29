@@ -122,3 +122,16 @@ NAME                               DESIRED   CURRENT   READY   AGE
 replicaset.apps/nginx1-996c49d8f   2         2         2       9m36s
 ```
 Multi-Arch is not an issue because the image used is build for different cpu types: https://hub.docker.com/r/nginxdemos/hello/tags
+
+## Network tweaks necessary
+Modify /etc/nsswitch.conf, make sure dns is first order, like below:
+```
+$ grep hosts /etc/nsswitch.conf
+hosts:          dns files
+```
+Enable IP-Forward
+```
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+sysctl -p
+sysctl -p | grep ip_forward
+```
