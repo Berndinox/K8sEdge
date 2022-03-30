@@ -49,7 +49,6 @@ kubectl create ns test1
 kubectl apply -f deploy.yaml service.yaml
 
 ## Verify from "any" node
-In contrast to KubeFed, KubeEdge comes with network capability out of the box.
 ```
 kubectl get all -n=test1 -o wide
 NAME                         READY   STATUS    RESTARTS   AGE    IP           NODE              NOMINATED NODE   READINESS GATES
@@ -64,3 +63,45 @@ service/nginx1-svc   ClusterIP   10.43.7.255   <none>        8000/TCP   9s    ap
 NAME                     READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES             SELECTOR
 deployment.apps/nginx1   4/4     4            4           2m8s   nginx1       nginxdemos/hello   app=nginx1,version=v1
 ```
+
+curl 10.43.7.255:8000 should return our demo-page successfully.
+
+However, without configuring edgemesh a service can not be reached.
+
+Alternative one:
+Simply avoid the use of kubernetes networking respectively CNI.
+Distribute the Pod without a service and make use of the HostPort
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx1
+  namespace: test1
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx1
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: nginx1
+        version: v1
+    spec:
+      hostNetwork: true
+      containers:
+      - image: nginxdemos/hello
+        imagePullPolicy: IfNotPresent
+        name: nginx1
+        ports:
+        - containerPort: 80
+        - hostPort: 8000
+```
+curl NODE-IP:8000 should be successfull
+- Pod must be deployed on that node in order to work
+
+Another Approach:
+Make use of the EdgeMesh componente.
+https://edgemesh.netlify.app/guide/getting-started.html
+However there are some drawbacks.

@@ -43,6 +43,7 @@ kubectl get nodes
 NAME              STATUS   ROLES                  AGE    VERSION
 kubeedge-master   Ready    control-plane,master   114m   v1.21.7+k3s1
 edge-1            Ready    agent,edge             2m9s   v1.19.3-kubeedge-v1.8.2
+kubectl taint nodes kubeedge-master node-role.kubernetes.io/master=:NoSchedule
 # Enable Logging
 export CLOUDCOREIPS=49.12.197.172
 cd /etc/kubeedge && wget https://raw.githubusercontent.com/kubeedge/kubeedge/master/build/tools/certgen.sh && chmod +x certgen.sh
@@ -73,13 +74,4 @@ sudo nano /etc/kubeedge/config/edgecore.yaml
 #Restart
 systemctl restart edgecore.service
 ```
-# Connect (Admin)
-on Master Node
-```
-cat /etc/rancher/k3s/k3s.yaml
-```
-Modify Server IP to the public facing IP
-Add Skip-Verify: true (not recommend for production)
 
-One nice Client is: Lens
-![LENS-K8s-Client](/PICs/LensK8sClient.png?raw=true)
