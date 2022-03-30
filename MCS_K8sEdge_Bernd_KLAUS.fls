@@ -1367,6 +1367,16 @@ INPUT C:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
 INPUT C:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
 INPUT C:\Program Files\MiKTeX\tex\latex\kvoptions\kvoptions.sty
 INPUT C:\Program Files\MiKTeX\tex\generic\ltxcmds\ltxcmds.sty
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
+INPUT MCS_K8sEdge_Bernd_KLAUS.out
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
+INPUT MCS_K8sEdge_Bernd_KLAUS.out
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
+INPUT MCS_K8sEdge_Bernd_KLAUS.out
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
+INPUT MCS_K8sEdge_Bernd_KLAUS.out
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.out
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.pdf
 INPUT C:\Program Files\MiKTeX\tex\latex\bookmark\bookmark.sty
@@ -1403,6 +1413,12 @@ INPUT C:\Program Files\MiKTeX\tex\latex\biblatex\blx-case-expl3.sty
 INPUT C:\Program Files\MiKTeX\tex\latex\l3kernel\expl3.sty
 INPUT C:\Program Files\MiKTeX\tex\latex\l3packages\xparse\xparse.sty
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.bcf
+INPUT MCS_K8sEdge_Bernd_KLAUS.bbl
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.bbl
+INPUT MCS_K8sEdge_Bernd_KLAUS.bbl
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.bbl
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.bbl
+INPUT MCS_K8sEdge_Bernd_KLAUS.bbl
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvb8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
@@ -1450,6 +1466,9 @@ INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.toc
+INPUT MCS_K8sEdge_Bernd_KLAUS.toc
+INPUT MCS_K8sEdge_Bernd_KLAUS.toc
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.toc
 INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1phv.fd
 INPUT C:\Program Files\MiKTeX\tex\latex\psnfss\ts1phv.fd
@@ -1473,16 +1492,10 @@ INPUT .\PICs\k8s-architecture.png
 INPUT .\PICs\k8s-architecture.png
 INPUT .\PICs\k8s-architecture.png
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvb8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
-INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvb8t.vf
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvb8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvro8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvro8r.tfm
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvbo8t.tfm
-INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvbo8t.vf
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvbo8r.tfm
 INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
 INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
 INPUT PICs\drawio\defaul-k8s.drawio.pdf
@@ -1517,9 +1530,19 @@ INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\courier\pcrr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvrc8t.tfm
+INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvrc8t.vf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.lof
+INPUT MCS_K8sEdge_Bernd_KLAUS.lof
+INPUT MCS_K8sEdge_Bernd_KLAUS.lof
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.lof
+INPUT .\MCS_K8sEdge_Bernd_KLAUS.lot
+INPUT MCS_K8sEdge_Bernd_KLAUS.lot
+INPUT MCS_K8sEdge_Bernd_KLAUS.lot
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.lot
 INPUT .\MCS_K8sEdge_Bernd_KLAUS.lol
+INPUT MCS_K8sEdge_Bernd_KLAUS.lol
 INPUT MCS_K8sEdge_Bernd_KLAUS.lol
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.lol
 INPUT MCS_K8sEdge_Bernd_KLAUS.aux
@@ -1542,8 +1565,6 @@ INPUT C:\Program Files\MiKTeX\fonts\type1\urw\courier\ucrr8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\courier\ucrr8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvb8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvb8a.pfb
-INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvbo8a.pfb
-INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvbo8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvr8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvr8a.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\urw\helvetic\uhvro8a.pfb
