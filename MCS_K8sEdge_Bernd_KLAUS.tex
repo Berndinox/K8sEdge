@@ -455,10 +455,21 @@ Three variants are available to solve the problem of missing network connectivit
 \end{itemize}
 In the course of solving the problem, two variants were examined in detail, firstly the one that does without all additional tools and secondly the variant with EdgeMesh. The variant with post-installed CNI is not considered further; in this case, one could fall back directly on vanilla \ac{K8s}.
 
-\paragraph{Without network} As long as there is no need for complex network communication between the pods, this variant offers a simple solution. Deployments, StatefullSets and DaemonSets can be distributed and scheduled via \ac{K8s} to the edge-nodes. The services can then be made available for local services only. This is achieved through the configuration of a so-called HostPort. It is important to note that making the port available cannot be done via NodePort, as in this case the port would be made accessible at all nodes, which in turn requires a functioning cluster network. The following is the modified YAML that makes the service accessible.
+\paragraph{Without network} As long as there is no need for complex network communication between the pods, this variant offers a simple solution. Deployments, StatefullSets and DaemonSets can be distributed and scheduled via \ac{K8s} to the edge-nodes. The services can then be made available for local services only. This is achieved through the configuration of a so-called HostPort. It is important to note that making the port available cannot be done via NodePort, as in this case the port would be made accessible at all nodes, which in turn requires a functioning cluster network. The following is the modified deployment that makes the application accessible on the edge-location. Please note that the object service was removed entierly, only relevant parts are cited.
 \begin{lstlisting}[caption={Web-application HostPort },captionpos=b]
-    CODE
+    spec:
+      hostNetwork: true
+      containers:
+      - image: nginxdemos/hello
+        ports:
+        - containerPort: 80
+        - hostPort: 8000
 \end{lstlisting}
+
+One possibility to establish the connection between the edge-locations in this variant would be the exchange via MQTT on the application level via the cloud component. However, this increases the complexity tremendous. In this case, one of the other two solutions is to be preferred at the current state of affairs.
+
+\paragraph{EdgeMesh} As already noted, this component must be installed before it can be used. Before the actual installation, which takes place within the \ac{K8s} system, the KubeEdge configuration must be adapted.
+
 
 KubeEdge Network Issue:
 Build on Top of: https://github.com/kubeedge/kubeedge/issues/2760
@@ -467,7 +478,7 @@ CNI is not a recommand solution: https://github.com/kubeedge/kubeedge/issues/166
 EdgeMesh no Raspberry Pi and CRI-IO: https://github.com/kubeedge/kubeedge/issues/2946
 No Cross-subnet Pod communication: https://github.com/kubeedge/edgemesh/issues/278
 
-
+wenn "ne network connect" bei KubeEdge in Frage kommt, ist ggf. KubeFed besser geeignet.
 
 \subsection{Enterprise VPN}
 \subsection{Distributed Database}
@@ -705,7 +716,7 @@ Clustering node-groups based on latency.
 
 \section{Discussion and further research}
 \label{sec:discuss}
-
+Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
 
 
 
