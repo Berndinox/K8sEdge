@@ -445,15 +445,20 @@ The following list represents the available Kube-API verbs:
     \item Patch
 \end{itemize}
 
-Not implemented at time of writing is the verb \textbf{"Proxy"}, which prevents us from connecting directly to the pod via kubectl exec. Ohter commands that rely on the proxy verb are attach, top, proxy and logs. For the latter, there is already a solution in the official documentation, also noted in the code base of this thesis.
+Not implemented at time of writing is the verb \textbf{"Proxy"}, which prevents us from connecting directly to the pod via kubectl exec. Ohter commands that rely on the proxy verb are attach, top,  and logs. For the latter, there is already a solution in the official documentation, also noted in the code base of this thesis.\medbreak
 
 Three variants are available to solve the problem of missing network connectivity.
 \begin{itemize}
-    \item \textit{Without network} - the first approach is to simply omit the network part and make your delpoyment independent of each other. However, this means that the actual added value of the \hyperref[sec:arch-default]{default architecture} is lost; the cluster no longer behaves like a location-bound cluster. Also the desccription found in the docs of KubeEdge doe not fit well: "With KubeEdge, users can orchestrate apps, manage devices and monitor app and device status on Edge nodes just like a traditional Kubernetes cluster in the Cloud." \cite{ke-docs-why}
-    \item \textit{CNI} - the next logical step seems to be to use a \ac{CNI}, which would make all functionalities available. However, this means that many of the advantages promised by KubeEdge are lost: The support of private-ip addresses behind \ac{NAT}, high availability and resilience as well as latency-independencie. In addition, a developer from KubeEdge points out that making use of a \ac{CNI} is not a recommand solution \cite{ke-cni-no}.
-    \item \textit{EdgeMesh} - as described in \autoref{sec:arch-default} an additional componente, part of the KubeEdge Project can be used.
+    \item \textit{Without network} - the first approach is to simply omit the network part and make your delpoyment independent of each other. However, this means that the actual added value of the \hyperref[sec:arch-default]{default architecture} is lost; the cluster no longer behaves like a location-bound cluster. Also the desccription found in the docs of KubeEdge seem not be be very accurate, when not using additional tools: "With KubeEdge, users can orchestrate apps, manage devices and monitor app and device status on Edge nodes just like a traditional Kubernetes cluster in the Cloud." \cite{ke-docs-why}
+    \item \textit{CNI} - the next logical step seems to use a \ac{CNI}, which would make all the required functionalities available. However, this means that many of the advantages promised by KubeEdge are gone: The support of private-ip addresses behind \ac{NAT}, high availability and resilience as well as latency-independencie. In addition, a developer from KubeEdge points out that making use of a \ac{CNI} is not a recommand solution \cite{ke-cni-no}.
+    \item \textit{EdgeMesh} - as described in \autoref{sec:arch-default} is an additional component which has to be installed manually. Although EdgeMesh is part of KubeEdge and integrates seamlessly, it is seen as a separate project whose development is independent. The addon promises to solve many of our problems and the supported functions seem optimal, but one should keep in mind that the project is still very young and only four releases have been issued.
 \end{itemize}
+In the course of solving the problem, two variants were examined in detail, firstly the one that does without all additional tools and secondly the variant with EdgeMesh. The variant with post-installed CNI is not considered further; in this case, one could fall back directly on vanilla \ac{K8s}.
 
+\paragraph{Without network} As long as there is no need for complex network communication between the pods, this variant offers a simple solution. Deployments, StatefullSets and DaemonSets can be distributed and scheduled via \ac{K8s} to the edge-nodes. The services can then be made available for local services only. This is achieved through the configuration of a so-called HostPort. It is important to note that making the port available cannot be done via NodePort, as in this case the port would be made accessible at all nodes, which in turn requires a functioning cluster network. The following is the modified YAML that makes the service accessible.
+\begin{lstlisting}[caption={Web-application HostPort },captionpos=b]
+    CODE
+\end{lstlisting}
 
 KubeEdge Network Issue:
 Build on Top of: https://github.com/kubeedge/kubeedge/issues/2760
@@ -463,7 +468,6 @@ EdgeMesh no Raspberry Pi and CRI-IO: https://github.com/kubeedge/kubeedge/issues
 No Cross-subnet Pod communication: https://github.com/kubeedge/edgemesh/issues/278
 
 
-"With KubeEdge, users can orchestrate apps, manage devices and monitor app and device status on Edge nodes just like a traditional Kubernetes cluster in the Cloud." https://kubeedge.io/en/docs/kubeedge/ - einfach nicht wahr!
 
 \subsection{Enterprise VPN}
 \subsection{Distributed Database}
