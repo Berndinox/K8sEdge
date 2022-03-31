@@ -496,7 +496,7 @@ What is certain is that the documentation at this point is not sufficiently well
         \centering
         \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}}
         \caption{KubeFed objects}
-        \label{fig:k8s-default}
+        \label{fig:kubefed-ressources}
     \end{figure} \medbreak
     The conventional objects are simply preceded by the abbreviation "Federation". If the API-resource is also delegated, the objects are passed to the edge-clusters and schedulded there in form of the default objects. The environment at the edge does not even know about the existence of these special federated resources, because they are scheduld in form of a default object. The service and deployment mentioned at the beginning is therefore expanded as follows.
     \begin{lstlisting}[caption={Federated Object},captionpos=b]
@@ -538,7 +538,7 @@ Caos Monkey
 \label{sec:variables}
 \subsection{Installation complexity}
 The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered. 
-\paragraph{Dependencies} The first important variable we look at in this appendix are the dependencies. This paragraph considers requirements that must be met in order for the installation to proceed successfully.
+\paragraph{Dependencies} The first important variable we look at in this context are the dependencies. This paragraph considers requirements that must be met in order for the installation to proceed successfully.
 
 \begin{itemize}
     \item \textit{Connectivity} - While KubeEdge works with literaly any connection when combined with EdgeMesh, even behind carrier-grade \ac{NAT}\cite{cg-nat}, important conditions must be checked for KubeFed, as descripted in \autoref{sec:dsrenvkf} under the paragraph "challenges". For the sake of completeness, the requirements for KubeFed are listed subsequent.
@@ -578,7 +578,7 @@ The first decision variable that is examined is the effort required for the inst
     \begin{center}
         \begin{tabular}{|l|l|l|l|l|}
             \hline
-            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
             \hline
             dependency & connectivity  & w/o static \ac{IP} & \cmark & \xmark \\
             dependency & connectivity  & w/o dNAT & \cmark & \xmark \\
@@ -609,7 +609,7 @@ Another important factor is the support and the community for the respective app
     \begin{center}
         \begin{tabular}{|l|l|l|l|l|}
             \hline
-            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
             \hline
             community & communication-channel  & Slack & \cmark & \cmark \\
             community & communication-channel  & mailing-list & \cmark & \cmark \\
@@ -646,7 +646,7 @@ Another important element when deciding between the two options is how promising
             Open pull-requests & 34 & 8 \\
             \hline
         \end{tabular}
-        \caption{Github Stats overview}
+        \caption{Github stats overview}
         \label{tab:gh-stats}
     \end{center}
 \end{table}
@@ -664,7 +664,7 @@ It should be noted that the table shown above is only a snapshot. The values may
     \begin{center}
         \begin{tabular}{|l|l|l|l|l|}
             \hline
-            Type & Subtype & Criteria & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
             \hline
             future-proof & releases  & frequency & \textbf{very-high} & \textbf{high} \\
             future-proof & Github  & stars & \textbf{5k} & \textbf{2k} \\
@@ -687,14 +687,16 @@ The following catalogue of criteria can be compiled on the basis of the data obt
 v(a) = \sum \limits_{r=0}^{m}w_{r} v_{r} (a_{r})
 \end{equation*}
 
-w(r) must be greater than 0 and the  vcondition of validity of the value function must be fulfilled.
+w(r) must be greater than 0 and the condition of validity of the value function must be fulfilled.
 
 \begin{equation*}
 \sum \limits_{r=0}^{m} w_{r} = 1
 \end{equation*}
 
+Provided that the above mathematical principles are followed, individual weightings can be assigned. This achieves a high degree of flexibility of the catalogue. 
+
 \subsection{Table}
-The following table acts as a criteria catalogue. Based on the previous qualitative research using the \ac{DSR} method, the values were obtained. Due to the many different areas of application or objectives that are targeted, this table can be adapted according to one's own requirements. Following the table, this is demonstrated by way of example. There is also an empty table in the \autoref{appendix} that serves as a template.
+The following table acts as a criteria catalogue. Based on the previous qualitative research using the \ac{DSR} method, the values were obtained. Due to the many different areas of application or objectives that are targeted, this table can be adapted according to one's own requirements.However, the values given serve as orientation points or generalised starting values. There is an empty table in the \autoref{appendix} that serves as a template so that adjustments can be made easily.
 
 \begin{table}[ht]
     \begin{center}
@@ -727,6 +729,12 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
         \label{tab:cct}
     \end{center}
 \end{table}
+To define your own values, proceed as follows. First, the categories are given the appropriate weighting. The total value of all categories must amount to 100\%. The more important a category is or is to be included in the evaluation, the higher the percentage value assigned should be. Then the percentage value of a category is divided into the criteria below it. So if the category is rated 20\%, two criteria can be assigned 10\% each, for example. The next step is to evaluate the respective criteria for the two environments. The pre-filled values above serve as an initial value respectively approximation. A value between 1 (low, bad) and 5 (high, good) is indicated. The weight is then calculated using the following formula.
+
+\begin{equation*}
+    \frac{CriteriaWeight}{100}*Rating
+\end{equation*}
+
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
 TODO: If somethin is really a requirement. How to mark it at the catalog?
