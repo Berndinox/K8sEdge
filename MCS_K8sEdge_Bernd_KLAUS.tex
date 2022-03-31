@@ -218,7 +218,7 @@ In order to be able to manage resources at the edge, a traditional architecture 
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.60\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
     \caption{Default \ac{K8s} architeture}
     \label{fig:k8s-default}
 \end{figure}
@@ -268,7 +268,7 @@ In this case, a different approach is chosen and, in contrast to the previous ar
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
+    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.60\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
     \caption{Distributed \ac{K8s} architeture}
     \label{fig:distributed-k8s}
 \end{figure}
@@ -403,6 +403,7 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 \section{Use-Cases}
 \label{sec:dsrusecase}
 \subsection{Web-application}
+\label{sec:dsrusecaseweb}
 The first test, which is to be carried out on each environment, is to make a simple web application accessible via ClusterIP and distributed at the edge-nodes. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed here:
 
 \begin{lstlisting}[caption={Web-application code},captionpos=b]
@@ -508,12 +509,19 @@ What is certain is that the documentation at this point is not sufficiently well
           - name: edge1
           - name: edge2
     \end{lstlisting}
+    The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved on: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge}.
 \end{enumerate}
 
 \subsection{Enterprise VPN}
 \subsection{Distributed Database}
 
 \section{Performed Tests}
+\subsection{Ressource usage}
+CPU / RAM / and so on!
+\subsection{Network connectivity}
+Latency Test, Offline Test
+\subsection{Application stability}
+Caos Monkey
 
 \section{Analysis}
 \label{sec:dsranalysis}
@@ -533,7 +541,7 @@ The first decision variable that is examined is the effort required for the inst
 \paragraph{Dependencies} The first important variable we look at in this appendix are the dependencies. This paragraph considers requirements that must be met in order for the installation to proceed successfully.
 
 \begin{itemize}
-    \item \textit{Connectivity} - While KubeEdge works with literaly any connection, even behind carrier-grade \ac{NAT}\cite{cg-nat}, important conditions must be checked for KubeFed, as descripted in \autoref{sec:dsrenvkf} under the paragraph "challenges". For the sake of completeness, the requirements for KubeFed are listed subsequent.
+    \item \textit{Connectivity} - While KubeEdge works with literaly any connection when combined with EdgeMesh, even behind carrier-grade \ac{NAT}\cite{cg-nat}, important conditions must be checked for KubeFed, as descripted in \autoref{sec:dsrenvkf} under the paragraph "challenges". For the sake of completeness, the requirements for KubeFed are listed subsequent.
     \begin{itemize}
         \item Static \ac{IP} or dyn \ac{DNS} agent if dynamic assigned
         \item \ac{NAT} rule if the device is located behind a router
@@ -548,9 +556,10 @@ The first decision variable that is examined is the effort required for the inst
     \begin{itemize} 
         \item \textit{KubeEdge}
         \begin{itemize}
-            \item \ac{CRI}
+            \item \ac{CRI} (e.g. Docker)
             \item KubeEdge binaries
             \item K3s (Master only)
+            \item EdgeMesh (Master only)
         \end{itemize}
         \item \textit{KubeFed}
         \begin{itemize}
@@ -560,8 +569,8 @@ The first decision variable that is examined is the effort required for the inst
         \end{itemize}
     \end{itemize}
     It should be noted that K3s includes or builds on \ac{CRI}. 
-    \item \textit{Configuration steps} - This property describes the necessary steps that were required during the installation without additional tools. For KubeEdge the basic installation, without any logging capability, is only done by using the binary. However, if logging is necessary (in almost all cases it should be), some adaptations must be made. For Kubefed, in contrast, the respective kubeconfig must be transferred to the master and added there as a custom context. Minor adaptation with little effort is necessary for both environments, yet the comparison is not balanced because KubeFed does not offer out-of-the-box the possibility to collect all logs of the edge devices.
-    \item \textit{Documentation}  - Both documentations appear well maintained and kept up to date. The KubeEdge updates seem a little more recent according to the Github history. The KubeFed documentation can only be read in the form of markdown files within Github, but there is a separate web page for KubeEdge.
+    \item \textit{Configuration steps} - This property describes the necessary steps that were required during the installation without additional tools. For KubeEdge the basic installation, without any logging capability and a working \ac{CNI}, is done by using a single binary. However, if logging is necessary (in almost all cases it should be), some adaptations must be made. The same applies to the installation of EdgeMesh, as described in \autoref{sec:dsrusecaseweb}. As the documentation is not clear enough, increased complexity and the associated effort are to be expected. For Kubefed, in contrast, the respective kubeconfig must be transferred to the master and added there as a custom context. This context is then added via kubefed binary. If one only examines the steps that are necessary to operate the two architectures in a meaningful way, these are much easier to accomplish for KubeFed. On the other hand, KubeEdge requires additional configurations and tools to be installed in order to be able to use the full range of functions. If you are looking for a simple and straightforward solution, KubeFed is the  winner in this section.
+    \item \textit{Documentation}  - Both documentations appear well maintained and kept up to date. The KubeEdge updates seem a little more recent according to the Github history. The KubeFed documentation can only be read in the form of markdown files within Github, but there is a separate web page for KubeEdge. It must be noted, however, that the part concerning network and connectivity is unclear or not sufficiently described. After research, the extension EdgeMesh, which offers its own documentation, could be found. However, the interaction between the components KubeEdge or the Autonomic Kube-API Endpoint, the MetaManager and EdgMesh is insufficiently described. Overall, therefore, the KubeFed documentation is easier to read and understand.
 \end{itemize}
 
 \paragraph{Summarised assessment} The following table presents the above facts in a clear form.  
@@ -576,9 +585,9 @@ The first decision variable that is examined is the effort required for the inst
             dependency & device support & extensive support & \cmark & \cmark \\
             dependency & device support & ressources efficiency & \textbf{high} & \textbf{moderate} 
             \\
-            configuration & required tools & master/edge & \textbf{3/2} & \textbf{4/2} \\
-            configuration & handling & necessary effort & \textbf{moderate} & \textbf{moderate} \\
-            configuration & documentation & clarity/actuality & \textbf{good} & \textbf{good} \\
+            configuration & required tools & master/edge & \textbf{4/2} & \textbf{4/2} \\
+            configuration & handling & necessary effort & \textbf{high} & \textbf{moderate} \\
+            configuration & documentation & clarity/actuality & \textbf{moderate} & \textbf{good} \\
             \hline
         \end{tabular}
         \caption{Installation complexitiy overview}
@@ -678,11 +687,14 @@ The following catalogue of criteria can be compiled on the basis of the data obt
 v(a) = \sum \limits_{r=0}^{m}w_{r} v_{r} (a_{r})
 \end{equation*}
 
-w(r) must be greater than 0 and the condition of validity of the value function must be fulfilled.
+w(r) must be greater than 0 and the  vcondition of validity of the value function must be fulfilled.
 
 \begin{equation*}
 \sum \limits_{r=0}^{m} w_{r} = 1
 \end{equation*}
+
+\subsection{Table}
+The following table acts as a criteria catalogue. Based on the previous qualitative research using the \ac{DSR} method, the values were obtained. Due to the many different areas of application or objectives that are targeted, this table can be adapted according to one's own requirements. Following the table, this is demonstrated by way of example. There is also an empty table in the \autoref{appendix} that serves as a template.
 
 \begin{table}[ht]
     \begin{center}
@@ -694,9 +706,9 @@ w(r) must be greater than 0 and the condition of validity of the value function 
             \hline
             Installation & 30\% & connectivity & 10\% & 5 & 1 & 0,5 & 0,1 \\
             & & device support & 10\% & 5 & 4 & 0,5 & 0,4 \\
-            & & required tools & 2\% & 4 & 3 & 0,08 & 0,06 \\
-            & & configuration & 2\% & 3 & 3 & 0,06 & 0,06 \\
-            & & documentation & 6\% & 4 & 4 & 0,24 & 0,24 \\
+            & & required tools & 2\% & 3 & 3 & 0,06 & 0,06 \\
+            & & configuration & 2\% & 2 & 4 & 0,04 & 0,08 \\
+            & & documentation & 6\% & 2 & 4 & 0,12 & 0,24 \\
             \hline
             Commuity & 6\% & communication channels & 3\% & 5 & 5 & 0,15 & 0,15 \\
             & & actual hype & 3\% & 4 & 3 & 0,12 & 0,09 \\
@@ -810,4 +822,5 @@ Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
 \clearpage
 \appendix
 \chapter{Appendix}
+\label{appendix}
 \end{document}
