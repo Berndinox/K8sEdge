@@ -468,17 +468,47 @@ In the course of solving the problem, two variants were examined in detail, firs
 
 One possibility to establish the connection between the edge-locations in this variant would be the exchange via MQTT on the application level via the cloud component. However, this increases the complexity tremendous. In this case, one of the other two solutions is to be preferred at the current state of affairs.
 
-\paragraph{EdgeMesh} As already noted, this component must be installed before it can be used. Before the actual installation, which takes place within the \ac{K8s} system, the KubeEdge configuration must be adapted.
+\paragraph{EdgeMesh} As already noted, this component must be installed before it can be used. Before the actual installation, which takes place within the \ac{K8s} system, the KubeEdge configuration must be adapted. The installation is divided into the following steps.
 
+\begin{enumerate}
+    \item \textit{Load} - Download the EdgeMesh sources from Github
+    \item \textit{CRDs} - Create the \ac{CRD} necessary
+    \item \textit{KubeEdge} - Konfigure KubeEdg components
+    \item \textit{Agent} - Apply the YAMLs provided by EdgeMesh
+    \item \textit{Restart} - and verify your system-changes.
+\end{enumerate}
 
-KubeEdge Network Issue:
-Build on Top of: https://github.com/kubeedge/kubeedge/issues/2760
-Solution: Edgemesh (not enable by default): https://edgemesh.netlify.app/
-CNI is not a recommand solution: https://github.com/kubeedge/kubeedge/issues/1662
-EdgeMesh no Raspberry Pi and CRI-IO: https://github.com/kubeedge/kubeedge/issues/2946
-No Cross-subnet Pod communication: https://github.com/kubeedge/edgemesh/issues/278
+The complete process is available in the following document: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md}{}{}{Berndinox/K8sEdge}. Please note that the project may change rapidly, the installation-process linked above is just a snapshot of the current state.  As long as EdgeMesh could be installed without errors, the deployment and service object described above can be distributed and scheduled without any modification. With this solution, the native \ac{K8s} approach is fully followed and ensured.\medbreak
 
-wenn "ne network connect" bei KubeEdge in Frage kommt, ist ggf. KubeFed besser geeignet.
+What is certain is that the documentation at this point is not sufficiently well formulated. It advertises native \ac{K8s} support, which cannot be met with a default KubeEdge installation. Although it is pointed out that logging has to be configured separately, the networking section receives little or no attention. It was only through intensive testing and tracking of issues on Github that the above behaviour regarding connectivity could be uncovered. This fact is taken into account in the later evaluation.
+
+\subsubsection{KubeFed} In principle, the same considerations must be made for delpoying on KubeFed as for those on KubeEdge without network support. The application must be designed so that no communication can take place between the clusters. However, the native approach of \ac{K8s} can be followed within the respective clusters at the edge. It would also be possible to operate several nodes at the respective edge-locations in the form of a cluster. Within this cluster, communication between the workloads would be possible without restrictions. Due to these properties, KubeFed is always particularly suitable when fewer and better developed locations are to be connected, which must be able to act independently. In order to roll out the deployment mentioned in the introduction of the chapter to the federated clusters, some adaptations are nevertheless necessary, which are illustrated below. 
+
+\begin{enumerate}
+    \item \textit{Enable API-Ressource} - On the master instance, the ressources earmarked for distribution must be enabled. Per-default KubeFed does not distribute any ressources. In this specific case, we have to enable the deployment and serivce object as follows.
+    \begin{lstlisting}[caption={Enable federation},captionpos=b]
+        kubefedctl enable deployments.apps, services --kubefed-namespace kube-federation-system
+    \end{lstlisting}
+    \item \textit{Create Namespace} - The first step is to create a namespace at the master, which then contains all the resources that are distributed to the clusters at the edge. In our first spefici use-case the namespace ist called "test1".
+    \item \textit{Create Ressources} - At this point it is crucial to understand that KubeFed distinguishes between two types of objects. The normal objects, which are however only executed and managed on the master, and specially federated objects which will be deployed on the edge-clusters. The subsequent picture illustrates the interaction.
+    \begin{figure}[ht]
+        \centering
+        \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}}
+        \caption{KubeFed objects}
+        \label{fig:k8s-default}
+    \end{figure} \medbreak
+    The conventional objects are simply preceded by the abbreviation "Federation". If the API-resource is also delegated, the objects are passed to the edge-clusters and schedulded there in form of the default objects. The environment at the edge does not even know about the existence of these special federated resources, because they are scheduld in form of a default object. The service and deployment mentioned at the beginning is therefore expanded as follows.
+    \begin{lstlisting}[caption={Federated Object},captionpos=b]
+        apiVersion: types.kubefed.io/v1beta1
+        kind: FederatedDeployment
+        spec:
+          ...
+        placement:
+          clusters:
+          - name: edge1
+          - name: edge2
+    \end{lstlisting}
+\end{enumerate}
 
 \subsection{Enterprise VPN}
 \subsection{Distributed Database}
@@ -771,6 +801,7 @@ Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
     \acro{CRI}[CRI]{container runtime interface}
     \acro{SIG}[SIG]{special interessts group}
     \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
+    \acro{CRD}[CRD]{costum ressource definition}
 \end{acronym}
 
 %
