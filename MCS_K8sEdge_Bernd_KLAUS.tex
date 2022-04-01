@@ -538,9 +538,11 @@ The utilisation of the CPU by the applications is measured every second for a du
     \end{minipage}
     \label{fig:cpu-load-1}
 \end{figure}
+%https://app.rawgraphs.io/
+
 In the diagram above, the process of cpustats itself and that of the SSH agent were not taken into account. Neither of them have any direct concern about the test performaed. Basically, the result can be interpreted in such a way that the load is low for both systems and no significant jumps were recognisable. Nevertheless, it must be noted that KubeEdge caused many times fewer CPU compared to KubeFed, while both system idle. The full CSV can be viewed in the designated folder on Github. The link is given at the end of the chapter.
 
-\paragraph{Memory} Htop\cite{htop} and \ac{aha}\cite{aha} were used to check the memory utilisation in idle mode. The measurement is carried out under the same conditions as the CPU test described above. The deployment was scaled to 1 on the corresponding node, no increased load must or had to be processed. The uptime of both system is 2 hours 15 minutes at time of testing. Since the memory behaves less erratically than the CPU, only one sample were taken. The total consumption for the both systems are:
+\paragraph{Memory} Htop\cite{htop} and \ac{aha}\cite{Aha} were used to check the memory utilisation in idle mode. The measurement is carried out under the same conditions as the CPU test described above. The deployment was scaled to 1 on the corresponding node, no increased load must or had to be processed. The uptime of both system is 2 hours 15 minutes at time of testing. Since the memory behaves less erratically than the CPU, only one sample were taken. The total consumption for the both systems are:
 \begin{itemize}
     \itemsep0em 
     \item \textit{KubeEdge} - 239 MB
@@ -598,7 +600,24 @@ As the data shows, KubeEdge gets by with less RAM. KubeFed, on the other hand, u
 \end{itemize}
 Similar to the results before, KubeEdge is also more efficient in this section.
 
-\subsubsection{Load} In the next part of the tests-series, the behaviour during increased CPU and memory load is examined. Since we are only concentrating on the performance part of individual nodes and its effects in this section, no \ac{HPA} is used but only a pod that simulates high load. The behaviour of the overall system, when distributing and scaling application load is examinated in the \autoref{sec:dsrtestapp}.
+\subsubsection{Load} In the next part of the tests-series, the behaviour during increased CPU and memory load is examined. Since we are only concentrating on the performance part of individual nodes and its effects in this section, no \ac{HPA} is used but only a pod that simulates high load. The behaviour of the overall system, when distributing and scaling application load is examinated in the \autoref{sec:dsrtestapp}. The same environment as for the previous tests is assumed as the basis for conducting the test. To test the described scenario, the tool "kube-stresscheck"\cite{kube-stress} is used. This tool creates a pod on one of the available edge-nodes which, on the one hand, occupies the entire \ac{RAM} and, on the other hand, utilises all available CPU cores.
+
+It should be noted that the standard \ac{QoS} of \ac{K8s} is applied or maintained for system pods\cite{k8s-qos}. This mechanism provides three different levels of execution: Guaranteed, Burstable, BestEffort. As the name suggests, pods with the level guaranteed are assigned the highest priority. The test that is carried out is only assigned the level BestEffort and should therefore theoretically not be able to influence system pods that are assigned a higher level. In real operation, high loads can still cause considerable problems under certain circumstances. In productive settings, such tests should be refrained from.
+
+\paragraph{KubeEdge} Due to the \ac{K8s} native support KubeEdge comes with, the configuration provided by kube-stresscheck is ready as is. The version selected is the one that only occupies one node with full load. In order to test the node that was selected as the input for the tests before, the other nodes are temporarily drained. Although the developers of the test application describe it as follows: "Usually pods like kube-proxy, nginx-ingress-controller, calico-node are crashlooping. If kubelet or docker was affected by stress test then node will become NotReady"\cite{kube-stress}. However, no such effects could be observed in the test run carried out. The following values were observed and recorded during the stress test on the affected node. 
+
+\begin{itemize}
+    \itemsep0em 
+    \item \textit{Memory Usage}: \textbf{100\%} - a flickering was noticed because the underlying \ac{OS} is trying to free-up unused allocated memory. On the other hand, the pod fills the \ac{RAM} directly again.
+    \item \textit{CPU usage}: \textbf{100\%} throughout on both cpu cores during the test periode. 
+\end{itemize}
+The following behaviour was observed during the test, which was carried out over a period of one minute.
+
+
+- logs
+- deploying something
+- chrashes
+
 
 \subsection{Network connectivity}
 \paragraph{Disconnected} 
@@ -913,7 +932,7 @@ Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
     \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
     \acro{CRD}[CRD]{costum ressource definition}
     \acro{HPA}[HPA]{horizontal pod autoscaler}
-    \acro{aha}[aha]{Ansi HTML adapter}
+    \acro{Aha}[Aha]{Ansi HTML adapter}
 \end{acronym}
 
 %

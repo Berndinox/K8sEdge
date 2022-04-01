@@ -275,6 +275,21 @@
   url   = {https://htop.dev/},
 }
 
+@WWW{aha,
+  author = {Alexander, Matthes},
+  date   = {2017-03-28},
+  title  = {Ubuntu Manpage: aha},
+  url    = {http://manpages.ubuntu.com/manpages/bionic/man1/aha.1.html},
+}
+
+@WWW{kube-stress,
+  author   = {Giantswarm},
+  date     = {2020-07-07},
+  title    = {kube-stresscheck},
+  url      = {https://github.com/giantswarm/kube-stresscheck},
+  subtitle = {Script to check Kubernetes nodes on stress (CPU/RAM) resistance.},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:
