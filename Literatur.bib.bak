@@ -257,6 +257,24 @@
   url    = {https://github.com/kubeedge/kubeedge/issues/1662},
 }
 
+@WWW{cpustat,
+  author       = {Colin, King},
+  title        = {Ubuntu Manpage: cpustat},
+  url          = {http://manpages.ubuntu.com/manpages/bionic/man8/cpustat.8.html},
+  organization = {Canonical Ltd.},
+}
+
+@Book{pchwnut,
+  author = {Robert, B. Thompson and Barbara, Fritchman Thompson},
+  date   = {2002-06-01},
+  title  = {PC Hardware in a Nutshell},
+}
+
+@WWW{htop,
+  title = {HTOP},
+  url   = {https://htop.dev/},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

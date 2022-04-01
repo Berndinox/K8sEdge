@@ -23,6 +23,7 @@
     numberbychapter=false,
     caption=\lstname,
     frame=single,
+    rulecolor=\color{gray},
     numbers=none,
     stepnumber=1,
     numbersep=2pt,
@@ -158,7 +159,7 @@ To promote modern development and be able to implement continuous deployment pip
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}}
+    \includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}
     \caption{\ac{K8s} architeture overview \cite{pic-k8s-overview}}
     \label{fig:k8s-architecture}
 \end{figure}
@@ -218,7 +219,7 @@ In order to be able to manage resources at the edge, a traditional architecture 
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.60\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}}
+    \includegraphics[width=0.60\textwidth]{PICs/drawio/defaul-k8s.drawio.pdf}
     \caption{Default \ac{K8s} architeture}
     \label{fig:k8s-default}
 \end{figure}
@@ -254,7 +255,7 @@ In addition there is no awarness of where workloads are running and the level of
 The following graphic illustrates the interaction of the components. 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/kubeedge-arch.png}}
+    \includegraphics[width=0.70\textwidth]{PICs/kubeedge-arch.png}
     \caption{KubeEdge architecture\cite{ke-docs-why}}
     \label{fig:ke-architecture}
 \end{figure}
@@ -268,7 +269,7 @@ In this case, a different approach is chosen and, in contrast to the previous ar
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.60\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}}
+    \includegraphics[width=0.60\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}
     \caption{Distributed \ac{K8s} architeture}
     \label{fig:distributed-k8s}
 \end{figure}
@@ -354,7 +355,7 @@ The main goal is to create both of the aimed architectures in a similar environm
 
 \begin{figure}[ht]
     \centering
-    \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.80\textwidth]{PICs/poc-map.png}}
+    \includegraphics[width=0.80\textwidth]{PICs/poc-map.png}
     \caption{Map of the \ac{PoC}\cite{googlemaps}}
     \label{fig:poc-map}
 \end{figure}
@@ -367,7 +368,7 @@ The main goal is to create both of the aimed architectures in a similar environm
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-cloud-controller" sh -s -
 \end{lstlisting}
 
-\paragraph{VPN} No \ac{VPN} is used for either environment. Although a VPN can increase security accordingly and services can communicate more easily, its use in a widely distributed edge environment with many nodes is problematic. VPNs are simply not designed for unstable connections with high latency and possibly rapidly changing \ac{IP} addresses. The two tools used therefore use alternative approaches via HTTPs and RPC respectively.
+\paragraph{VPN} No \ac{VPN} is used for either environment. Although a VPN can increase security accordingly and services can communicate more easily, its use in a widely distributed edge environment with many nodes is problematic in most cases. Traditional VPNs are not designed for unstable connections with high latency and possibly rapidly changing \ac{IP} addresses. The tools used in both architetures therefore use alternative approaches via HTTPs and RPC respectively.
 
 \subsection{KubeEdge}
 \label{sec:dsrenvke}
@@ -400,11 +401,10 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 \end{itemize}
 \paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge}
 
-\section{Use-Cases}
+\section{Use-Case}
 \label{sec:dsrusecase}
-\subsection{Web-application}
 \label{sec:dsrusecaseweb}
-The first test, which is to be carried out on each environment, is to make a simple web application accessible via ClusterIP and distributed at the edge-nodes. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed here:
+As a test, a web-application is distributed over several egde-nodes which is to be made accessible locally as well as via ClusterIP. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed here:
 
 \begin{lstlisting}[caption={Web-application code},captionpos=b]
 kind: Deployment
@@ -430,7 +430,7 @@ spec:
 
 It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}.
 
-\subsubsection{KubeEdge} 
+\subsection{KubeEdge} 
 Starting the web-application on KubeEdge environment is not as simple as assumed. If the deployment and the service definition are created via kubectl, this looks quite successful at first. The service is created and pods are scheduled accordingly. However, our goal was to make the service-ip accessible from within the nodes of the cluster via ClusterIP. But, when the service is called via curl, an error appears. Another problem is that the pod cannot be accessed either directly on the exposed port or via kubectl exec.
 
 After some research, it turned out that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
@@ -483,7 +483,7 @@ The complete process is available in the following document: \hyperref{https://g
 
 What is certain is that the documentation at this point is not sufficiently well formulated. It advertises native \ac{K8s} support, which cannot be met with a default KubeEdge installation. Although it is pointed out that logging has to be configured separately, the networking section receives little or no attention. It was only through intensive testing and tracking of issues on Github that the above behaviour regarding connectivity could be uncovered. This fact is taken into account in the later evaluation.
 
-\subsubsection{KubeFed} In principle, the same considerations must be made for delpoying on KubeFed as for those on KubeEdge without network support. The application must be designed so that no communication can take place between the clusters. However, the native approach of \ac{K8s} can be followed within the respective clusters at the edge. It would also be possible to operate several nodes at the respective edge-locations in the form of a cluster. Within this cluster, communication between the workloads would be possible without restrictions. Due to these properties, KubeFed is always particularly suitable when fewer and better developed locations are to be connected, which must be able to act independently. In order to roll out the deployment mentioned in the introduction of the chapter to the federated clusters, some adaptations are nevertheless necessary, which are illustrated below. 
+\subsection{KubeFed} In principle, the same considerations must be made for delpoying on KubeFed as for those on KubeEdge without network support. The application must be designed so that no communication can take place between the clusters. However, the native approach of \ac{K8s} can be followed within the respective clusters at the edge. It would also be possible to operate several nodes at the respective edge-locations in the form of a cluster. Within this cluster, communication between the workloads would be possible without restrictions. Due to these properties, KubeFed is always particularly suitable when fewer and better developed locations are to be connected, which must be able to act independently. In order to roll out the deployment mentioned in the introduction of the chapter to the federated clusters, some adaptations are nevertheless necessary, which are illustrated below. 
 
 \begin{enumerate}
     \item \textit{Enable API-Ressource} - On the master instance, the ressources earmarked for distribution must be enabled. Per-default KubeFed does not distribute any ressources. In this specific case, we have to enable the deployment and serivce object as follows.
@@ -494,12 +494,12 @@ What is certain is that the documentation at this point is not sufficiently well
     \item \textit{Create Ressources} - At this point it is crucial to understand that KubeFed distinguishes between two types of objects. The normal objects, which are however only executed and managed on the master, and specially federated objects which will be deployed on the edge-clusters. The subsequent picture illustrates the interaction.
     \begin{figure}[ht]
         \centering
-        \tcbox[sharp corners, boxsep=2mm, boxrule=0.2mm, colframe=gray!20!gray, colback=white]{\includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}}
+        \includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}
         \caption{KubeFed objects}
         \label{fig:kubefed-ressources}
     \end{figure} \medbreak
     The conventional objects are simply preceded by the abbreviation "Federation". If the API-resource is also delegated, the objects are passed to the edge-clusters and schedulded there in form of the default objects. The environment at the edge does not even know about the existence of these special federated resources, because they are scheduld in form of a default object. The service and deployment mentioned at the beginning is therefore expanded as follows.
-    \begin{lstlisting}[caption={Federated Object},captionpos=b]
+    \begin{lstlisting}[float,caption={Federated Object},captionpos=b]
         apiVersion: types.kubefed.io/v1beta1
         kind: FederatedDeployment
         spec:
@@ -512,15 +512,100 @@ What is certain is that the documentation at this point is not sufficiently well
     The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved on: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge}.
 \end{enumerate}
 
-\subsection{Enterprise VPN}
-\subsection{Distributed Database}
-
 \section{Performed Tests}
+In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with DSR guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
 \subsection{Ressource usage}
-CPU / RAM / and so on!
+As already described in the \autoref{sec:generalchallanges}, the efficient use of resources is an important characteristic in the edge-computing environment. Due to the fact that we rely on K3s as \ac{K8s} distribution for the expression with KubeFed, which is known for using few resources, comparable results can be expected. In principle, however, KubeEdge should be somewhat more lightweight, since only a \ac{CNI} is used without full \ac{K8s} distribution. The only unknown is the deployment of EdgeMesh which could increase the resource requirements. The tests are performaned on the edge-side choosing node "edge-1" located in US. The uptime of the nodes for both environments, at time of the measurements, is exactly the same, approximately 15 minutes.
+
+\subsubsection{Idle}
+The first parameter to be considered is the CPU and Memory load while system is idle or under no significant load. The first test is carried out using the tool cpustat. "Cpustat  is  a  program  that dumps the CPU utilization of current running tasks (that is, processes or kernel threads).  cpustat is useful to monitor the  activity  of  long  lived processes in a system, such as daemons, kernel threads as well as typical user processes" \cite{cpustat}. \medbreak
+
+\paragraph{CPU} The deployment created in the usecase is scaled to one pod per node, then the first measurement is performed in idle mode using the command: \lstinline|cpustat -x -D -a 1 30 -r export.csv|.
+The utilisation of the CPU by the applications is measured every second for a duration of 30 seconds and exportet in a CSV. To provide a simple overview, the top 5 processes that caused the highest CPU load are shown based on their ticks consumed. "The processor clock coordinates all CPU and memory operations by periodically generating a time reference signal called a clock cycle or tick" \cite{pchwnut}.
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}[b]{.49\linewidth}
+        \centering
+        \includegraphics[width=\textwidth]{PICs/ke-cpu-noload.png}
+        \caption{KubeEdge CPU without load}
+    \end{minipage}
+    %\hspace{.05\linewidth}
+    \begin{minipage}[b]{.49\linewidth}
+        \centering
+        \includegraphics[width=\textwidth]{PICs/kf-cpu-noload.png}
+        \caption{KubeFed CPU without load}
+    \end{minipage}
+    \label{fig:cpu-load-1}
+\end{figure}
+In the diagram above, the process of cpustats itself and that of the SSH agent were not taken into account. Neither of them have any direct concern about the test performaed. Basically, the result can be interpreted in such a way that the load is low for both systems and no significant jumps were recognisable. Nevertheless, it must be noted that KubeEdge caused many times fewer CPU compared to KubeFed, while both system idle. The full CSV can be viewed in the designated folder on Github. The link is given at the end of the chapter.
+
+\paragraph{Memory} Htop\cite{htop} and \ac{aha}\cite{aha} were used to check the memory utilisation in idle mode. The measurement is carried out under the same conditions as the CPU test described above. The deployment was scaled to 1 on the corresponding node, no increased load must or had to be processed. The uptime of both system is 2 hours 15 minutes at time of testing. Since the memory behaves less erratically than the CPU, only one sample were taken. The total consumption for the both systems are:
+\begin{itemize}
+    \itemsep0em 
+    \item \textit{KubeEdge} - 239 MB
+    \item \textit{KubeFed} - 600MB
+\end{itemize}
+
+The following table lists, in descending order, the 5 processes with the most RAM use and their percentage share of the total utilisation.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Process & Usage in \%  \\
+                    \hline
+                    dockerd & 4,5 \\
+                    edgecore & 4,2 \\
+                    systemd-journald & 3,2 \\
+                    edgemesh-agent & 2,6 \\
+                    containerd & 2.2 \\
+                    \hline
+                \end{tabular}
+                \caption{KubeEdge RAM uasge}
+                \label{tab:ke-ram-noload}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Process & Usage in \%  \\
+                    \hline
+                    k3s & 24,0 \\
+                    containerd & 6,9 \\
+                    metrics-server & 2,4 \\
+                    systemd-journald & 2,2 \\
+                    coredns & 2.2 \\
+                    \hline
+                \end{tabular}
+                \caption{KubeFed RAM uasge}
+                \label{tab:kf-ram-noload}
+            \end{center}
+        \end{minipage}
+    \end{center}
+\end{table}
+As the data shows, KubeEdge gets by with less RAM. KubeFed, on the other hand, uses almost three times as much. Although 600 MB may not seem like much in today's times, this can be important in some scenarios, especially in the context of edge-computing.
+
+\paragraph{Disk} The last resource to be examined in this section is that of hard disk usage. The board tool "df" provided by Ubuntu shows the respective space allocated.
+
+\begin{itemize}
+    \itemsep0em 
+    \item \textit{KubeEdge} - 3.5 GB allocated
+    \item \textit{KubeFed} - 4.1 GB allocated
+\end{itemize}
+Similar to the results before, KubeEdge is also more efficient in this section.
+
+\subsubsection{Load} In the next part of the tests-series, the behaviour during increased CPU and memory load is examined. Since we are only concentrating on the performance part of individual nodes and its effects in this section, no \ac{HPA} is used but only a pod that simulates high load. The behaviour of the overall system, when distributing and scaling application load is examinated in the \autoref{sec:dsrtestapp}.
+
 \subsection{Network connectivity}
+\paragraph{Disconnected} 
+
 Latency Test, Offline Test
 \subsection{Application stability}
+\label{sec:dsrtestapp}
 Caos Monkey
 
 \section{Analysis}
@@ -735,6 +820,11 @@ To define your own values, proceed as follows. First, the categories are given t
     \frac{CriteriaWeight}{100}*Rating
 \end{equation*}
 
+The permitted value range for the rating must be taken into account.
+\begin{equation*}
+    Rating = \left\{1,2,3,4,5  \right\}
+\end{equation*}
+
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
 TODO: If somethin is really a requirement. How to mark it at the catalog?
@@ -822,6 +912,8 @@ Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
     \acro{SIG}[SIG]{special interessts group}
     \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
     \acro{CRD}[CRD]{costum ressource definition}
+    \acro{HPA}[HPA]{horizontal pod autoscaler}
+    \acro{aha}[aha]{Ansi HTML adapter}
 \end{acronym}
 
 %
