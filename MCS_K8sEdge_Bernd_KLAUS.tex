@@ -799,7 +799,22 @@ The test via NodePort, which bypasses the internal network structure based on Ed
 
 The test only shows an increase of 25\%. Considering that the target node is under full load, this is an enormously good value and exceeds expectations. Especially under heavy load, Kubefed resp. a single target cluster, can process the request faster compared to KubeEdge and the EdgheMesh-agent.
 
-\subsubsection{Connection restoring} 
+\subsubsection{Connection restoring}
+In addition to the ability to keep services available under heavy load, seamless restoration of availability is also important in the event of a disconnection. As with the previous runs, the test-deployment for this setup is scaled to a single pod on the node edge-1. The connection between the master and the node is then disconnected via the firewall function provided by Hetzner. This allows the connection to be cut without manipulating the nodes themselves. The following steps are then carried out in an orderly sequence for each environment.
+\begin{enumerate}
+    \itemsep0em
+    \item Verify the availability of the pod via NodePort or HostPort
+    \item Query the status of the node on the master
+    \item Scaling of the test-deployment on the (unavailable) target node to two pods
+    \item Restore the connection; disable the firewall rule
+    \item Verify if the node is marked as available again without any action being taken
+    \item Check if the deployment has been scaled accordingly
+\end{enumerate}
+
+During the entire run, any anomalies in the underlying system and within \ac{K8s} ecosystem are observed. The time until the system is fully restored and the deployment is scaled is also measured. Likewise, during disconnection, the service should continue to be available through HostPort for KubeEdge or NodePort in case of KubeFed. 
+
+
+
 
 \subsubsection{Result and interpretation}
 
