@@ -639,18 +639,33 @@ The following behaviour was observed during the test, which was carried out over
 \end{itemize}
 In summary, KubeFed did also behaive very well during the tests. Even under heavy load, our test service performs well and only stands out due to slightly higher response times. As with KubeEdge, this could be further improved through the use of \ac{QoS}.
 
-
+\subsubsection{Result and interpretation} 
+Both systems can be considered resource efficient. KubeFed benefits from the use of K3s instead of vanilla K8s. Nevertheless, KubeEdge is the winner in terms of minimum requirements and may be preferable for edge locations with weak devices. Under high load, both environments could prove high stability.
 
 \subsection{Network connectivity}
 \label{sec:dsrtestnetwork}
 \subsubsection{Reponse time}
-In the course of the performance tests,which can be found in the \autoref{sec:dsrtestress}, network tests were also carried out to test the behaviour both under load and without load. For this purpose the tool curl is used which can measure time values via output parameters. The test-command is shown below.
+In the course of the performance tests, which can be found in the \autoref{sec:dsrtestress}, network tests were also carried out to test the behaviour both under load and without load. For this purpose the tool curl is used which can measure time values via output parameters. The test-command is shown below.
+
 \begin{lstlisting}[caption={Curl command},captionpos=b]
 curl -w "@curl-output.txt" -o /dev/null -s IP:8000
 \end{lstlisting}
-The "curl-output.txt" file defines the processing and output specifications.
 
-\paragraph{KubeEdge}
+The \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/curl.md}{}{}{curl-output.txt} file defines the processing and output specifications. The call via curl is made from the respective master node located in Germany, as also shown in the following \autoref{tab:poc-nodes}. The target in each case is the node edge-1 which is hosted in the US and performs our target deployment. Due to the differences within the architecture of the two environments, different methods are used at this point. While the internal ClusterIP can be addressed for KubeEdge, which brings the data transfer to the target pod internally via EdgeMesh, a NodePort must be made accessible via the internet for KubeFed. This means that in the case of KubeFed, the curl command must be issued against the public IP of the target node. The service object of our usecase, describe in \autoref{sec:dsrusecase}, was therefore modified as follows for KubeFed.
+
+\begin{lstlisting}[caption={Curl command},captionpos=b]
+type: NodePort
+ports:
+- name: http
+  port: 8000
+  targetPort: 80
+  NodePort: 30298
+\end{lstlisting}
+
+It should be noted that the default port-range for NodePorts is from 30000 to 32767.
+
+\paragraph{KubeEdge} based on the command declared above, the following data could be obtained.
+
 \begin{table}[ht]
     \begin{center}
         \begin{minipage}{.49\linewidth}
@@ -667,7 +682,7 @@ The "curl-output.txt" file defines the processing and output specifications.
                     time\_total & 0.193011s \\
                     \hline
                 \end{tabular}
-                \caption{KubeEdge: curl without load}
+                \caption{KubeEdge: curl no load (ClusterIP)}
                 \label{tab:ke-con-noload}
             \end{center}
         \end{minipage}
@@ -685,15 +700,62 @@ The "curl-output.txt" file defines the processing and output specifications.
                     time\_total & 0.338480s \\
                     \hline
                 \end{tabular}
-                \caption{KubeEdge: curl with load}
-                \label{tab:ke-con-noload}
+                \caption{KubeEdge: curl with load (ClusterIP)}
+                \label{tab:ke-con-load}
             \end{center}
         \end{minipage}
     \end{center}
 \end{table}
+
 The total time to complete a call increased by about 75\% in the test conducted. While this may sound like a large increase at first, it must be mentioned again that the node was under absolute full load. In this respect, this value is relativised and could even be considered quite good.
-\paragraph{KubeFed}
-\textit{Service respsonsenes} - A test using curl with the same parameters was carried out.
+
+In order to provide a complete overview, although functions that constitute a decisive added value were deactivated, KubeEdge was also tested via HostPort. This variant is more comparable with the NodePort described above.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000079s \\
+                    time\_connect & 0.093761s \\
+                    time\_pretransfer & 0.093832s \\
+                    time\_starttransfer & 0.187626s \\
+                    \hline
+                    time\_total & 0.188056s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeEdge: curl no load (HostPort)}
+                \label{tab:ke-con-noload-np}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000033s \\
+                    time\_connect & 0.093475s \\
+                    time\_pretransfer & 0.093552s \\
+                    time\_starttransfer & 0.201756s \\
+                    \hline
+                    time\_total & 0.201889s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeEdge: curl with load (HostPort)}
+                \label{tab:ke-con-load-np}
+            \end{center}
+        \end{minipage}
+    \end{center}
+\end{table}
+
+The test via NodePort, which bypasses the internal network structure based on EdgeMesh, is similar to the following test of KubeFed. However, this variant also means that a decisive added value of KubeEdge is lost. This shows that EdgeMesh brings with it a certain overhead that should not go unnoticed.
+
+\paragraph{KubeFed} under the same conditions, except for the adjustments to the service, the test was run through for KubeFed. The result is displayed below.
+
 \begin{table}[ht]
     \begin{center}
         \begin{minipage}{.49\linewidth}
@@ -711,7 +773,7 @@ The total time to complete a call increased by about 75\% in the test conducted.
                     \hline
                 \end{tabular}
                 \caption{KubeFed: curl without load}
-                \label{tab:ke-con-noload}
+                \label{tab:kf-con-noload}
             \end{center}
         \end{minipage}
         \begin{minipage}{.49\linewidth}
@@ -729,14 +791,17 @@ The total time to complete a call increased by about 75\% in the test conducted.
                     \hline
                 \end{tabular}
                 \caption{KubeFed: curl with load}
-                \label{tab:kf-con-noload}
+                \label{tab:kf-con-load}
             \end{center}
         \end{minipage}
     \end{center}
 \end{table}
-The test only shows an increase of 25\%. Considering that the target node is under full load, this is an enormously good value and exceeds expectations.
 
-\paragraph{Disconnected} 
+The test only shows an increase of 25\%. Considering that the target node is under full load, this is an enormously good value and exceeds expectations. Especially under heavy load, Kubefed resp. a single target cluster, can process the request faster compared to KubeEdge and the EdgheMesh-agent.
+
+\subsubsection{Connection restoring} 
+
+\subsubsection{Result and interpretation}
 
 Latency Test, Offline Test
 \subsection{Application stability}
