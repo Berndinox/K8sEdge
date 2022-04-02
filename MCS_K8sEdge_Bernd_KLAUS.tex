@@ -515,6 +515,7 @@ What is certain is that the documentation at this point is not sufficiently well
 \section{Performed Tests}
 In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with DSR guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
 \subsection{Ressource usage}
+\label{sec:dsrtestress}
 As already described in the \autoref{sec:generalchallanges}, the efficient use of resources is an important characteristic in the edge-computing environment. Due to the fact that we rely on K3s as \ac{K8s} distribution for the expression with KubeFed, which is known for using few resources, comparable results can be expected. In principle, however, KubeEdge should be somewhat more lightweight, since only a \ac{CNI} is used without full \ac{K8s} distribution. The only unknown is the deployment of EdgeMesh which could increase the resource requirements. The tests are performaned on the edge-side choosing node "edge-1" located in US. The uptime of the nodes for both environments, at time of the measurements, is exactly the same, approximately 15 minutes.
 
 \subsubsection{Idle}
@@ -542,11 +543,12 @@ The utilisation of the CPU by the applications is measured every second for a du
 
 In the diagram above, the process of cpustats itself and that of the SSH agent were not taken into account. Neither of them have any direct concern about the test performaed. Basically, the result can be interpreted in such a way that the load is low for both systems and no significant jumps were recognisable. Nevertheless, it must be noted that KubeEdge caused many times fewer CPU compared to KubeFed, while both system idle. The full CSV can be viewed in the designated folder on Github. The link is given at the end of the chapter.
 
-\paragraph{Memory} Htop\cite{htop} and \ac{aha}\cite{Aha} were used to check the memory utilisation in idle mode. The measurement is carried out under the same conditions as the CPU test described above. The deployment was scaled to 1 on the corresponding node, no increased load must or had to be processed. The uptime of both system is 2 hours 15 minutes at time of testing. Since the memory behaves less erratically than the CPU, only one sample were taken. The total consumption for the both systems are:
+\paragraph{Memory} Htop\cite{htop} and \ac{Aha}\cite{aha} were used to check the memory utilisation in idle mode. The measurement is carried out under the same conditions as the CPU test described above. The deployment was scaled to 1 on the corresponding node, no increased load must or had to be processed. The uptime of both system is 2 hours 15 minutes at time of testing. Since the memory behaves less erratically than the CPU, only one sample were taken. The total consumption for the both systems are:
+
 \begin{itemize}
     \itemsep0em 
     \item \textit{KubeEdge} - 239 MB
-    \item \textit{KubeFed} - 600MB
+    \item \textit{KubeFed} - 600 MB
 \end{itemize}
 
 The following table lists, in descending order, the 5 processes with the most RAM use and their percentage share of the total utilisation.
@@ -607,19 +609,133 @@ It should be noted that the standard \ac{QoS} of \ac{K8s} is applied or maintain
 \paragraph{KubeEdge} Due to the \ac{K8s} native support KubeEdge comes with, the configuration provided by kube-stresscheck is ready as is. The version selected is the one that only occupies one node with full load. In order to test the node that was selected as the input for the tests before, the other nodes are temporarily drained. Although the developers of the test application describe it as follows: "Usually pods like kube-proxy, nginx-ingress-controller, calico-node are crashlooping. If kubelet or docker was affected by stress test then node will become NotReady"\cite{kube-stress}. However, no such effects could be observed in the test run carried out. The following values were observed and recorded during the stress test on the affected node. 
 
 \begin{itemize}
-    \itemsep0em 
-    \item \textit{Memory Usage}: \textbf{100\%} - a flickering was noticed because the underlying \ac{OS} is trying to free-up unused allocated memory. On the other hand, the pod fills the \ac{RAM} directly again.
+    \item \textit{Memory usage}: \textbf{100\%} - a flickering was noticed because the underlying \ac{OS} is trying to free-up unused allocated memory. On the other hand, the pod fills the \ac{RAM} directly again.
     \item \textit{CPU usage}: \textbf{100\%} throughout on both cpu cores during the test periode. 
 \end{itemize}
 The following behaviour was observed during the test, which was carried out over a period of one minute.
 
+\begin{itemize} 
+    \item \textit{Stability} - All functionalities of the environment were maintained during the test. Also all pods were available during the entire run and did not get re-scheduled or exited. All local services and agents at the edge-node also performed their services unhindered.
+    \item \textit{Logs} - No errors could be read in the local logs of the respective nodes or in the kubernetes-specific logs. No indication of any problems that could be traced back to the load tests could be found within the test pods either.
+    \item \textit{Responsiveness} - The test deployment responds and is fully available during the test period. The response times are somewhat slower, as described in the following \autoref{sec:dsrtestnetwork}.
+    \item \textit{Recovery} - After the end of the test, operation was continue without any consequences. The CPU as well as RAM utilisation go back to the initial values. 
+\end{itemize}
+In summary, KubeEdge has done exceptionally well. No failures or noteworthy events were detected during the tests. Although the performance of the services that are located on the same node suffers, these effects were within limits and to some extent predictable. The effective use of \ac{QoS} could further improve overall performance.
 
-- logs
-- deploying something
-- chrashes
+\paragraph{KubeFed} The test is carried out under the same conditions as the test above. The test deployment is scaled to a pod on the target system, edge-1. However, since KubeFed does not offer an \ac{CNI} for intra-cluster service communication, the port is changed from ClusterIP to NodePort. This allows the connection test to be carried out using curl with the same conditions. The following values were observed and recorded during the stress test on the affected node.
+
+\begin{itemize}
+    \item \textit{Memory usage}: \textbf{100\%} - similar to the behaivor with KubeEdge, a flickering was noticed.
+    \item \textit{CPU usage}: \textbf{100\%} throughout on both cpu cores during the test periode. 
+\end{itemize}
+
+The following behaviour was observed during the test, which was carried out over a period of one minute. With the exception of the response times, the same results were achieved. For the sake of completeness, these are listed again below.
+
+\begin{itemize} 
+    \item \textit{Stability} - All functionalities of the environment were maintained during the test. Also all pods were available during the entire run and did not get re-scheduled or exited. All local services and agents at the edge-node also performed their services unhindered.
+    \item \textit{Logs} - No errors could be read in the local logs of the respective nodes or in the kubernetes-specific logs. No indication of any problems that could be traced back to the load tests could be found within the test pods either.
+    \item \textit{Responsiveness} - Similar to the test before, the deployment of the test pod was reachable during the test. Details of this test, as mentioned earlier, can be found in the network-section in \autoref{sec:dsrtestnetwork}.
+    \item \textit{Recovery} - After the end of the test, operation was continue without any consequences. The CPU as well as RAM utilisation go back to the initial values. 
+\end{itemize}
+In summary, KubeFed did also behaive very well during the tests. Even under heavy load, our test service performs well and only stands out due to slightly higher response times. As with KubeEdge, this could be further improved through the use of \ac{QoS}.
+
 
 
 \subsection{Network connectivity}
+\label{sec:dsrtestnetwork}
+\subsubsection{Reponse time}
+In the course of the performance tests,which can be found in the \autoref{sec:dsrtestress}, network tests were also carried out to test the behaviour both under load and without load. For this purpose the tool curl is used which can measure time values via output parameters. The test-command is shown below.
+\begin{lstlisting}[caption={Curl command},captionpos=b]
+curl -w "@curl-output.txt" -o /dev/null -s IP:8000
+\end{lstlisting}
+The "curl-output.txt" file defines the processing and output specifications.
+
+\paragraph{KubeEdge}
+\begin{table}[ht]
+    \begin{center}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000059s \\
+                    time\_connect & 0.000581s \\
+                    time\_pretransfer & 0.000663s \\
+                    time\_starttransfer & 0.192938s \\
+                    \hline
+                    time\_total & 0.193011s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeEdge: curl without load}
+                \label{tab:ke-con-noload}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000070s \\
+                    time\_connect & 0.000245s \\
+                    time\_pretransfer & 0.000316s \\
+                    time\_starttransfer & 0.338320s \\
+                    \hline
+                    time\_total & 0.338480s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeEdge: curl with load}
+                \label{tab:ke-con-noload}
+            \end{center}
+        \end{minipage}
+    \end{center}
+\end{table}
+The total time to complete a call increased by about 75\% in the test conducted. While this may sound like a large increase at first, it must be mentioned again that the node was under absolute full load. In this respect, this value is relativised and could even be considered quite good.
+\paragraph{KubeFed}
+\textit{Service respsonsenes} - A test using curl with the same parameters was carried out.
+\begin{table}[ht]
+    \begin{center}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000085s \\
+                    time\_connect & 0.089800s \\
+                    time\_pretransfer & 0.089906s \\
+                    time\_starttransfer & 0.180030s \\
+                    \hline
+                    time\_total & 0.180333s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeFed: curl without load}
+                \label{tab:ke-con-noload}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{.49\linewidth}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                    \hline
+                    Measuring point & Time \\
+                    \hline
+                    time\_namelookup & 0.000042s \\
+                    time\_connect & 0.089541s \\
+                    time\_pretransfer & 0.089756s \\
+                    time\_starttransfer & 0.225031s \\
+                    \hline
+                    time\_total & 0.225544s \\
+                    \hline
+                \end{tabular}
+                \caption{KubeFed: curl with load}
+                \label{tab:kf-con-noload}
+            \end{center}
+        \end{minipage}
+    \end{center}
+\end{table}
+The test only shows an increase of 25\%. Considering that the target node is under full load, this is an enormously good value and exceeds expectations.
+
 \paragraph{Disconnected} 
 
 Latency Test, Offline Test

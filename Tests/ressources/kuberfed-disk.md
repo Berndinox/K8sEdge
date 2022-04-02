@@ -1,3 +1,4 @@
+```
 df -h
 Filesystem      Size  Used Avail Use% Mounted on
 udev            949M     0  949M   0% /dev
@@ -24,3 +25,4 @@ overlay          38G  4.1G   32G  12% /run/k3s/containerd/io.containerd.runtime.
 overlay          38G  4.1G   32G  12% /run/k3s/containerd/io.containerd.runtime.v2.task/k8s.io/1bf3ee602873659932675f4e8da51e04a83f63c346821c6481b9eecb832c4a39/rootfs
 overlay          38G  4.1G   32G  12% /run/k3s/containerd/io.containerd.runtime.v2.task/k8s.io/61e8f64604e1a11fab1db3b1be96ec2cb2947c6c265532340d96146d8218eeaf/rootfs
 tmpfs           194M     0  194M   0% /run/user/0
+```

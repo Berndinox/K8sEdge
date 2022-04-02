@@ -1,3 +1,6 @@
+Source: https://github.com/giantswarm/kube-stresscheck
+
+```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -75,3 +78,4 @@ spec:
       containers:
         - name: kube-stresscheck
           image: quay.io/giantswarm/kube-stresscheck:latest
+```
