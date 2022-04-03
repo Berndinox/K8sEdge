@@ -800,9 +800,10 @@ The test via NodePort, which bypasses the internal network structure based on Ed
 The test only shows an increase of 25\%. Considering that the target node is under full load, this is an enormously good value and exceeds expectations. Especially under heavy load, Kubefed resp. a single target cluster, can process the request faster compared to KubeEdge and the EdgheMesh-agent.
 
 \subsubsection{Connection restoring}
-In addition to the ability to keep services available under heavy load, seamless restoration of availability is also important in the event of a disconnection. As with the previous runs, the test-deployment for this setup is scaled to a single pod on the node edge-1. The connection between the master and the node is then disconnected via the firewall function provided by Hetzner. This allows the connection to be cut without manipulating the nodes themselves. The following steps are then carried out in an orderly sequence for each environment.
+In addition to the ability to keep services available under heavy load, seamless restoration of availability is also important in the event of a disconnection. As with the previous runs, the test-deployment for this setup is scaled to a single pod on the node edge-1. The connection between the master and the node is then disconnected via the firewall function provided by Hetzner. This allows the connection to be cut without manipulating the nodes themselves. In summary, the steps are as listed below in an orderly sequence for each environment.
 \begin{enumerate}
     \itemsep0em
+    \item Disconnect "edge-1" for at least 30 minutes with Hetzner firewall.
     \item Verify the availability of the pod via NodePort or HostPort
     \item Query the status of the node on the master
     \item Scaling of the test-deployment on the (unavailable) target node to two pods
@@ -813,8 +814,35 @@ In addition to the ability to keep services available under heavy load, seamless
 
 During the entire run, any anomalies in the underlying system and within \ac{K8s} ecosystem are observed. The time until the system is fully restored and the deployment is scaled is also measured. Likewise, during disconnection, the service should continue to be available through HostPort for KubeEdge or NodePort in case of KubeFed. 
 
+\paragraph{KubeEdge} Actually, KubeEdge should be able to handle network interruptions excellently, following the description of the developers. Unfortunately, this could \textbf{not} be proven in the test carried out. The first four steps of the above procedure were completed without any problems. The affected node is marked as NotReady and the pod that is exposed via HostPort is still accessible. However, the edge-node could not reconnect to the cluster after 30 minutes off-time. In the course of the problem, all error messages in the logs were searched through, leading to the following findings. \par
 
+First of all, the EdgeMesh-Agent, runnin inside a pod could establish the connection. This source of error can therefore be excluded. Then the EdgeCore component was examined, where the following error stood out.
 
+\vspace{\baselineskip}
+\begin{minipage}{\linewidth}
+    \begin{lstlisting}[caption={EdgeCore Error},captionpos=b]
+Apr 02 17:37:20 edge-1 edgecore[583]: W0402 17:37:20.670742     583 context_channel.go:180] The module websocket message channel is full, message: {Header:{ID:183c3a0f-3c6f-40f7-ade9-2ec0b9f0e8dd ParentID: Timestamp:1648921040658 ResourceVersion: Sync:true MessageType:} Router:{Source:>
+    \end{lstlisting}
+\end{minipage}
+
+This error occurs because the MetaManager still wants to transmit the status of the node and the pods. The messages are accepted by the local EdgeHub process, but cannot then be forwarded to the Cloudcore component because of the connection beeing cut off. Instead the messages are saved in a message queue, so that the messages can be transmitted after restoration of the connection. While it seems like a good idea in principle to cache local status and events so that they can be processed later, the implementation is obviously failing. \par
+
+However, the problems continue to accumulate as all messages are passed in one go to the CloudCore queue, after reconnecting the node, which also overruns it. In this status, not only one node is now affected, but all of them, as a status query illustrates.
+
+\begin{lstlisting}[caption={EdgeCore nodes unavailable},captionpos=b]
+kubectl get nodes
+NAME              STATUS                        ROLES                  AGE
+edge-2            NotReady,SchedulingDisabled   agent,edge             3d5h
+edge-1            NotReady                      agent,edge             3d5h
+raspberrypi       NotReady,SchedulingDisabled   agent,edge             3d5h
+kubeedge-master   Ready                         control-plane,master   3d5h
+\end{lstlisting}
+
+The functionality could not be restored without manual intervention. Both the component on node edge-1 and on the master had to be restarted manually. It must be mentioned that at least the distributed pods were recognised without any further action and our service was always during the hole test. Furthermore, the problem only occurs after longer network disconnections, because the queue has to fill up first. However, depending on the environment and workload, this period can change considerably.\par
+\vspace{\baselineskip}
+\textbf{In a new test, with only 5 minutes of disconnection, the problem could not be provoked.}\par
+\vspace{\baselineskip}
+Researching the issue described above leads us to the following \hyperref{https://github.com/kubeedge/kubeedge/issues/3567}{}{}{issue \#3576} which has already been reported in the Github repo of kubeEdge. Unfortunately, it must be noted that the problem has been open for over two months without any feedback. Considering the challenges from \autoref{sec:generalchallanges}, that connections at the edge are often of poor quality and terminations have to be compensated accordingly, KubeEdge does not seem very suitable for such scenarios.
 
 \subsubsection{Result and interpretation}
 

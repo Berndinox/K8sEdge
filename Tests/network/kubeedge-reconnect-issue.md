@@ -1,5 +1,5 @@
 # KubeEdge broken
-Afer connection restoring of edge-1 - remains NotReady
+Afer connection restoring of edge-1 (30 Minutes offline) - remains NotReady
 
 ## Master:
 kubectl get nodes
@@ -33,29 +33,26 @@ Apr 02 17:37:20 edge-1 edgecore[583]: W0402 17:37:20.670742     583 context_chan
 Apr 02 17:37:23 edge-1 edgecore[583]: E0402 17:37:23.660699     583 ws.go:77] dial websocket error(dial tcp 49.12.197.172:10000: connect: connection refused), response message:
 Apr 02 17:37:23 edge-1 edgecore[583]: E0402 17:37:23.660738     583 websocket.go:90] Init websocket connection failed dial tcp 49.12.197.172:10000: connect: connection refused
 ```
-This error is related to: https://github.com/kubeedge/beehive/blob/master/pkg/core/context/context_channel.go#L174
+This error is related to:
+https://github.com/kubeedge/beehive/blob/master/pkg/core/context/context_channel.go#L174
+https://github.com/kubeedge/kubeedge/commit/6f212c9bd227c0335b54051d587fc3c73aabfb92#diff-55957eb2fde5f07479933dfb3485861b6e5f655c25efd502e95d1cd79f3efa10
+https://github.com/kubeedge/kubeedge/issues/3567
+
 
 `systemctl restart edgecore` - does not change anything
 ping to master and vice versa is possible. (Firewall removed successfully)
 
 ## Master:
-cloudcore.log:
+cloudcore.log
 ```
-goroutine 290033 [IO wait, 2 minutes]:
-internal/poll.runtime_pollWait(0x7f0cd18df910, 0x72, 0xffffffffffffffff)
-        /usr/local/go/src/runtime/netpoll.go:227 +0x55
-internal/poll.(*pollDesc).wait(0xc000524b18, 0x72, 0x7500, 0x75b6, 0xffffffffffffffff)
-        /usr/local/go/src/internal/poll/fd_poll_runtime.go:87 +0x45
-internal/poll.(*pollDesc).waitRead(...)
-        /usr/local/go/src/internal/poll/fd_poll_runtime.go:92
-internal/poll.(*FD).Read(0xc000524b00, 0xc000af8000, 0x75b6, 0x75b6, 0x0, 0x0, 0x0)
-        /usr/local/go/src/internal/poll/fd_unix.go:166 +0x1d5
-net.(*netFD).Read(0xc000524b00, 0xc000af8000, 0x75b6, 0x75b6, 0x52d6, 0x0, 0x0)
-        /usr/local/go/src/net/fd_posix.go:55 +0x4f
-net.(*conn).Read(0xc00032e148, 0xc000af8000, 0x75b6, 0x75b6, 0x0, 0x0, 0x0)
-        /usr/local/go/src/net/net.go:183 +0x91
+I0403 07:06:20.842982    3200 application.go:413] [metaserver/ApplicationCenter] get a Application (NodeName=edge-1;Key=/networking.istio.io/v1alpha3/destinationrules/null/null;Verb=watch;Status=InApplying;Reason=)
+I0403 07:06:20.843130    3200 application.go:422] [metaserver/applicationCenter]successfully to process Application((NodeName=edge-1;Key=/networking.istio.io/v1alpha3/destinationrules/null/null;Verb=watch;Status=Approved;Reason=))
+W0403 07:06:42.353806    3200 messagehandler.go:216] Timeout to receive heart beat from edge node edge-1 for project e632aba927ea4ac2b575ec1603d56f10
+E0403 07:06:42.354037    3200 ws.go:122] failed to read message, error: read tcp 49.12.197.172:10000->5.161.41.112:35528: use of closed network connection
+I0403 07:06:42.858667    3200 application.go:413] [metaserver/ApplicationCenter] get a Application (NodeName=edge-2;Key=/core/v1/secrets/null/null;Verb=watch;Status=InApplying;Reason=)
+I0403 07:06:42.859306    3200 application.go:422] [metaserver/applicationCenter]successfully to process Application((NodeName=edge-2;Key=/core/v1/secrets/null/null;Verb=watch;Status=Approved;Reason=))
+E0403 07:06:44.261679    3200 messagehandler.go:471] Failed to send event to node: edge-1, affected event: id: f78fb2da-74c4-45e9-b47f-a661fb18e94e, parent_id: , group: resource, source: dynamiccontroller, resource: kube-system/endpoints/rancher.io-local-path, operation: update, err: use of closed network connection
 ```
-Even the ability to write clean logs is broken.
 
 Restart the KubeEdge core component:
 
@@ -69,6 +66,7 @@ edge-2            Ready,SchedulingDisabled   agent,edge             3d5h   v1.22
 edge-1            Ready                      agent,edge             3d5h   v1.22.6-kubeedge-v1.10.0
 raspberrypi       Ready,SchedulingDisabled   agent,edge             3d5h   v1.22.6-kubeedge-v1.10.0
 ```
+
 
 
 
