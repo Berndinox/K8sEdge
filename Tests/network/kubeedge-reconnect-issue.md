@@ -1,5 +1,6 @@
 # KubeEdge broken
-Afer connection restoring of edge-1 (30 Minutes offline) - remains NotReady
+Afer connection restoring of edge-1 (30 Minutes offline)
+all Nodes remain NotReady
 
 ## Master:
 kubectl get nodes
@@ -10,7 +11,6 @@ edge-1            NotReady                      agent,edge             3d5h   v1
 raspberrypi       NotReady,SchedulingDisabled   agent,edge             3d5h   v1.22.6-kubeedge-v1.10.0
 kubeedge-master   Ready                         control-plane,master   3d5h   v1.21.4+k3s1
 ```
-Node not becoming ready!
 
 
 ## Edge-1 Node:
@@ -22,7 +22,7 @@ W0402 17:33:53.547971       1 tunnel.go:28] Connection between agent and server 
 I0402 17:33:53.548028       1 tunnel.go:31] Tunnel agent connecting to tunnel server
 I0402 17:33:53.932483       1 tunnel.go:50] agent success connected to server [/ip4/49.12.197.172/tcp/20004 /ip4/127.0.0.1/tcp/20004
 ```
-EdgeMesh seemd to be fine.
+EdgeMesh seems to be fine.
 
 journalctl -u edgecore -b
 ```
@@ -34,9 +34,9 @@ Apr 02 17:37:23 edge-1 edgecore[583]: E0402 17:37:23.660699     583 ws.go:77] di
 Apr 02 17:37:23 edge-1 edgecore[583]: E0402 17:37:23.660738     583 websocket.go:90] Init websocket connection failed dial tcp 49.12.197.172:10000: connect: connection refused
 ```
 This error is related to:
+
 https://github.com/kubeedge/beehive/blob/master/pkg/core/context/context_channel.go#L174
 https://github.com/kubeedge/kubeedge/commit/6f212c9bd227c0335b54051d587fc3c73aabfb92#diff-55957eb2fde5f07479933dfb3485861b6e5f655c25efd502e95d1cd79f3efa10
-https://github.com/kubeedge/kubeedge/issues/3567
 
 
 `systemctl restart edgecore` - does not change anything
@@ -67,6 +67,8 @@ edge-1            Ready                      agent,edge             3d5h   v1.22
 raspberrypi       Ready,SchedulingDisabled   agent,edge             3d5h   v1.22.6-kubeedge-v1.10.0
 ```
 
+The problem was already reported in Jan:
+https://github.com/kubeedge/kubeedge/issues/3567
 
 
 

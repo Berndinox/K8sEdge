@@ -1550,9 +1550,33 @@ INPUT .\PICs\kf-cpu-noload.png
 INPUT .\PICs\kf-cpu-noload.png
 INPUT .\PICs\kf-cpu-noload.png
 INPUT .\PICs\kf-cpu-noload.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubeedge-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
+INPUT PICs\kubefed-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
+INPUT .\PICs\kubefed-scale-100.png
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvrc8t.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvrc8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT C:\Program Files\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\t1cmss.fd
+INPUT C:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\ecss1095.tfm
+INPUT C:\Program Files\MiKTeX\tex\latex\base\ts1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\ts1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\ts1cmss.fd
+INPUT C:\Program Files\MiKTeX\tex\latex\base\ts1cmss.fd
+INPUT C:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\tcss1095.tfm
 INPUT .\MCS_K8sEdge_Bernd_KLAUS.lof
 INPUT MCS_K8sEdge_Bernd_KLAUS.lof
 INPUT MCS_K8sEdge_Bernd_KLAUS.lof
@@ -1570,6 +1594,8 @@ INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
 INPUT .\MCS_K8sEdge_Bernd_KLAUS.out
 INPUT MCS_K8sEdge_Bernd_KLAUS.run.xml
 OUTPUT MCS_K8sEdge_Bernd_KLAUS.run.xml
+INPUT C:\Users\Bernd\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcss1095.pk
+INPUT C:\Users\Bernd\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcss1095.pk
 INPUT C:\Program Files\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT C:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb

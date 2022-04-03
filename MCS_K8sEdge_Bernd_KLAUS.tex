@@ -838,18 +838,121 @@ raspberrypi       NotReady,SchedulingDisabled   agent,edge             3d5h
 kubeedge-master   Ready                         control-plane,master   3d5h
 \end{lstlisting}
 
-The functionality could not be restored without manual intervention. Both the component on node edge-1 and on the master had to be restarted manually. It must be mentioned that at least the distributed pods were recognised without any further action and our service was always during the hole test. Furthermore, the problem only occurs after longer network disconnections, because the queue has to fill up first. However, depending on the environment and workload, this period can change considerably.\par
+The functionality could not be restored without manual intervention. Both the component on node edge-1 and on the master had to be restarted manually. It must be mentioned that at least the distributed pods were recognised without any further action and our service was available during the hole test. Furthermore, the problem only occurs after longer network disconnections, because the queue has to fill up first. However, depending on the environment and workload, this period can change considerably.\par
 \vspace{\baselineskip}
-\textbf{In a new test, with only 5 minutes of disconnection, the problem could not be provoked.}\par
+\textbf{In another test, with only 5 minutes of disconnection, the problem could not be provoked.}\par
 \vspace{\baselineskip}
-Researching the issue described above leads us to the following \hyperref{https://github.com/kubeedge/kubeedge/issues/3567}{}{}{issue \#3576} which has already been reported in the Github repo of kubeEdge. Unfortunately, it must be noted that the problem has been open for over two months without any feedback. Considering the challenges from \autoref{sec:generalchallanges}, that connections at the edge are often of poor quality and terminations have to be compensated accordingly, KubeEdge does not seem very suitable for such scenarios.
+Researching the issue described above leads us to the following \hyperref{https://github.com/kubeedge/kubeedge/issues/3567}{}{}{issue \#3576} which has already been reported in the Github repo of kubeEdge. Unfortunately, it must be noted that the problem has been open for over two months without any feedback. Considering the challenges from \autoref{sec:generalchallanges}, that connections at the edge are often of poor quality and terminations have to be compensated accordingly, KubeEdge does not seem very suitable for such scenarios. The full logs and commands run through during the test could be found in the thesis \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/kubeedge-reconnect-issue.md}{}{}{repo}. \par
 
-\subsubsection{Result and interpretation}
+In addition, the pods of the deployment could not be removed cleanly after the test. This problem has already been reported as \hyperref{https://github.com/kubeedge/kubeedge/issues/3736
+}{}{}{Issue 3736}. At least the KubeEdge team is already working on fixing this issue.
 
-Latency Test, Offline Test
+\paragraph{KubeFed} Due to the nature of the architecture, no such problems were detected during the test on the KubeFed environment. In simple terms, a kubectl hosted in the central cluster controls other clusters. Each cluster functions completely independently of the others and can therefore remain separated for hours without any problems. This is also confirmed by tests that have been carried out. After reconnecting, the disconnected instance was recognised almost instantly and was again controllable from the central unit. It must also be mentioned that the separated cluster remains locally operable during the time of separation. This remains even if the connection is no longer established at all. In this case, one could simply continue to use the \ac{K8s} cluster as a singular instance.
+
+\subsubsection{Result and interpretation} Fulfilling expectations, KubeFed is characterised by particularly good error resistance in the network area. Both under load and complete disconnection, services remain well accessible. KubeEdge also offers good response times under increased load, although those over the internal \ac{CNI} has somewhat increased latency. However, this is due to the architecture itself and is within acceptable limits. However, the fact that the local message queue overflows if the connection is interrupted is problematic and, as a result, also causes the master component to crash. Although the functionality could be restored by restarting the services, a larger environment with many edge-nodes cannot be operated sensibly in this form. However, it can be assumed that a fix will be provided for this.
+
 \subsection{Application stability}
 \label{sec:dsrtestapp}
-Caos Monkey
+This part of the test focuses on the scalability of the environment and the stability achieved in the process. For this our test deployment from the previous chapters is reused. The first step is to scale from 0 to 100 pods, then all events of the namespace and start-times are evaluated and compared. Any system-relevant peculiarities or problems are also examined and recorded. All the steps performed during the test for both environments are listed below.
+
+\begin{enumerate}
+    \itemsep0em
+    \item Scale test-deployment to zero pods
+    \item Scale up the test-deployment to 100 pods
+    \begin{itemize}
+        \item KubeFed: the pods are evenly distributed over the nodes
+        \item KubeEdge: the decision is left to the Scheduler
+    \end{itemize}
+    \item Recording of the following events
+    \begin{itemize}
+        \itemsep0em
+        \item Namespace events
+        \item Pod status and startup times
+        \item Cluster events and behaviour
+    \end{itemize}
+    \item Scale test-deployment down to zero pods
+\end{enumerate}
+
+The command to monitor the state of the pods is as easy as:
+\vspace{\baselineskip}
+\begin{lstlisting}[caption={Pods status},captionpos=b]
+watch -n 2 'echo $(echo -n $(kubectl get pods -n=test1 | grep "Pending" | wc -l) && echo -n "/" && echo $( kubectl get pods -n=test1 | grep "Running" | wc -l)) | ts  >> running.log'
+\end{lstlisting}
+\vspace{\baselineskip}
+The code displayed above queries every two seconds the count of the pods in pending and running state and is writing those information as well as an added timestamp to the file called "running.log". It should also be noted that the image (nginxdemo/hello) is already cached on all nodes, and the same image is used for each pod.
+
+\paragraph{KubeEdge} After just under one and a half minutes, KubeEdge starts all 100 pods and completes the task flawlessly. The following command confirms that the deployment scaled properly.
+\vspace{\baselineskip}
+
+\begin{lstlisting}[caption={KubeEdge scaling to 100},captionpos=b]
+kubectl get deployment -n=test1
+NAME     READY     UP-TO-DATE   AVAILABLE   AGE
+nginx1   100/100   100          100         3d23h
+\end{lstlisting}
+
+Besides the evidence that the procedure has worked, however, efficiency is also an important variable. Therefore, as previously described, the pods were monitored during the test and the state of each was recorded with a timestamp. The evaluated data can be presented graphically as follows.
+
+\begin{center}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{PICs/kubeedge-scale-100.png}
+    \caption{KubeEdge scale}
+    \label{fig:kubeedge-scale}
+\end{figure}
+\end{center}
+
+It only takes 8 seconds for all pods to reach the "pending" state, the pods are then started linearly in tranches and are all in the "running" status after exactly 94 seconds. While these values are considered quite positive, considering that the test environment only uses low-resource nodes, the results regarding distribution are less convincing. The following table illustrates the distribution of the pods across the nodes on the edge.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|l|l|}
+            \hline
+            Node & Pods  \\
+            \hline
+            Edge-1 & 6  \\
+            Edge-2 & 82  \\
+            Raspberry & 13 \\
+            \hline
+        \end{tabular}
+        \caption{KubeEdge: scale distribution}
+        \label{tab:ke-scale-distribution}
+    \end{center}
+\end{table}
+
+The exact causes of the uneven distribution could not be determined exactly, a connection with the respective latency of the nodes would be quite conceivable, as \autoref{tab:poc-nodes} illustrates. The node with the lowest latency to the master was able to launch significantly more pods in the tests. An actual connection could not be proven.
+
+\paragraph{KubeFed} Due to the different mode of operation, the distribution of the pods for KubeFed is done manually in the configuration, which is why a more even distribution is achieved. While this behaviour may be advantageous for the test at hand, the functions of a dynamic scheduler may work more efficiently in environments with rapidly changing environments and a variety of different deployments. \par
+In order to scale to exactly 100 pods for the KubeFed environment, the deployment was adapted as follows.
+\vspace{\baselineskip}
+\begin{lstlisting}[caption={KubeFed scale adaptations},captionpos=b]
+    spec:
+      replicas: 33
+...
+  placement:
+    clusters:
+    - name: edge1, edg2, edge3 // simplified line
+  overrides:
+    - clusterName: edge2
+      clusterOverrides:
+        - path: "/spec/replicas"
+          value: 34
+\end{lstlisting}
+\par
+Since an uneven number of edge-nodes is used, one node must be loaded with an additional pod via override. Similar to KubeEdge, the node with the lowest latency was selected. The deployment was then distributed and the following values were determined. In the course of the distribution of the above-mentioned deployment, the following values were collected. For ease of classification, the values are also shown graphically.
+
+\begin{center}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.9\textwidth]{PICs/kubefed-scale-100.png}
+        \caption{KubeFed scale}
+        \label{fig:kubefed-scale}
+    \end{figure}
+\end{center}
+\par
+After only 20 seconds, all pods could be started successfully. KubeFed thus takes just under a third of the time as KubeEdge. This is also where the performance efficiency of the RaspberryPi node comes into play, requiring only 12 seconds for 33 pods. Nevertheless, it is important to note that KubeEdge started almost all pods on the same node. Assuming linearity and starting all pods in the KubeFed environment on one node, the start time would be about 60 seconds. That would still be faster. The gaps in the above diagram are caused by the "waiting" status, which is not covered by the monitoring command. However, this is only an intermediate status which has no relevance for measuring the total time.
+
+\subsubsection{Result and interpretation} 
+Both architectures, KubeEdge and KubeFed were able to scale without major problems. Due to the manually performed symmetrical distribution of the pods on KubeFed nodes, the start-up process is significantly faster overall. KubeEdge, on the other hand, has problems with distribution and starts most pods on the node with the supposedly lowest latency. In the specific case, this leads to a disadvantage of KubeEdge, but in larger environments with increased dynamic and complexity, the use of a dynamic scheduler still brings great advantages. The more detailed study of scheduling is reserved for future work.
 
 \section{Analysis}
 \label{sec:dsranalysis}
@@ -1076,17 +1179,18 @@ TODO: If somethin is really a requirement. How to mark it at the catalog?
 
 \chapter{Related Work}
 \label{chap:related}
-\section{Kubernetes and the Edge?}
-Some introdution to K8s at the Edge, highlighting the main Architectures.
-\section{Extend Cloud to Edge with KubeEdge}
-Descripes KubeEdge and its advantages
-\section{Sharpening Kubernetes for the Edge}
-Sharpening Kubernetes for the Edge
-Make Kubernetes aware of the latency between the nodes at the Edge.
-\section{Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes}
-Similar to the paper before. Latecny awar pod deploymentm, but you also can deploy to regions and an custom re-scheduler is implementated taking care of redeploying when one node fails.
-Clustering node-groups based on latency.
+\section{Kubernetes and the Edge}
+The paper\cite{hal-kubeedge} provides an excellent introduction to the topic and offers the necessary basics. However, it mainly examines the vanilla \ac{K8s}, which is only slightly suitable for use in edge-computing without additional tools. In the related work chapter, the paper refers to the use of KubeEdge and KubeFed, on which the present thesis is based on. These theses are therefore to be understood as an extension of the cited paper.
 
+\section{Extend Cloud to Edge with KubeEdge}
+The whitepaper\cite{kubedge} provides a good insight into the internals of KubeEde. However, some components of KubeEdge have since been revised or even replaced. KubeBus, for example, has been replaced by EdgeMesh. Also, no realworl exmaple is tested on the environment in the paper. Nevertheless, many mechanisms remain unchanged, which is why the paper is still of great relevance.
+
+\section{Sharpening Kubernetes for the Edge}
+As shown in this scientific paper, schedulers do not always work as desired. An approach to solving this problem is described in the white paper "Sharpening Kubernetes for the Edge"\cite{k8s-sharping-edge}. The authors describe the function of a scheduler that takes into account the respective latencies between the nodes and can thus make intelligent decisions. This could be a well-functioning extension for K8s at the edge.
+
+
+\section{Ultra-Reliable and Low-Latency Computing with K8s}
+In the research paper "Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes"\cite{k8s-latency-sched} the approach of the latency aware scheduler is pushed one step further. However, logical regions can be defined and pods can be launched preferentially in these. A re-scheduler has also been implemented, which makes it possible to automatically redistribute deployment when the environment changes in order to achieve optimum results.
 
 \chapter{Results}
 \label{chap:results}
@@ -1100,7 +1204,7 @@ Clustering node-groups based on latency.
 \section{Discussion and further research}
 \label{sec:discuss}
 Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
-
+Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
 
 
 %
