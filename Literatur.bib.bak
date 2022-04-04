@@ -298,6 +298,15 @@
   url    = {https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/},
 }
 
+@Report{k8s-latency-sched,
+  author      = {Laszl ´ o, Toka},
+  date        = {2020-11-03},
+  institution = {Journal of Grid Computing},
+  title       = {Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes},
+  type        = {resreport},
+  doi         = {10.1007/s10723-021-09573-z},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

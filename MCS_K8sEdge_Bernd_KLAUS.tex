@@ -956,9 +956,17 @@ Both architectures, KubeEdge and KubeFed were able to scale without major proble
 
 \section{Analysis}
 \label{sec:dsranalysis}
-\subsection{Relevant Magnitudes}
+This chapter deals with or analyses the previously conducted test on a further level. Characteristics or attributes that have no direct relation to the tests but were indirectly relevant are also described  in the following subsections. Likewise, the overall result of the previous practical tests is analysed in more detail and documented.
+
+\subsection{Handling}
+\paragraph{Deployment} As the previous tests have shown, the way in which deployments can be distributed varies. While KubeEdge can process the same configuration files as on a conventional \ac{K8s} cluster and thus follow the native approach, modifications are necessary for KubeFed. To improve handling, KubeFed also offers functionality to automatically convert standard \ac{K8s} resources into federated resources. Nevertheless, a further step is necessary and the seamless integration of an existing CI/CD pipeline may not be possible as the conversion has to be taken into account.
+
+\paragraph{Scaling} As mentioned briefly above, KubeFed distributes a number of pods over a number of connected clusters at the edge when they are listed in the deployment. To find out the total number of pods, all pods across all clusters must be added together, which is not possible with a single command. Alternatively, the deployment file can be interpreted accordingly, but the pods must also be totalled here. KubeEdge, on the other hand, uses a scheduler that performs the distribution independently or dynamically \cite{ke-doc-schedule}. In this respect, variants offer both advantages and disadvantages. In a smaller, manageable environment with clearly defined locations and workloads each running, KubeFed provides the necessary tools. However, in larger environments, with thousands of nodes and rapidly changing conditions, the scheduler approach is the better choice.Although the distribution did not function optimally in the test conducted above, the potential should not be disregarded. After all, the scheduler can be extended relatively easily and other parameters, such as latency, can be taken into account. Possible extensions of the scheduler are described in the related works in \autoref{sec:sharp-k8s-edge} and \autoref{sec:ultra-low-k8s}.
+
+\paragraph{Stability} KubeEdge manchmal etwas clunky.
+
 \subsection{Outcome}
-\subsection{Paraphrase}
+
 
 
 
@@ -1186,10 +1194,12 @@ The paper\cite{hal-kubeedge} provides an excellent introduction to the topic and
 The whitepaper\cite{kubedge} provides a good insight into the internals of KubeEde. However, some components of KubeEdge have since been revised or even replaced. KubeBus, for example, has been replaced by EdgeMesh. Also, no realworl exmaple is tested on the environment in the paper. Nevertheless, many mechanisms remain unchanged, which is why the paper is still of great relevance.
 
 \section{Sharpening Kubernetes for the Edge}
+\label{sec:sharp-k8s-edge}
 As shown in this scientific paper, schedulers do not always work as desired. An approach to solving this problem is described in the white paper "Sharpening Kubernetes for the Edge"\cite{k8s-sharping-edge}. The authors describe the function of a scheduler that takes into account the respective latencies between the nodes and can thus make intelligent decisions. This could be a well-functioning extension for K8s at the edge.
 
 
 \section{Ultra-Reliable and Low-Latency Computing with K8s}
+\label{sec:ultra-low-k8s}
 In the research paper "Ultra-Reliable and Low-Latency Computing in the Edge with Kubernetes"\cite{k8s-latency-sched} the approach of the latency aware scheduler is pushed one step further. However, logical regions can be defined and pods can be launched preferentially in these. A re-scheduler has also been implemented, which makes it possible to automatically redistribute deployment when the environment changes in order to achieve optimum results.
 
 \chapter{Results}
