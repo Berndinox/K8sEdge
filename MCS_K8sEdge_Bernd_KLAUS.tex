@@ -517,6 +517,7 @@ What is certain is that the documentation at this point is not sufficiently well
 \end{enumerate}
 
 \section{Performed Tests}
+\label{sec:dsrtest}
 In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with DSR guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
 \subsection{Ressource usage}
 \label{sec:dsrtestress}
@@ -963,6 +964,7 @@ Both architectures, KubeEdge and KubeFed were able to scale without major proble
 This chapter deals with or analyses the previously conducted test on a further level. Characteristics or attributes that have no direct relation to the tests but were indirectly relevant are also described  in the following subsections. Likewise, the overall result of the previous practical tests is analysed in more detail and documented.
 
 \subsection{Handling}
+\label{sec:handling}
 \paragraph{Deployment} As the previous tests have shown, the way in which deployments can be distributed varies. While KubeEdge can process the same configuration files as on a conventional \ac{K8s} cluster and thus follow the native approach, modifications are necessary for KubeFed. To improve handling, KubeFed also offers functionality to automatically convert standard \ac{K8s} resources into federated resources. Nevertheless, a further step is necessary and the seamless integration of an existing CI/CD pipeline may not be possible as the conversion has to be taken into account.
 
 \paragraph{Scaling} As mentioned briefly above, KubeFed distributes a number of pods over a number of connected clusters at the edge when they are listed in the deployment. To find out the total number of pods, all pods across all clusters must be added together, which is not possible with a single command. Alternatively, the deployment file can be interpreted accordingly, but the pods must also be totalled here. KubeEdge, on the other hand, uses a scheduler that performs the distribution independently or dynamically \cite{ke-doc-schedule}. In this respect, variants offer both advantages and disadvantages. In a smaller, manageable environment with clearly defined locations and workloads each running, KubeFed provides the necessary tools. However, in larger environments, with thousands of nodes and rapidly changing conditions, the scheduler approach is the better choice.Although the distribution did not function optimally in the test conducted above, the potential should not be disregarded. After all, the scheduler can be extended relatively easily and other parameters, such as latency, can be taken into account. Possible extensions of the scheduler are described in the related works in \autoref{sec:sharp-k8s-edge} and \autoref{sec:ultra-low-k8s}.
@@ -1127,17 +1129,22 @@ It should be noted that the table shown above is only a snapshot. The values may
 \end{table}
 
 \subsection{Operation}
-When operating the enviroments
-\paragraph{Stability} KubeEdge is clunky!
-\paragraph{Handling} How? Differences, KnowHow!
-\paragraph{Scalability} of the enviroment itself (not the deplyoment: LINK to it)
-\paragraph{Troubleshooting} If shit goes wrong!
+The next variable that is defined concerns the operation of the respective environments. For example, increased effort in the installation routine can be justified by better downstream operation. In order to be able to make a clear statement regarding the two environments, the results of the tests, performed in \autoref{sec:dsrtest}, are evaluated in the following 4 sections.
+
+\paragraph{Stability} As the tests showed, both environments were able to create the test application and distribute it accordingly and keep it available. For KubeEdge, however, problems occurred in the course of the connectivity test, described in \autoref{sec:dsrtestnetwork}, which could only be solved by restarting the services both at the master and at the edge node concerned. Also, due to the complexity of KubeEdge, the susceptibility to errors is generally higher, also because the system is in active development. However, it can be assumed that the problem discovered will be remedied in the coming releases. If the stability of the environment is an absolute requirement, only KubeFed can be recommended at this point, considering the facts at hand.
+
+\paragraph{Handling} As already mentioned in \autoref{sec:handling}, KubeEdge offers the native approach to use K8s. Deployments running on a "normal" \ac{K8s} environment can simply be transferred to KubeEdge without modifikation. Administrators who are familiar with K8s can thus perform simple tasks or even solve problems without having to deal with the system in detail. If, on the other hand, deeper-seated problems occur, expertise regarding KubeEdge is unavoidable. In order to operate KubeFed, some new API objects have to be created or operated. However, the learning curve is low, also because there is a tool-supported translation option for \ac{K8s} Objects. In principle, no additional skills are required if major problems occur, as these are basically "only" individual \ac{K8s} clusters.
+
+\paragraph{Scalability} This paragraph focuses on the scalability of the environment itself, not that of the applications running on it. No official data could be found for either variant. For KubeEdge, the default values of Kubernetes itself could be considered, which are 5,000 nodes \cite{k8s-doc-bigcluster}. How accurate this information is has not been checked in detail and is explicitly marked as subjective. KubeFed cannot be equated with these specifications due to the different operating method. The fact alone that the respective configuration of the individual clusters has to be imported into the master shows that the limitations with regard to scaling occur much earlier. Of course, such tasks can be automated, but if the clearly stated goal is to operate thousands of nodes, the use of KubeFed cannot be recommended on the basis of the available data. 
 
 \subsection{Application deployment}
-Hwo to app deploy
-\paragraph{Transformation} Of the deployment or the app itself?
-\paragraph{CI/CD} how?! KubeEdge ezy bezy, KubeFed NOT!
-\paragraph{Deployment scaling} dynamisch scheduler vs manual
+As in the Handling chapter outlined above, which deals with general handling, this section explains and delves into the details of the application deployment. The results of the tests carried out previously are also included in the evaluation, in particular those from \autoref{sec:dsrtestapp}.
+
+\paragraph{Transformation} For KubeEdge, no transformatioen is required; for KubeFed, the objects to be distributed must first be activated and packed into a "wrapper". Normal Kubernetes objects are extended with the abbreviation "Federated" in front. Normal Kubernetes objects are extended with the abbreviation "Federated" and some additional properties such as clusters or overrides are added.
+
+\paragraph{CI/CD} Both environments can receive and run applications via \ac{CI/CD} pipeline. Due to the transformation, more work may be necessary for KubeFed. However, in the case of a KubeFed environment with only a few nodes and a ready integration of a CI/CD pipeline, the question arises whether it is not more sensible to distribute directly to the clusters without KubeFed.
+
+\paragraph{Deployment scaling}
 
 \subsection{Security}
 \paragraph{I have no idea yet!}
@@ -1234,6 +1241,7 @@ In the research paper "Ultra-Reliable and Low-Latency Computing in the Edge with
 
 \section{Conclusio}
 \label{sec:conclusio}
+\section{Generel advice}
 
 \section{Discussion and further research}
 \label{sec:discuss}
