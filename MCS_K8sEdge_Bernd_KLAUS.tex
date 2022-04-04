@@ -117,7 +117,7 @@ Kubernetes is the de facto swiss-army-knife for orchestrating container-platform
 \maketitle
 \chapter{Introdutcion}
 \label{chap:introduction}
-Because of \ac{IoT} Devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast \cite{SotE21} over the coming years. Concomitant edge-computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are two different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
+Because of \ac{IoT} devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast \cite{SotE21} over the coming years. Concomitant edge-computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are two different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
 
 \begin{itemize}
     \label{item:architecture}
@@ -134,7 +134,7 @@ Problems arise when trying to find the proper architecture for a specific use-ca
 \label{sec:rq}
 This paper is going to answer the subsequent research questions:
 \begin{enumerate}
-    \item What are the main differences of the in \autoref{item:architecture} mentioned architectures regarding functionality, scalability, costs and security?
+    \item What are the main differences of the in \autoref{item:architecture} mentioned architectures regarding functionality, scalability and security aspects?
     \item Which decision criteria must be defined respectively examined to create a catalog capable
     of choosing the proper architecture easier for \ac{IT} managers as well as administrators?
     \item Is there a trend in which technology is most likely to be used?
@@ -142,11 +142,12 @@ This paper is going to answer the subsequent research questions:
 
 \section{Goal}
 \label{sec:goal}
-The main goal of this thesis is to highlight the pros and cons for each of the \hyperref[item:architecture]{architectures} defined in the \hyperref[chap:introduction]{Introduction}. The focus will be mainly on the geo-distribution aspect. Although \ac{IoT} is playing a major role in pushing the development forward, however it is not considered further in the present work. To find the proper architecture, or at least recommendations what could fit best for different desired use-cases, a catalog will be defined. An important part will become the decision criteria catalogue helping people making comprehensible decisions based on scientific research. The main characteristics which are taken into account are scalability, state-of-the-art, handling, costs as well as security.
+The main goal of this thesis is to highlight the pros and cons for each of the \hyperref[item:architecture]{architectures} defined in the \hyperref[chap:introduction]{Introduction}. The focus will be mainly on the geo-distribution aspect. Although \ac{IoT} is playing a major role in pushing the development forward, however it is not considered further in the present work. To find the proper architecture, or at least recommendations what could fit best for different desired use-cases, a catalog will be defined. An important part will become the decision criteria catalogue helping people making comprehensible decisions based on scientific research. The main characteristics which are taken into account are scalability, state-of-the-art, handling as well as security. A template for using the catalogue yourself can be found in the appendix.
 
-\section{Methodology}
+\section{Structure}
 \label{sec:methodology}
-In the first part of the present work existing literature will be inspected. Related and relevant work will be examined accordingly and linked in the document. Also results will be incorporated to get out the most of it. The goal is to create a list with main criteria necessary for decision-making. As a result, a catalogue of criteria is drawn up in order to be able to decide on the right architecture. The \ac{DSR} method serves as a scientific method and to test the characteristics recorded in the catalogue. This chapter is given the most attention, it is the area where new techniques or architectural decisions are finally verified and the proof is given whether the catalogue works as expected or not. In the latter case, the catalog will be revised to reflect the findings of the last step and re-examined again using \ac{DSR}.
+\label{sec:structure}
+In the first part of the paper, the current state of research is presented in the course of a literature search. Products and solutions are outlined for the various target platforms, which are then developed in the course of a \ac{PoC} using the \ac{DSR} method. Tests are to show the respective behaviour and possible areas of application. This results in properties that flow into the following catalogue. This catalogue of criteria, in the form of a utility value analysis, can then be used to find the optimal target environment for individual areas of application. A point system is used to evaluate the respective criteria. Finally, outlooks are given and related works and extensions are cited.
 
 
 \chapter{State of the Art}
@@ -317,7 +318,9 @@ The above-mentioned challenges provide a good starting point for defining the ne
 
 \section{Methodology}
 \label{sec:dsrmethode}
-According to the description in the introduction before, \ac{DSR} is used as a scientific method to construct the \ac{PoC}. For this purpose two real world exmaples are build, which are then gradually refined. Those exmaples are descripte in detail in the following \autoref{sec:dsrenv} "environment". The same \hyperref[sec:dsrusecase] are then deployed onto each of these environments. Afterwards, Tests are then defined and carried out on the basis of the issues listed in section \autoref{sec:generalchallanges} "genereal challenges". Based on the results, a preferred environment per property can finally be determined.
+As described in \autoref{sec:methodology}, \ac{DSR} is used as a scientific method to create \ac{PoC}. For this purpose, two environments are built as described in \autoref{sec:dsrenv}, each representing one of the architectures listed in \autoref{sec:architecture}. A test-deployment is then applied to both environments and tested against specific use cases. The findings are finally interpetated and summarised in \autoref{sec:dsranalysis} and serve as a basis for the following catalogue.\par
+
+All details about the code or the configurations are not saved in the appendix but on the \hyperref{https://github.com/Berndinox/K8sEdge}{}{}{Github repository}, which is linked in the relevant places. The work itself only shows fragments that are relevant to the passage to ensure the best possible reading flow.
 
 \section{Environment}
 \label{sec:dsrenv}
@@ -406,6 +409,7 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 \label{sec:dsrusecaseweb}
 As a test, a web-application is distributed over several egde-nodes which is to be made accessible locally as well as via ClusterIP. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed here:
 
+\vspace{\baselineskip}
 \begin{lstlisting}[caption={Web-application code},captionpos=b]
 kind: Deployment
 spec:
@@ -434,7 +438,7 @@ It is important to note that the above configuration only contains parts to incr
 Starting the web-application on KubeEdge environment is not as simple as assumed. If the deployment and the service definition are created via kubectl, this looks quite successful at first. The service is created and pods are scheduled accordingly. However, our goal was to make the service-ip accessible from within the nodes of the cluster via ClusterIP. But, when the service is called via curl, an error appears. Another problem is that the pod cannot be accessed either directly on the exposed port or via kubectl exec.
 
 After some research, it turned out that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
-
+\vspace{\baselineskip}
 The following list represents the available Kube-API verbs:
 \begin{itemize}
     \itemsep0em 
@@ -963,19 +967,23 @@ This chapter deals with or analyses the previously conducted test on a further l
 
 \paragraph{Scaling} As mentioned briefly above, KubeFed distributes a number of pods over a number of connected clusters at the edge when they are listed in the deployment. To find out the total number of pods, all pods across all clusters must be added together, which is not possible with a single command. Alternatively, the deployment file can be interpreted accordingly, but the pods must also be totalled here. KubeEdge, on the other hand, uses a scheduler that performs the distribution independently or dynamically \cite{ke-doc-schedule}. In this respect, variants offer both advantages and disadvantages. In a smaller, manageable environment with clearly defined locations and workloads each running, KubeFed provides the necessary tools. However, in larger environments, with thousands of nodes and rapidly changing conditions, the scheduler approach is the better choice.Although the distribution did not function optimally in the test conducted above, the potential should not be disregarded. After all, the scheduler can be extended relatively easily and other parameters, such as latency, can be taken into account. Possible extensions of the scheduler are described in the related works in \autoref{sec:sharp-k8s-edge} and \autoref{sec:ultra-low-k8s}.
 
-\paragraph{Stability} KubeEdge manchmal etwas clunky.
+\paragraph{Operation} KubeEdge performs all tests successfully in the end, but in case of network disconnection, manual intervention was necessary. A pod that was stuck in the "ContainerCreating" status also had to be removed manually. So while the service is basically good, manual intervention may be necessary during operation. This also has to do with the rapid development and the fast growing exosystem. In this context, it must be mentioned that KubeEdge is made up of far more components than KubeFed and therefore has an increased complexity. KubeFed, on the other hand, does an excellent job and comes up with no surprises.
 
-\subsection{Outcome}
+\subsection{Limitations}
+During the tests, the following limitations and challenges came to light.
 
+\paragraph{KubeEdge} makes it hard to operated disconnected nodes locally, because costum agents and services are used at the edge. Although the environment can be manipulated via docker cli, this may cause so-called zombie containers, that mus be cleaned up after use. Similarly, a deployment cannot be scaled up on the nodes if a hostPort is used; a port can only be used once on the system. Another limitation that arises from the use of EdgeMesh is that currently only Docker cointainers are supported.
 
+\paragraph{KubeFed} Although KubeFed does not have many of the limitations of KubeEdge, other drawbacks are to be expected. Thus, due to the architecture itself, no network is available for the data of the pods between the clusters. If the applications themselves only take on local tasks, this is not a problem, but if you want to implement more complex systems with interdependencies, limits are reached quickly. Accesses from one cluster to the other must therefore be solved in the application itself. In concrete terms, this means that existing Kubernetes deployments may have to be revised.
 
+\subsection{Outcome} The two architectures are fundamentally different. While KubeEdge offers the native Kubernetes approach and existing applications can be used 1:1 for edge-computing, the configurations for KubeFed have to be revised. On the other hand, KubeEdge itself has a more complex structure and some teething troubles were discovered during the test. KubeFed shines with stability and seems to be the perfect choice for smaller controllable environments with simple applications. As far as the detected errors can be fixed, KubeFed is always a good choice when complex applications have to be distributed dynamically over many nodes.
 
 \chapter{Catalog}
 \label{chap:catalog}
 
 \section{Decision Variables}
 \label{sec:variables}
-\subsection{Installation complexity}
+\subsection{Installation}
 The first decision variable that is examined is the effort required for the installation and the associated complexity. According to the KISS principle\cite{kiss}, those solutions with less complexity should be preferred. One investigates the installation routine, descripted in the  \autoref{sec:dsrenv} "environment", very different steps and necessary tools were discovered. 
 \paragraph{Dependencies} The first important variable we look at in this context are the dependencies. This paragraph considers requirements that must be met in order for the installation to proceed successfully.
 
@@ -1117,6 +1125,22 @@ It should be noted that the table shown above is only a snapshot. The values may
         \label{tab:fp-overview}
     \end{center}
 \end{table}
+
+\subsection{Operation}
+When operating the enviroments
+\paragraph{Stability} KubeEdge is clunky!
+\paragraph{Handling} How? Differences, KnowHow!
+\paragraph{Scalability} of the enviroment itself (not the deplyoment: LINK to it)
+\paragraph{Troubleshooting} If shit goes wrong!
+
+\subsection{Application deployment}
+Hwo to app deploy
+\paragraph{Transformation} Of the deployment or the app itself?
+\paragraph{CI/CD} how?! KubeEdge ezy bezy, KubeFed NOT!
+\paragraph{Deployment scaling} dynamisch scheduler vs manual
+
+\subsection{Security}
+\paragraph{I have no idea yet!}
 
 \section{Criteria catalogue}
 \label{sec:cc}
