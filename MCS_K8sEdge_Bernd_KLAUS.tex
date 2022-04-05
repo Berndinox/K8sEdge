@@ -834,7 +834,7 @@ This error occurs because the MetaManager still wants to transmit the status of 
 
 However, the problems continue to accumulate as all messages are passed in one go to the CloudCore queue, after reconnecting the node, which also overruns it. In this status, not only one node is now affected, but all of them, as a status query illustrates.
 
-\begin{lstlisting}[caption={EdgeCore nodes unavailable},captionpos=b]
+\begin{lstlisting}[caption={EdgeCore nodes unavailable},captionpos=b,label=lst:nodes-unavailable]
 kubectl get nodes
 NAME              STATUS                        ROLES                  AGE
 edge-2            NotReady,SchedulingDisabled   agent,edge             3d5h
@@ -842,6 +842,8 @@ edge-1            NotReady                      agent,edge             3d5h
 raspberrypi       NotReady,SchedulingDisabled   agent,edge             3d5h
 kubeedge-master   Ready                         control-plane,master   3d5h
 \end{lstlisting}
+
+\autoref{lst:nodes-unavailable} illustrates the effects of the overflowing queue. All nodes at the edge, except the master, are in the "NotReady" state. The nodes cannot be served with K8s relevant updates or changes in this state. It is therefore important to correct the problem quickly.\par
 
 The functionality could not be restored without manual intervention. Both the component on node edge-1 and on the master had to be restarted manually. It must be mentioned that at least the distributed pods were recognised without any further action and our service was available during the hole test. Furthermore, the problem only occurs after longer network disconnections, because the queue has to fill up first. However, depending on the environment and workload, this period can change considerably.\par
 \vspace{\baselineskip}
@@ -879,11 +881,15 @@ This part of the test focuses on the scalability of the environment and the stab
 \end{enumerate}
 
 The command to monitor the state of the pods is as easy as:
+
 \vspace{\baselineskip}
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Pods status},captionpos=b]
 watch -n 2 'echo $(echo -n $(kubectl get pods -n=test1 | grep "Pending" | wc -l) && echo -n "/" && echo $( kubectl get pods -n=test1 | grep "Running" | wc -l)) | ts  >> running.log'
 \end{lstlisting}
+\end{minipage}
 \vspace{\baselineskip}
+
 The code displayed above queries every two seconds the count of the pods in pending and running state and is writing those information as well as an added timestamp to the file called "running.log". It should also be noted that the image (nginxdemo/hello) is already cached on all nodes, and the same image is used for each pod.
 
 \paragraph{KubeEdge} After just under one and a half minutes, KubeEdge starts all 100 pods and completes the task flawlessly. The following command confirms that the deployment scaled properly.
@@ -1137,6 +1143,26 @@ The next variable that is defined concerns the operation of the respective envir
 
 \paragraph{Scalability} This paragraph focuses on the scalability of the environment itself, not that of the applications running on it. No official data could be found for either variant. For KubeEdge, the default values of Kubernetes itself could be considered, which are 5,000 nodes \cite{k8s-doc-bigcluster}. How accurate this information is has not been checked in detail and is explicitly marked as subjective. KubeFed cannot be equated with these specifications due to the different operating method. The fact alone that the respective configuration of the individual clusters has to be imported into the master shows that the limitations with regard to scaling occur much earlier. Of course, such tasks can be automated, but if the clearly stated goal is to operate thousands of nodes, the use of KubeFed cannot be recommended on the basis of the available data. 
 
+\paragraph{Summarised assesment} the following table illustrates the facts collected.
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            operation & stability  & error-free test & \xmark & \cmark \\
+            operation & stability  & product complexity & \textbf{high} & \textbf{low} \\
+            operation & handling & learning curve & \textbf{moderate} & \textbf{low} \\
+            operation & handling & troubleshooting & \textbf{hard} & \textbf{easy} \\
+            operation & scaling & environment nodes & \textbf{thousands} & \textbf{hundreds} \\
+            operation & scaling & limitations & \textbf{no statement} & \textbf{no statement} \\
+            \hline
+        \end{tabular}
+        \caption{operationt overview}
+        \label{tab:ops-overview}
+    \end{center}
+\end{table}
+
 \subsection{Application deployment}
 As in the Handling chapter outlined above, which deals with general handling, this section explains and delves into the details of the application deployment. The results of the tests carried out previously are also included in the evaluation, in particular those from \autoref{sec:dsrtestapp}.
 
@@ -1144,7 +1170,26 @@ As in the Handling chapter outlined above, which deals with general handling, th
 
 \paragraph{CI/CD} Both environments can receive and run applications via \ac{CI/CD} pipeline. Due to the transformation, more work may be necessary for KubeFed. However, in the case of a KubeFed environment with only a few nodes and a ready integration of a CI/CD pipeline, the question arises whether it is not more sensible to distribute directly to the clusters without KubeFed.
 
-\paragraph{Deployment scaling}
+\paragraph{Deployment scaling} As can be read in the \autoref{sec:dsrtestapp}, the manual distribution is contrasted with the dynamic scheudling across all nodes. Since the dynamic scheduler, through the use of annotations, can achieve a similar behaviour as of the manual distribution on KubeFed, it offers the wider range of functionality. In terms of adaptability, KubeEdge is therefore the preferred variant.
+
+\paragraph{Summarised assesment} the above facts can be clearly presented as follows.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            application & deployment  & transformation & \cmark {\tiny\textit{not required}} & \xmark {\tiny\textit{required}} \\
+            application & deployment  & CI/CD & \cmark & \cmark \\
+            application & scaling & method & \textbf{dynamic} & \textbf{manual} \\
+            application & scaling & adaptability & \textbf{high} & \textbf{moderate} \\
+            \hline
+        \end{tabular}
+        \caption{application deployment overview}
+        \label{tab:appdeploy-overview}
+    \end{center}
+\end{table}
 
 \subsection{Security}
 \paragraph{I have no idea yet!}
@@ -1193,6 +1238,13 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
             & & release cycles & 3\% & 4 & 3 & 0,12 & 0,09 \\
             & & independencie & 3\% & 1 & 4 & 0,03 & 0,09 \\
             & & commercial sponsors & 1\% & 5 & 0 & 0,05 & 0 \\
+            \hline
+            Application & 17\% & deployment & 10\% & 5 & 4 & 0,5 & 0,4 \\
+            & & scaling & 7\% & 5 & 2 & 0,35 & 0,14 \\
+            \hline
+            Operation & 17\% & stability & 10\% & 1 & 5 & 0,1 & 0,5 \\
+            & & handling & 3\% & 2 & 5 & 0,06 & 0,15 \\
+            & & scaling nodes & 4\% & 5 & 3 & 0,2 & 0,08 \\
             \hline
         \end{tabular}}
         \caption{Criteria catalog table}
