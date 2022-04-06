@@ -105,7 +105,7 @@ Kubernetes wird als Schweizer Armemesser der Container-Orchestrierung bezeichnet
 
 
 \outline{
-Kubernetes is the de facto swiss-army-knife for orchestrating container-platforms. In addition, Kubernetes can also be used for deploying devices as well as applications on top of it on the edge of the network. However, there are different methods for archiving comparable results. On the one hand a possible solution is to build a central instance managing small distributed and independent clusters, on the other hand a centralized cluster with just leafs on the edge may be a better fit. This results in the challenge to find the best solution for the desired environment respectively use-case. The following thesis is making use of "Design Science Research" to give introductions on how to choose the proper architecture for the aimed environment.
+Kubernetes is the de facto swiss-army-knife for orchestrating container-platforms. Bey ond that, the tool can also be used to distribute workloads and manage nodes in an edge-computing environment. However, there are different methods regarding the architecture for archiving comparable results. On the one hand a possible solution is to build a central instance managing small distributed and independent clusters, on the other hand a centralized master controlling associated edge-nodes could be used. Making the right architectural decision is crucial. The goal is therefore to to answer the question of which architecture is more suitable for a individually defined scenario. To answer this question the "Design Science Research" method is used in order to build a proof-of-concept and be able to record the necessary findings. These data serve as a basis for developing a catalogue of criteria to support decision-makers in the selection process. The results show that the two architectures can serve certain requirements or goals differently. In addition to certain peculiarities, the respective strengths were also pointed out. The characteristics can be evaluated in the criteria catalogue itself in order to be able to determine the optimal target architecture for individual needs. Lastly, the expansion in the form of a hybrid environment is described as a possible future-work.
 }
 \keywords{Kubernetes, edge-computing, geo-distribution, proof-of-concept}
 
@@ -250,7 +250,7 @@ In addition there is no awarness of where workloads are running and the level of
     \item \textit{EdgeController} - a \ac{K8s} controller responsible for managing and distributing metadata.
     \item \textit{EdgeHub} - the counterpart to the Edgecontroller; uses a websocket server for syning updates to and from the cloud.
     \item \textit{MetaManager} - Message processor, coordinating between edgehub and edged. Can also store information in an SQLite database. In case of connectivity issues those database is used so that services can continue to run continuously.
-    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI} and making them fit for edge scenarios. Main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project.
+    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI}, making them fit for edge scenarios. Main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project.
 \end{itemize}
 
 The following graphic illustrates the interaction of the components. 
@@ -435,7 +435,7 @@ spec:
 It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}.
 
 \subsection{KubeEdge} 
-Starting the web-application on KubeEdge environment is not as simple as assumed. If the deployment and the service definition are created via kubectl, this looks quite successful at first. The service is created and pods are scheduled accordingly. However, our goal was to make the service-ip accessible from within the nodes of the cluster via ClusterIP. But, when the service is called via curl, an error appears. Another problem is that the pod cannot be accessed either directly on the exposed port or via kubectl exec.
+Starting the web-application on KubeEdge environment without any further modifikation on the \ac{K8s} stack the deployment fails. This is manifested as follows: If the deployment and the service definition is created via kubectl, the job looks successful at first. The service is created and pods are scheduled accordingly. However, the goal is to follow the native approach and make the service accessible via ClusterIP using the Kubernetes network functionality. However, this is not possible as a test making use of curl proves. Another problem that arises is that the pods cannot be accessed either directly on the exposed port or via kubectl exec.
 
 After some research, it turned out that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
 \vspace{\baselineskip}
@@ -454,9 +454,9 @@ Not implemented at time of writing is the verb \textbf{"Proxy"}, which prevents 
 
 Three variants are available to solve the problem of missing network connectivity.
 \begin{itemize}
-    \item \textit{Without network} - the first approach is to simply omit the network part and make your delpoyment independent of each other. However, this means that the actual added value of the \hyperref[sec:arch-default]{default architecture} is lost; the cluster no longer behaves like a location-bound cluster. Also the desccription found in the docs of KubeEdge seem not be be very accurate, when not using additional tools: "With KubeEdge, users can orchestrate apps, manage devices and monitor app and device status on Edge nodes just like a traditional Kubernetes cluster in the Cloud." \cite{ke-docs-why}
+    \item \textit{Without network} - the first approach is to simply omit the network part and make your delpoyment independent of each other, comparable to how KubeFed handles its workloads. However, this means that the actual added value of the \hyperref[sec:arch-default]{default architecture} is lost; network communication can not take place as it would within a traditional \ac{K8s} cluster. Also the desccription found in the docs of KubeEdge seem not be be very accurate, when not using additional tools: "With KubeEdge, users can orchestrate apps, manage devices and monitor app and device status on Edge nodes just like a traditional Kubernetes cluster in the Cloud." \cite{ke-docs-why}
     \item \textit{CNI} - the next logical step seems to use a \ac{CNI}, which would make all the required functionalities available. However, this means that many of the advantages promised by KubeEdge are gone: The support of private-ip addresses behind \ac{NAT}, high availability and resilience as well as latency-independencie. In addition, a developer from KubeEdge points out that making use of a \ac{CNI} is not a recommand solution \cite{ke-cni-no}.
-    \item \textit{EdgeMesh} - as described in \autoref{sec:arch-default} is an additional component which has to be installed manually. Although EdgeMesh is part of KubeEdge and integrates seamlessly, it is seen as a separate project whose development is independent. The addon promises to solve many of our problems and the supported functions seem optimal, but one should keep in mind that the project is still very young and only four releases have been issued.
+    \item \textit{EdgeMesh} - as described in \autoref{sec:arch-default} is an additional component which has to be installed manually. Although EdgeMesh is part of KubeEdge and integrates seamlessly, it is seen as a separate project whose development is independent. EdgeMesh functions similarly to the \ac{CNI} described above and is based on the same mechanisms, but is equipped with additional functions for use at the edge. It should be noted that the project was still in a fairly young status at the time of the research, when comparing the statistics of the Github repository.
 \end{itemize}
 In the course of solving the problem, two variants were examined in detail, firstly the one that does without all additional tools and secondly the variant with EdgeMesh. The variant with post-installed CNI is not considered further; in this case, one could fall back directly on vanilla \ac{K8s}.
 
@@ -521,7 +521,7 @@ What is certain is that the documentation at this point is not sufficiently well
 In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with DSR guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
 \subsection{Ressource usage}
 \label{sec:dsrtestress}
-As already described in the \autoref{sec:generalchallanges}, the efficient use of resources is an important characteristic in the edge-computing environment. Due to the fact that we rely on K3s as \ac{K8s} distribution for the expression with KubeFed, which is known for using few resources, comparable results can be expected. In principle, however, KubeEdge should be somewhat more lightweight, since only a \ac{CNI} is used without full \ac{K8s} distribution. The only unknown is the deployment of EdgeMesh which could increase the resource requirements. The tests are performaned on the edge-side choosing node "edge-1" located in US. The uptime of the nodes for both environments, at time of the measurements, is exactly the same, approximately 15 minutes.
+As already described in the \autoref{sec:generalchallanges}, the efficient use of resources is an important characteristic in the edge-computing environment. Due to the fact that we rely on K3s as \ac{K8s} distribution for the expression with KubeFed, which is known for using few resources, comparable results can be expected. In principle, however, KubeEdge should be somewhat more lightweight, since only the Docker agent as well as EdgeMesh is used on the edge-nodes. Unknown at this point is how many ressources are consumed by the EdgeMesh containers. The tests are performaned on the edge-side choosing node "edge-1" located in US. The uptime of the nodes for both environments, at time of the measurements, is exactly the same, approximately 15 minutes.
 
 \subsubsection{Idle}
 The first parameter to be considered is the CPU and Memory load while system is idle or under no significant load. The first test is carried out using the tool cpustat. "Cpustat  is  a  program  that dumps the CPU utilization of current running tasks (that is, processes or kernel threads).  cpustat is useful to monitor the  activity  of  long  lived processes in a system, such as daemons, kernel threads as well as typical user processes" \cite{cpustat}. \medbreak
@@ -573,7 +573,7 @@ The following table lists, in descending order, the 5 processes with the most RA
                     containerd & 2.2 \\
                     \hline
                 \end{tabular}
-                \caption{KubeEdge RAM uasge}
+                \caption{KubeEdge: RAM uasge}
                 \label{tab:ke-ram-noload}
             \end{center}
         \end{minipage}
@@ -590,7 +590,7 @@ The following table lists, in descending order, the 5 processes with the most RA
                     coredns & 2.2 \\
                     \hline
                 \end{tabular}
-                \caption{KubeFed RAM uasge}
+                \caption{KubeFed: RAM uasge}
                 \label{tab:kf-ram-noload}
             \end{center}
         \end{minipage}
@@ -819,7 +819,7 @@ In addition to the ability to keep services available under heavy load, seamless
 
 During the entire run, any anomalies in the underlying system and within \ac{K8s} ecosystem are observed. The time until the system is fully restored and the deployment is scaled is also measured. Likewise, during disconnection, the service should continue to be available through HostPort for KubeEdge or NodePort in case of KubeFed. 
 
-\paragraph{KubeEdge} Actually, KubeEdge should be able to handle network interruptions excellently, following the description of the developers. Unfortunately, this could \textbf{not} be proven in the test carried out. The first four steps of the above procedure were completed without any problems. The affected node is marked as NotReady and the pod that is exposed via HostPort is still accessible. However, the edge-node could not reconnect to the cluster after 30 minutes off-time. In the course of the problem, all error messages in the logs were searched through, leading to the following findings. \par
+\paragraph{KubeEdge} The features advertised on the KubeEdge homepage, especially those concerning the handling of network interruptions, could not be proven or confirmed in the tests carried out. The first four steps of the above procedure were completed without any issues. The affected node is marked as NotReady, as expected when the link goes down and the pod that is exposed via HostPort is still accessible. However, the edge-node could not reconnect to the cluster and mark itself as "Ready" again after 30 minutes off-time. In the course of the problem, all error messages in the logs were searched through, leading to the following findings. \par
 
 First of all, the EdgeMesh-Agent, runnin inside a pod could establish the connection. This source of error can therefore be excluded. Then the EdgeCore component was examined, where the following error stood out.
 
@@ -895,7 +895,7 @@ The code displayed above queries every two seconds the count of the pods in pend
 \paragraph{KubeEdge} After just under one and a half minutes, KubeEdge starts all 100 pods and completes the task flawlessly. The following command confirms that the deployment scaled properly.
 \vspace{\baselineskip}
 
-\begin{lstlisting}[caption={KubeEdge scaling to 100},captionpos=b]
+\begin{lstlisting}[caption={KubeEdge scaling proof},captionpos=b]
 kubectl get deployment -n=test1
 NAME     READY     UP-TO-DATE   AVAILABLE   AGE
 nginx1   100/100   100          100         3d23h
@@ -1192,7 +1192,11 @@ As in the Handling chapter outlined above, which deals with general handling, th
 \end{table}
 
 \subsection{Security}
-\paragraph{I have no idea yet!}
+\paragraph{Environment}
+Logging, Auth, Patch management
+
+\paragraph{Application}
+Patch management 
 
 \section{Criteria catalogue}
 \label{sec:cc}
