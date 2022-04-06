@@ -314,6 +314,129 @@
   url    = {https://kubeedge.io/en/docs/architecture/cloud/edge_controller/},
 }
 
+@WWW{k8s-doc-bigcluster,
+  author = {The Kubernetes Authors},
+  date   = {2021-06-17},
+  editor = {The Kubernetes Authors},
+  title  = {Considerations for large clusters},
+  url    = {https://kubernetes.io/docs/setup/best-practices/cluster-large/},
+}
+
+@WWW{bk-gh-repo,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge Repository},
+  url    = {https://github.com/Berndinox/K8sEdge},
+}
+
+@WWW{bk-gh-ke-install,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: KubeEdge install},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-install.md},
+}
+
+@WWW{bk-gh-kf-install,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: KubeFed install},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md},
+}
+
+@WWW{bk-gh-docs,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: DOCS},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/DOCs/},
+}
+
+@WWW{bk-gh-edgemesh,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: EdgeMesh},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md},
+}
+
+@WWW{bk-gh-usecase,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: KubeFed usecase},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md},
+}
+
+@WWW{bk-gh-curl,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: CURL},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/curl.md},
+}
+
+@WWW{gh-ke-issue3567,
+  author = {neiba},
+  date   = {2022-01-19},
+  title  = {beehiveContext.SendToGroup error the message channel is full when edgenode reconnect},
+  url    = {https://github.com/kubeedge/kubeedge/issues/3567},
+}
+
+@WWW{bk-gh-ke-reconnect,
+  author = {Bernd Klaus},
+  date   = {2022-04-06},
+  title  = {Github K8sEdge: KubeEdge reconnect issue},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/kubeedge-reconnect-issue.md},
+}
+
+@WWW{ke-gh-issue3736,
+  author = {farawaychen},
+  date   = {2022-03-25},
+  title  = {When an edge node goes offline, many Terminating pods are generated},
+  url    = {https://github.com/kubeedge/kubeedge/issues/3736},
+}
+
+@Report{bsi-report-2021,
+  author      = {Horst Seehofer},
+  date        = {2021-09-01},
+  institution = {BSI},
+  title       = {Die Lage der IT-Sicherheitin Deutschland 2021},
+  type        = {resreport},
+  number      = {BSI-LB21/510},
+  url         = {https://www.bmi.bund.de/SharedDocs/downloads/DE/publikationen/themen/it-digitalpolitik/bsi-lagebericht-cybersicherheit-2021.pdf},
+}
+
+@Report{sec-2022,
+  author      = {Jeremy Jurgens},
+  date        = {2022-01-01},
+  institution = {World Economic Forum},
+  title       = {Global CybersecurityOutlook 2022},
+  type        = {resreport},
+  url         = {https://www3.weforum.org/docs/WEF_Global_Cybersecurity_Outlook_2022.pdf},
+}
+
+@Report{secureops,
+  author      = {SecureOPS},
+  institution = {SecureOPS},
+  title       = {Critical Cybersecurity Statistics},
+  type        = {resreport},
+  subtitle    = {You Must Know for the LastSeveral Years},
+}
+
+@Report{report-sec-hornet,
+  author      = {HornetSecurity},
+  date        = {2021-01-01},
+  institution = {HornetSecurity},
+  title       = {Cyber Threat Report},
+  type        = {resreport},
+  subtitle    = {Edition 2021/22},
+  url         = {https://www.hornetsecurity.com/de/cyberthreat-report/?_adin=1952923387},
+}
+
+@WWW{stat-cyber,
+  author = {Statistik Austria},
+  date   = {2022-04-06},
+  editor = {Anna-Sofie Turulski},
+  title  = {Statistiken zur Internetkriminalität in Österreich},
+  url    = {https://de.statista.com/themen/4253/internetkriminalitaet-in-oesterreich/},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

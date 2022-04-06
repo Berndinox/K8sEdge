@@ -32,7 +32,7 @@
     %umberstyle=\tiny,
     tabsize=3,
     columns=fixed,
-    basicstyle={\fontfamily{pcr}\selectfont\footnotesize},
+    basicstyle={\fontfamily{pcr}\selectfont\footnotesize}, 
     keywordstyle=\bfseries,
     commentstyle={\color[gray]{0.33}\itshape},
     stringstyle=\color[gray]{0.25},
@@ -105,7 +105,7 @@ Kubernetes wird als Schweizer Armemesser der Container-Orchestrierung bezeichnet
 
 
 \outline{
-Kubernetes is the de facto swiss-army-knife for orchestrating container-platforms. Bey ond that, the tool can also be used to distribute workloads and manage nodes in an edge-computing environment. However, there are different methods regarding the architecture for archiving comparable results. On the one hand a possible solution is to build a central instance managing small distributed and independent clusters, on the other hand a centralized master controlling associated edge-nodes could be used. Making the right architectural decision is crucial. The goal is therefore to to answer the question of which architecture is more suitable for a individually defined scenario. To answer this question the "Design Science Research" method is used in order to build a proof-of-concept and be able to record the necessary findings. These data serve as a basis for developing a catalogue of criteria to support decision-makers in the selection process. The results show that the two architectures can serve certain requirements or goals differently. In addition to certain peculiarities, the respective strengths were also pointed out. The characteristics can be evaluated in the criteria catalogue itself in order to be able to determine the optimal target architecture for individual needs. Lastly, the expansion in the form of a hybrid environment is described as a possible future-work.
+Kubernetes is the de facto swiss-army-knife for orchestrating container-platforms. Beyond that, the tool can also be used to distribute workloads and manage nodes in an edge-computing environment. However, there are different methods regarding the architecture for achieving comparable results. On the one hand a possible solution is to build a central instance managing small distributed and independent clusters, on the other hand a centralized master controlling associated edge-nodes could be used. Making the right architectural decision is crucial. The goal is therefore to answer the question of which architecture is more suitable for a individually defined scenario. To answer this question the "Design Science Research" method is used in order to build a proof-of-concept and be able to record the necessary findings. These data serve as a basis for developing a catalogue of criteria to support decision-makers in the selection process. The results show that the two architectures can serve certain requirements or goals differently. In addition to certain peculiarities, the respective strengths were also pointed out. The characteristics can be evaluated in the criteria catalogue itself in order to be able to determine the optimal target architecture for individual needs. Lastly, the expansion in the form of a hybrid environment is described as a possible future-work.
 }
 \keywords{Kubernetes, edge-computing, geo-distribution, proof-of-concept}
 
@@ -312,15 +312,15 @@ The above-mentioned challenges provide a good starting point for defining the ne
 
 
 
-\chapter{Design Science Research}
+\chapter{Proof-of-concept}
 \label{chap:dsr}
-"A common topic when performing research in technical disciplines is to design some kind of artefact, such as a model, an information system, or a method for performing a certain task. To address this topic in a systematic and scientific way, Design Science Research (DSR) has stablished itself as an appropriate research method." \cite{dsr-method}
 
-\section{Methodology}
+
+\section{Design Science Research}
 \label{sec:dsrmethode}
-As described in \autoref{sec:methodology}, \ac{DSR} is used as a scientific method to create \ac{PoC}. For this purpose, two environments are built as described in \autoref{sec:dsrenv}, each representing one of the architectures listed in \autoref{sec:architecture}. A test-deployment is then applied to both environments and tested against specific use cases. The findings are finally interpetated and summarised in \autoref{sec:dsranalysis} and serve as a basis for the following catalogue.\par
+As described in \autoref{sec:methodology}, \ac{DSR} is used as a scientific method to create \ac{PoC}. \ac{DSR} describes itself as follows: "A common topic when performing research in technical disciplines is to design some kind of artefact, such as a model, an information system, or a method for performing a certain task. To address this topic in a systematic and scientific way, Design Science Research (DSR) has stablished itself as an appropriate research method" \cite{dsr-method}. Two environments are built as described in \autoref{sec:dsrenv}, each representing one of the architectures listed in \autoref{sec:architecture}. A test-deployment is then applied to both environments and tested against specific use-cases. The findings are finally interpetated and summarised in \autoref{sec:dsranalysis} and serve as a basis for the following catalogue.\par
 
-All details about the code or the configurations are not saved in the appendix but on the \hyperref{https://github.com/Berndinox/K8sEdge}{}{}{Github repository}, which is linked in the relevant places. The work itself only shows fragments that are relevant to the passage to ensure the best possible reading flow.
+All details about the code or the configurations are not listed in the appendix but on the Github repository\cite{bk-gh-repo} of the project, which is linked in the relevant places. The work itself only shows fragments that are relevant to the passage to ensure the best possible reading flow.
 
 \section{Environment}
 \label{sec:dsrenv}
@@ -383,7 +383,7 @@ For the default architecture resrespectively KubeEdge variant, only a \ac{K8s} i
     \item \textit{CloudStream} - While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
 \end{itemize}
 
-\paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-install.md}{}{}{Berndinox/K8sEdge}
+\paragraph{Installation} Steps for installation can be found int the file "kubeedge-install"\cite{bk-gh-ke-install} the the project repository.
 
 \subsection{KubeFed}
 \label{sec:dsrenvkf}
@@ -402,7 +402,7 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
     
     \item \textit{dNAT} - As long as the target node is behind a router and connected with a private ip, destination \ac{NAT} must be configured to forward the necessary port. Alternatively, a reverse-proxy can be used to publish the internal service. This step is also only required for the KubeFed variant. 
 \end{itemize}
-\paragraph{Installation} Steps for installation can be founf in the Github repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge}
+\paragraph{Installation} Steps for installation can be found on the Github: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge} \cite{bk-gh-kf-install}
 
 \section{Use-Case}
 \label{sec:dsrusecase}
@@ -432,9 +432,10 @@ spec:
     app: nginx1
 \end{lstlisting}
 
-It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}.
+It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}\cite{bk-gh-docs}.
 
 \subsection{KubeEdge} 
+\label{sec:ke-usecase}
 Starting the web-application on KubeEdge environment without any further modifikation on the \ac{K8s} stack the deployment fails. This is manifested as follows: If the deployment and the service definition is created via kubectl, the job looks successful at first. The service is created and pods are scheduled accordingly. However, the goal is to follow the native approach and make the service accessible via ClusterIP using the Kubernetes network functionality. However, this is not possible as a test making use of curl proves. Another problem that arises is that the pods cannot be accessed either directly on the exposed port or via kubectl exec.
 
 After some research, it turned out that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
@@ -483,7 +484,7 @@ One possibility to establish the connection between the edge-locations in this v
     \item \textit{Restart} - and verify your system-changes.
 \end{enumerate}
 
-The complete process is available in the following document: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md}{}{}{Berndinox/K8sEdge}. Please note that the project may change rapidly, the installation-process linked above is just a snapshot of the current state.  As long as EdgeMesh could be installed without errors, the deployment and service object described above can be distributed and scheduled without any modification. With this solution, the native \ac{K8s} approach is fully followed and ensured.\medbreak
+The complete process is available in the following document: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md}{}{}{Berndinox/K8sEdge}\cite{bk-gh-edgemesh}. Please note that the project may change rapidly, the installation-process linked above is just a snapshot of the current state.  As long as EdgeMesh could be installed without errors, the deployment and service object described above can be distributed and scheduled without any modification. With this solution, the native \ac{K8s} approach is fully followed and ensured.\medbreak
 
 What is certain is that the documentation at this point is not sufficiently well formulated. It advertises native \ac{K8s} support, which cannot be met with a default KubeEdge installation. Although it is pointed out that logging has to be configured separately, the networking section receives little or no attention. It was only through intensive testing and tracking of issues on Github that the above behaviour regarding connectivity could be uncovered. This fact is taken into account in the later evaluation.
 
@@ -513,7 +514,7 @@ What is certain is that the documentation at this point is not sufficiently well
           - name: edge1
           - name: edge2
     \end{lstlisting}
-    The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved on: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge}.
+    The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved in the Github Repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge - KubeFed usecase}\cite{bk-gh-usecase}.
 \end{enumerate}
 
 \section{Performed Tests}
@@ -656,7 +657,7 @@ In the course of the performance tests, which can be found in the \autoref{sec:d
 curl -w "@curl-output.txt" -o /dev/null -s IP:8000
 \end{lstlisting}
 
-The \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/curl.md}{}{}{curl-output.txt} file defines the processing and output specifications. The call via curl is made from the respective master node located in Germany, as also shown in the following \autoref{tab:poc-nodes}. The target in each case is the node edge-1 which is hosted in the US and performs our target deployment. Due to the differences within the architecture of the two environments, different methods are used at this point. While the internal ClusterIP can be addressed for KubeEdge, which brings the data transfer to the target pod internally via EdgeMesh, a NodePort must be made accessible via the internet for KubeFed. This means that in the case of KubeFed, the curl command must be issued against the public IP of the target node. The service object of our usecase, describe in \autoref{sec:dsrusecase}, was therefore modified as follows for KubeFed.
+The \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/curl.md}{}{}{curl-output.txt}\cite{bk-gh-curl} file defines the processing and output specifications. The call via curl is made from the respective master node located in Germany, as also shown in the following \autoref{tab:poc-nodes}. The target in each case is the node edge-1 which is hosted in the US and performs our target deployment. Due to the differences within the architecture of the two environments, different methods are used at this point. While the internal ClusterIP can be addressed for KubeEdge, which brings the data transfer to the target pod internally via EdgeMesh, a NodePort must be made accessible via the internet for KubeFed. This means that in the case of KubeFed, the curl command must be issued against the public IP of the target node. The service object of our usecase, describe in \autoref{sec:dsrusecase}, was therefore modified as follows for KubeFed.
 
 \begin{lstlisting}[caption={Curl command},captionpos=b]
 type: NodePort
@@ -849,10 +850,10 @@ The functionality could not be restored without manual intervention. Both the co
 \vspace{\baselineskip}
 \textbf{In another test, with only 5 minutes of disconnection, the problem could not be provoked.}\par
 \vspace{\baselineskip}
-Researching the issue described above leads us to the following \hyperref{https://github.com/kubeedge/kubeedge/issues/3567}{}{}{issue \#3576} which has already been reported in the Github repo of kubeEdge. Unfortunately, it must be noted that the problem has been open for over two months without any feedback. Considering the challenges from \autoref{sec:generalchallanges}, that connections at the edge are often of poor quality and terminations have to be compensated accordingly, KubeEdge does not seem very suitable for such scenarios. The full logs and commands run through during the test could be found in the thesis \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/kubeedge-reconnect-issue.md}{}{}{repo}. \par
+Researching the issue described above leads us to the following \hyperref{https://github.com/kubeedge/kubeedge/issues/3567}{}{}{issue \#3576}\cite{gh-ke-issue3567} which has already been reported in the Github repo of kubeEdge. Unfortunately, it must be noted that the problem has been open for over two months without any feedback. Considering the challenges from \autoref{sec:generalchallanges}, that connections at the edge are often of poor quality and terminations have to be compensated accordingly, KubeEdge does not seem very suitable for such scenarios. The full logs and commands run through during the test could be found in the thesis \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/Tests/network/kubeedge-reconnect-issue.md}{}{}{repository hosted on Github}\cite{bk-gh-ke-reconnect}. \par
 
 In addition, the pods of the deployment could not be removed cleanly after the test. This problem has already been reported as \hyperref{https://github.com/kubeedge/kubeedge/issues/3736
-}{}{}{Issue 3736}. At least the KubeEdge team is already working on fixing this issue.
+}{}{}{Issue 3736}\cite{ke-gh-issue3736}. At least the KubeEdge team is already working on fixing this issue.
 
 \paragraph{KubeFed} Due to the nature of the architecture, no such problems were detected during the test on the KubeFed environment. In simple terms, a kubectl hosted in the central cluster controls other clusters. Each cluster functions completely independently of the others and can therefore remain separated for hours without any problems. This is also confirmed by tests that have been carried out. After reconnecting, the disconnected instance was recognised almost instantly and was again controllable from the central unit. It must also be mentioned that the separated cluster remains locally operable during the time of separation. This remains even if the connection is no longer established at all. In this case, one could simply continue to use the \ac{K8s} cluster as a singular instance.
 
@@ -984,7 +985,7 @@ During the tests, the following limitations and challenges came to light.
 
 \paragraph{KubeFed} Although KubeFed does not have many of the limitations of KubeEdge, other drawbacks are to be expected. Thus, due to the architecture itself, no network is available for the data of the pods between the clusters. If the applications themselves only take on local tasks, this is not a problem, but if you want to implement more complex systems with interdependencies, limits are reached quickly. Accesses from one cluster to the other must therefore be solved in the application itself. In concrete terms, this means that existing Kubernetes deployments may have to be revised.
 
-\subsection{Outcome} The two architectures are fundamentally different. While KubeEdge offers the native Kubernetes approach and existing applications can be used 1:1 for edge-computing, the configurations for KubeFed have to be revised. On the other hand, KubeEdge itself has a more complex structure and some teething troubles were discovered during the test. KubeFed shines with stability and seems to be the perfect choice for smaller controllable environments with simple applications. As far as the detected errors can be fixed, KubeFed is always a good choice when complex applications have to be distributed dynamically over many nodes.
+\subsection{Outcome} The two architectures are fundamentally different. While KubeEdge offers the native Kubernetes approach and existing applications can be used 1:1 for edge-computing, the configurations for KubeFed have to be revised. On the other hand, KubeEdge itself has a more complex structure and some teething troubles were discovered during the test. KubeFed shines with stability and seems to be the perfect choice for smaller controllable environments with simple applications. As far as the detected errors can be fixed, KubeEdge can fit well when complex applications have to be distributed dynamically over many, up to thousands, edge-nodes.
 
 \chapter{Catalog}
 \label{chap:catalog}
@@ -1129,7 +1130,7 @@ It should be noted that the table shown above is only a snapshot. The values may
             future-proof & independencie & alternative option & \xmark & \cmark \\
             \hline
         \end{tabular}
-        \caption{future-proof overview}
+        \caption{Future-proof overview}
         \label{tab:fp-overview}
     \end{center}
 \end{table}
@@ -1158,7 +1159,7 @@ The next variable that is defined concerns the operation of the respective envir
             operation & scaling & limitations & \textbf{no statement} & \textbf{no statement} \\
             \hline
         \end{tabular}
-        \caption{operationt overview}
+        \caption{Operationt overview}
         \label{tab:ops-overview}
     \end{center}
 \end{table}
@@ -1186,17 +1187,19 @@ As in the Handling chapter outlined above, which deals with general handling, th
             application & scaling & adaptability & \textbf{high} & \textbf{moderate} \\
             \hline
         \end{tabular}
-        \caption{application deployment overview}
+        \caption{Application deployment overview}
         \label{tab:appdeploy-overview}
     \end{center}
 \end{table}
 
-\subsection{Security}
-\paragraph{Environment}
-Logging, Auth, Patch management
+\subsection{IT-Security}
+As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating\cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. The following considerations play an important role in this respect and should therefore definitely be given the necessary attention in the design phase.
 
-\paragraph{Application}
-Patch management 
+TODO: CIA Triad als Basis, Verfügbarkeit und Stability haben wir schon. usw.
+
+\paragraph{Authentication}
+\paragraph{Authorization}
+\paragraph{Logging} A fundamental part of the security architecture is logging.
 
 \section{Criteria catalogue}
 \label{sec:cc}
