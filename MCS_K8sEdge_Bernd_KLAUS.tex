@@ -459,7 +459,14 @@ Three variants are available to solve the problem of missing network connectivit
     \item \textit{CNI} - the next logical step seems to use a \ac{CNI}, which would make all the required functionalities available. However, this means that many of the advantages promised by KubeEdge are gone: The support of private-ip addresses behind \ac{NAT}, high availability and resilience as well as latency-independencie. In addition, a developer from KubeEdge points out that making use of a \ac{CNI} is not a recommand solution \cite{ke-cni-no}.
     \item \textit{EdgeMesh} - as described in \autoref{sec:arch-default} is an additional component which has to be installed manually. Although EdgeMesh is part of KubeEdge and integrates seamlessly, it is seen as a separate project whose development is independent. EdgeMesh functions similarly to the \ac{CNI} described above and is based on the same mechanisms, but is equipped with additional functions for use at the edge. It should be noted that the project was still in a fairly young status at the time of the research, when comparing the statistics of the Github repository.
 \end{itemize}
-In the course of solving the problem, two variants were examined in detail, firstly the one that does without all additional tools and secondly the variant with EdgeMesh. The variant with post-installed CNI is not considered further; in this case, one could fall back directly on vanilla \ac{K8s}.
+In the course of solving the problem, two variants were examined in detail, firstly the one that does without all additional tools and secondly the variant with EdgeMesh. The variant with post-installed CNI is not considered further; in this case, one could fall back directly on vanilla \ac{K8s}. The following graphic illustrates the differences. The green access is via ClusterIP using the internal network component EdgeMesh, whereas the call in purple is made directly to the Pod without an internal network.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{PICs/drawio/ke-network.drawio.pdf}
+    \caption{KubeEdge networking}
+    \label{fig:ke-networking}
+\end{figure}
 
 \paragraph{Without network} As long as there is no need for complex network communication between the pods, this variant offers a simple solution. Deployments, StatefullSets and DaemonSets can be distributed and scheduled via \ac{K8s} to the edge-nodes. The services can then be made available for local services only. This is achieved through the configuration of a so-called HostPort. It is important to note that making the port available cannot be done via NodePort, as in this case the port would be made accessible at all nodes, which in turn requires a functioning cluster network. The following is the modified deployment that makes the application accessible on the edge-location. Please note that the object service was removed entierly, only relevant parts are cited.
 \begin{lstlisting}[caption={Web-application HostPort },captionpos=b]
@@ -1136,6 +1143,7 @@ It should be noted that the table shown above is only a snapshot. The values may
 \end{table}
 
 \subsection{Operation}
+\label{sec:catops}
 The next variable that is defined concerns the operation of the respective environments. For example, increased effort in the installation routine can be justified by better downstream operation. In order to be able to make a clear statement regarding the two environments, the results of the tests, performed in \autoref{sec:dsrtest}, are evaluated in the following 4 sections.
 
 \paragraph{Stability} As the tests showed, both environments were able to create the test application and distribute it accordingly and keep it available. For KubeEdge, however, problems occurred in the course of the connectivity test, described in \autoref{sec:dsrtestnetwork}, which could only be solved by restarting the services both at the master and at the edge node concerned. Also, due to the complexity of KubeEdge, the susceptibility to errors is generally higher, also because the system is in active development. However, it can be assumed that the problem discovered will be remedied in the coming releases. If the stability of the environment is an absolute requirement, only KubeFed can be recommended at this point, considering the facts at hand.
@@ -1193,13 +1201,14 @@ As in the Handling chapter outlined above, which deals with general handling, th
 \end{table}
 
 \subsection{IT-Security}
-As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating\cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. The following considerations play an important role in this respect and should therefore definitely be given the necessary attention in the design phase.
+As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating \cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. In order to obtain a complete view, this chapter is oriented towards the CIA triad \cite{it-sec-book}. The part of the availability has already been examined respectivley described in \autoref{sec:catops}. The chapter therefore concentrates on the confidentiality and integrity part of the CIA triad.
 
-TODO: CIA Triad als Basis, Verfügbarkeit und Stability haben wir schon. usw.
+TODO: CIA Triad als Basis, Verfügbarkeit und Stability haben wir schon. usw. Jeweils die Auswirkungen. Was out-of-the-box und was on top notwendig.
 
-\paragraph{Authentication}
+\paragraph{Authentication} (Der Nodes unnd Benutzer)
 \paragraph{Authorization}
 \paragraph{Logging} A fundamental part of the security architecture is logging.
+\paragraph{Updates}
 
 \section{Criteria catalogue}
 \label{sec:cc}
