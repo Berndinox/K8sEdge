@@ -192,6 +192,17 @@ To promote modern development and be able to implement continuous deployment pip
     \item \textit{Volumes} - provide persistent storage which extends beyond the life cycle of the pods. Volumes can be mounted at any defined position inside the pods. The disadvantage is that the data written to those \textit{Volumes} resides out of the \ac{K8s} ecosystem and therefore the operator must take care of data security and replication. This becomes even more complicated in an edge-computing environment where nodes have higher latency between them.
 \end{itemize}
 
+\paragraph{Security} Although this is not directly an object or component of \ac{K8s}, the principles regarding IT-Security are nevertheless of important significance. A distinction is made between security at different levels, as illustrated by the "4Cs" of cloud native computing \cite{k8s-4cs}:
+
+\begin{itemize}
+    \item \textit{Cloud} - as well as Co-location includes all locations and physikal devices.
+    \item \textit{Cluster} - refers to the entire \ac{K8s} cluster itself.
+    \item \textit{Container} - represents the unit that performs the workload.
+    \item \textit{Code} - the actual application, which is located in the containers.
+\end{itemize}
+
+In order to create a holistic security concept, all layers must be considered and taken into account. Due to the diversity, these efforts are usually quite extensive and time-consuming  and should not be underestimated. Nevertheless, Kubernetes offers many tools and methods to harden and secure the environment accordingly.
+
 \subsection{Edge-Computing}
 Edge-computing is the model that extends cloud services to the edge of the
 network. The computing resources on the edge act as a layer between the user, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the source, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-ressources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
@@ -316,7 +327,7 @@ The above-mentioned challenges provide a good starting point for defining the ne
 \label{chap:dsr}
 
 
-\section{Design Science Research}
+\section{Methodology}
 \label{sec:dsrmethode}
 As described in \autoref{sec:methodology}, \ac{DSR} is used as a scientific method to create \ac{PoC}. \ac{DSR} describes itself as follows: "A common topic when performing research in technical disciplines is to design some kind of artefact, such as a model, an information system, or a method for performing a certain task. To address this topic in a systematic and scientific way, Design Science Research (DSR) has stablished itself as an appropriate research method" \cite{dsr-method}. Two environments are built as described in \autoref{sec:dsrenv}, each representing one of the architectures listed in \autoref{sec:architecture}. A test-deployment is then applied to both environments and tested against specific use-cases. The findings are finally interpetated and summarised in \autoref{sec:dsranalysis} and serve as a basis for the following catalogue.\par
 
@@ -325,7 +336,7 @@ All details about the code or the configurations are not listed in the appendix 
 \section{Environment}
 \label{sec:dsrenv}
 \subsection{Generel}
-The main goal is to create both of the aimed architectures in a similar environment. The target environment should provide good coverage of the diversity encountered in edge environments. For that poropse the \ac{PoC} is build across \hyperref{https://www.hetzner.com/cloud}{}{}{Hetzner Cloud} and a local site connected via 4G mobile internet.
+The main goal is to create both of the aimed architectures in a similar environment. The target environment should provide good coverage of the diversity encountered in edge environments. For that poropse the \ac{PoC} is build across \hyperref{https://www.hetzner.com/cloud}{}{}{Hetzner Cloud}\cite{hetzner-cloud} and a local site connected via 4G mobile internet.
 
 \paragraph{Coverage} This combination allows a wide range of possibilities to be achieved:
 
@@ -381,6 +392,7 @@ For the default architecture resrespectively KubeEdge variant, only a \ac{K8s} i
 
 \begin{itemize}
     \item \textit{CloudStream} - While the standard installation can be done easily, activating logs is much more challenging. Activities such as generating certificates, setting environment vairables and adapting configuration files must be carried out manually.
+    \item \textit{K8s Networking} - As will become clear in the next \autoref{sec:ke-usecase}, no \ac{CNI} is installed per default, which is why it must be post-installed, if this functionality is required. 
 \end{itemize}
 
 \paragraph{Installation} Steps for installation can be found int the file "kubeedge-install"\cite{bk-gh-ke-install} the the project repository.
@@ -973,6 +985,46 @@ After only 20 seconds, all pods could be started successfully. KubeFed thus take
 \subsubsection{Result and interpretation} 
 Both architectures, KubeEdge and KubeFed were able to scale without major problems. Due to the manually performed symmetrical distribution of the pods on KubeFed nodes, the start-up process is significantly faster overall. KubeEdge, on the other hand, has problems with distribution and starts most pods on the node with the supposedly lowest latency. In the specific case, this leads to a disadvantage of KubeEdge, but in larger environments with increased dynamic and complexity, the use of a dynamic scheduler still brings great advantages. The more detailed study of scheduling is reserved for future work.
 
+\subsection{Security bechmark}
+In the course of the tests carried out, some security scans were also executed in order to identify any problems with the two environments. The following illustration shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}.
+
+\vspace{\baselineskip}
+\begin{center}
+\begin{minipage}{.40\linewidth}
+    \begin{center}
+    \begin{lstlisting}[caption={KubeEdge bench},captionpos=b]
+== Summary policies ==
+0 checks PASS
+0 checks FAIL
+26 checks WARN
+0 checks INFO
+== Summary total ==
+2 checks PASS
+11 checks FAIL
+36 checks WARN
+0 checks INFO
+    \end{lstlisting}
+    \end{center}
+\end{minipage}
+\hspace{.05\linewidth}
+\begin{minipage}{.40\linewidth}
+    \begin{center}
+    \begin{lstlisting}[caption={KubeFed bench},captionpos=b]
+== Summary policies ==
+0 checks PASS
+0 checks FAIL
+26 checks WARN
+0 checks INFO
+== Summary total ==
+2 checks PASS
+11 checks FAIL
+36 checks WARN
+0 checks INFO
+    \end{lstlisting}
+    \end{center}
+\end{minipage}
+\end{center}
+
 \section{Analysis}
 \label{sec:dsranalysis}
 This chapter deals with or analyses the previously conducted test on a further level. Characteristics or attributes that have no direct relation to the tests but were indirectly relevant are also described  in the following subsections. Likewise, the overall result of the previous practical tests is analysed in more detail and documented.
@@ -1032,7 +1084,7 @@ The first decision variable that is examined is the effort required for the inst
         \end{itemize}
     \end{itemize}
     It should be noted that K3s includes or builds on \ac{CRI}. 
-    \item \textit{Configuration steps} - This property describes the necessary steps that were required during the installation without additional tools. For KubeEdge the basic installation, without any logging capability and a working \ac{CNI}, is done by using a single binary. However, if logging is necessary (in almost all cases it should be), some adaptations must be made. The same applies to the installation of EdgeMesh, as described in \autoref{sec:dsrusecaseweb}. As the documentation is not clear enough, increased complexity and the associated effort are to be expected. For Kubefed, in contrast, the respective kubeconfig must be transferred to the master and added there as a custom context. This context is then added via kubefed binary. If one only examines the steps that are necessary to operate the two architectures in a meaningful way, these are much easier to accomplish for KubeFed. On the other hand, KubeEdge requires additional configurations and tools to be installed in order to be able to use the full range of functions. If you are looking for a simple and straightforward solution, KubeFed is the  winner in this section.
+    \item \textit{Configuration steps} - This property describes the necessary steps that were required during the installation without additional tools. For KubeEdge the basic installation, without any logging capability and a working \ac{CNI}, is done by using a single binary. However, if logging is necessary (in almost all cases it should be), some adaptations must be made. The same applies to the installation of EdgeMesh, as described in \autoref{sec:dsrenvke}. As the documentation is not clear enough, increased complexity and the associated effort are to be expected. For Kubefed, in contrast, the respective kubeconfig must be transferred to the master and added there as a custom context. This context is then added via kubefed binary. If one only examines the steps that are necessary to operate the two architectures in a meaningful way, these are much easier to accomplish for KubeFed. On the other hand, KubeEdge requires additional configurations and tools to be installed in order to be able to use the full range of functions. If you are looking for a simple and straightforward solution, KubeFed is the  winner in this section.
     \item \textit{Documentation}  - Both documentations appear well maintained and kept up to date. The KubeEdge updates seem a little more recent according to the Github history. The KubeFed documentation can only be read in the form of markdown files within Github, but there is a separate web page for KubeEdge. It must be noted, however, that the part concerning network and connectivity is unclear or not sufficiently described. After research, the extension EdgeMesh, which offers its own documentation, could be found. However, the interaction between the components KubeEdge or the Autonomic Kube-API Endpoint, the MetaManager and EdgMesh is insufficiently described. Overall, therefore, the KubeFed documentation is easier to read and understand.
 \end{itemize}
 
@@ -1203,8 +1255,9 @@ As in the Handling chapter outlined above, which deals with general handling, th
 \subsection{IT-Security}
 As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating \cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. In order to obtain a complete view, this chapter is oriented towards the CIA triad \cite{it-sec-book}. The part of the availability has already been examined respectivley described in \autoref{sec:catops}. The chapter therefore concentrates on the confidentiality and integrity part of the CIA triad.
 
-TODO: CIA Triad als Basis, Verfügbarkeit und Stability haben wir schon. usw. Jeweils die Auswirkungen. Was out-of-the-box und was on top notwendig.
 
+
+ 
 \paragraph{Authentication} (Der Nodes unnd Benutzer)
 \paragraph{Authorization}
 \paragraph{Logging} A fundamental part of the security architecture is logging.
