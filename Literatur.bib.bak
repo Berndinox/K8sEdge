@@ -523,6 +523,33 @@
   url   = {https://github.com/flannel-io/flannel},
 }
 
+@WWW{k3s-network-conf,
+  author = {Rancher Docs},
+  title  = {Network Options},
+  url    = {https://rancher.com/docs/k3s/latest/en/installation/network-options/},
+}
+
+@WWW{bk-gh-ke-node-test,
+  author = {Bernd Klaus},
+  date   = {2022-04-09},
+  title  = {KubeEdge node security check},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/Tests/it-security/kubedge-node-test.md},
+}
+
+@WWW{ke-secure-fw,
+  author = {The KubeEdge Authors},
+  date   = {2021-01-08},
+  title  = {Secure kubeedge using SPIFFE/SPIRE},
+  url    = {https://kubeedge.io/ko/blog/secure-kubeedge/},
+}
+
+@WWW{em-security,
+  author = {The EdgeMesh Authors},
+  date   = {2022-01-27},
+  title  = {EdgeMesh Security},
+  url    = {https://edgemesh.netlify.app/guide/security.html},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

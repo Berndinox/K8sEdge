@@ -1,4 +1,5 @@
 
+# KubeEdge node security check
 netstat -tulpn
 ```
 Active Internet connections (only servers)
@@ -22,4 +23,38 @@ udp        0      0 169.254.96.16:55222     0.0.0.0:*                           
 udp        0      0 169.254.96.16:53        0.0.0.0:*                           1281/edgemesh-agent
 udp        0      0 127.0.0.53:53           0.0.0.0:*                           537/systemd-resolve
 udp        0      0 5.161.41.112:68         0.0.0.0:*                           535/systemd-network
+```
+
+## EdgeMesh encryption:
+
+Master: kubectl edit configmap edgemesh-agent-cfg -n=kubedge
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edgemesh-agent-cfg
+  ...
+data:
+  edgemesh-agent.yaml: |
+    ...
+    modules:
+      tunnel:
+        security:
+          enable: true
+          httpServer: https://KubeEdge-Master:10002
+```
+Nodes: kubectl edit configmap edgemesh-agent-cfg -n=kubedge
+```
+apiVersion: v1
+metadata:
+  name: edgemesh-server-cfg
+  ...
+data:
+  edgemesh-server.yaml: |
+    ...
+    modules:
+      tunnel:
+        security:
+          enable: true
+          httpServer: https://KubeEdge-Master:10002
 ```

@@ -161,7 +161,7 @@ To promote modern development and be able to implement continuous deployment pip
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.75\textwidth]{PICs/k8s-architecture.png}
-    \caption{\ac{K8s} architeture overview \cite{pic-k8s-overview}}
+    \caption{\ac{K8s} architeture overview\cite{pic-k8s-overview}}
     \label{fig:k8s-architecture}
 \end{figure}
 
@@ -1087,15 +1087,21 @@ Afterwards, a freely selectable plug-in such as Calico, Canal or Cilium can be i
     \item EdgeMesh
 \end{itemize}
 
-Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port and is therefore accessible from the outside, provided it is not blocked on the firewall. 
+Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port\cite{bk-gh-ke-node-test} and is therefore accessible from the outside, provided it is not blocked on the firewall. This can pose a safety risk. With regard to the security of the workloads on EdgeCore, it should be noted that no PodSecurity policies can be applied. For this, however, there is a separate framework, called "SPIFFE" that offers comparable functionalities\cite{ke-secure-fw}. However, the implementation requires additional software and server components and entails a much higher level of complexity. Concerning the last component, EdgeMesh, important insights could be gained. The security section of the official EdgeMesh documentation describes: "The EdgeMesh service does not turn on security by default, and edgemesh-server establishes a connection with edgemesh-agent without any authentication" \cite{em-security}. This means that once the \hyperref{https://edgemesh.netlify.app/guide/getting-started.html}{}{}{"Getting Started"}\cite{em-getstart} instructions have been followed, the nodes communicate with each other without encryption. There is no special note on this on the page. A certificate authority is required so that the data traffic can be encrypted. The CloudCore componente, which runs on the central instance, can fulfil this role. The following adjustments should therefore be carried out in any case for the ConfigMaps of the EdgeMesh agent and server.
+
+\begin{lstlisting}[caption={EdgeMesh security\cite{bk-gh-ke-node-test}},captionpos=b]
+modules:
+  tunnel:
+    security:
+      enable: true
+      httpServer: https://KubeEdge-Master:10002
+\end{lstlisting}
 
 
 
+\paragraph{Policies} The second part, of the test using "falco"\cite{falco-scan} in the beginng of the chapter, focuses mainly on the policies that affect security within the cluster. Since no hardening of the workloads has taken place to date, and the tests were carried out with full administrative rights, warnings also appear here. According to the "4Cs" of security, this mainly concerns the container part. Further safeguarding considerations and recommendations, although not the main focus of this work, can be found in the document \autoref{sec:it-sec-end}.
 
-\par
-The second part focuses mainly on the policies that affect security within the cluster. Since no hardening of the workloads has taken place to date, and the tests were carried out with full administrative rights, warnings also appear here. According to the "4Cs" of security, this mainly concerns the container part. Further safeguarding considerations and recommendations, although not the main focus of this work, can be found in the document \autoref{sec:it-sec-end}.
-
-\subsubsection{Result and interpretation} Tests that check the environment itself for security-relevant factors are only suitable to a limited extent, as the tests above has shown. For the workload itself, on the other hand, the tests carried out are more meaningful. Since no modification for hardening had taken place in this area until then, warnings were to be expected.
+\subsubsection{Result and interpretation} Conventional security tests for \ac{K8s} are only conditionally suitable for the two environments. If one looks at the environments in detail, especially if the installation routine has not been explicitly adapted, problems regarding security can be uncovered. K3s, or indirectly KubeFed, offers its own documentation for this, a good safety standard can be achieved by simple measures. With regard to KubeEdge, the procedure is more difficult. Standard configurations have granular deficiencies. Adaptations to achieve a higher security standard are possible but also require more effort and know-how.
 
 \section{Analysis}
 \label{sec:dsranalysis}
@@ -1329,7 +1335,7 @@ As in the Handling chapter outlined above, which deals with general handling, th
 As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating \cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. In order to obtain a complete view, this chapter is oriented towards the CIA triad \cite{it-sec-book}. The part of the availability has already been examined respectivley described in \autoref{sec:catops}. The chapter therefore concentrates on the confidentiality and integrity part of the CIA triad.
 
 \subsubsection{Key components}
-The first section build on \autoref{sec:technology} and is dedicated to further information regarding \ac{K8s} and its security architecture. The most important features are listed below in no particular order.
+The first subsection builds on \autoref{sec:technology} and is dedicated to further information regarding \ac{K8s} and its security architecture. The most important features respectively mechanics are listed below in no particular order.
 
 \paragraph{API} The API is used for control, which can be called via HTTPs and authenticates as well as authorises users respectively admins accordingly. Both variants, KubeEdge and KubeFed, offer this interface. To authenticate users, the API supports static tokens, X.509 certificates and service account tokens. As a developer who is to roll out or maintain an application on a system, the use of service tokens is the recommanded method of authentication. In contrast to the previously mentioned variants, these tokens can be easily recalled and equipped with the necessary authorisations\cite{owasp-k8s-cheat}. Understanding this is relevant when comparing the two environments in terms of interaction with the API. While for KubeEdge a central interface controls the entire system, KubeFed has a multi-level structure. The central KubeFed cluster does not control the edge nodes directly, but also via their shared API. Conversely, this means that the central KubeFed instance can be granted the exact necessary rights on the edge nodes. The authorisations can also be different or withdrawn if necessary, which makes the environment very flexible, but also entails an increased configuration effort.\par
 In order to omit fine-grained permissions \ac{K8s} is making use of \ac{RBAC}. "Role-based access control (RBAC) is a method of regulating access to computer or network resources based on the roles of individual users within your organization"\cite{k8s-rbac}. The default behaivor is to block requests, commonly referred to "fail-safe", if not explicit allowed. In the context of the CIA triad, this represents the area of authorization.
@@ -1344,8 +1350,8 @@ With KubeFed, however, the API port 6443 (default) must be accessible from the c
 \begin{itemize}
     \item Build phase
     \begin{itemize}
-        \item Avoid unnecesary stuff like build tools or even the shell. Distroless or "from Scratch" Images is the prefered way to create container images.
-        \item Use recent software packages or containers tagged as "latest". Although this can cause problems in the productive environment, it ensures that the latest version is always used. If specific versions are chosen, a corresponding update mechanism should be implemented.
+        \item Unnecessary stuff inside containers like build tools or even shells should be avoided. Distroless or "from Scratch" Images is the prefered way to create container images.
+        \item The use of recent software packages or containers tagged as "latest" is recommanded. Although this can cause problems in the productive environment, it ensures that the latest version is always used. If specific versions are chosen, a corresponding update mechanism should be implemented.
     \end{itemize}
 \end{itemize}
 
@@ -1359,6 +1365,7 @@ In order to secure the environment accordingly, taking into account the points m
     \item \textit{Application} - verify the code itself inside the containers
 \end{enumerate}
 
+\subsubsection{Findings} was wurde im POC Teil aufgedeckt.
 
 
 \section{Criteria catalogue}
