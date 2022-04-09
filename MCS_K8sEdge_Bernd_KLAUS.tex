@@ -1046,6 +1046,50 @@ At first glance, the above results do not meet expectations. Both environments h
     \item KubeEdge: Master 
 \end{itemize}
 
+The tests carried out take into account the following components:
+\begin{itemize}
+    \itemsep0em
+    \item File permissions
+    \item Kubernetes-API
+    \item Kube-Scheduler
+    \item PodSecurityPolicies
+\end{itemize}
+The complete test is stored in thesis repo\cite{bk-gh-repo} in the file "k3s-test.md"\cite{bk-gh-k3s-test}. In the course of the test run, all requirements were met, except for two weak points. The first part that did not go through successfully concerns the \ac{PSP}. The \ac{PSP} are an important part of the cluster, responsible for hardening pods. Control mechanisms for volumes, networking or even apparmor or selinux can be used with it. The following code excerpt shows, the extension is not installed.
+
+
+\begin{lstlisting}[caption={K3s PSP test},captionpos=b]
+journalctl -D /var/log/journal -u k3s | grep 'Running kube-apiserver' | tail -n1 | grep 'enable-admission-plugins'
+
+--enable-admission-plugins=NodeRestriction 
+\end{lstlisting}
+
+The first line of code queries the installed extensions, the last line returns the results where the \ac{PSP} extension should also appear. As it turns out, the default configuration of K3s does not install this part. To fix this, the following parameter should be used during installation.
+
+\begin{lstlisting}[basicstyle=\tiny,caption={K3s PSP install},captionpos=b]
+--kube-apiserver-arg="enable-admission-plugins=NodeRestriction,PodSecurityPolicy,ServiceAccount"
+\end{lstlisting}
+
+The second part, which is not covered by K3s, is the use of NetworkPolicies. By default, the \ac{CNI} "Flannel"\cite{flannel} is used for K3s, which does not support such a function. At this point, the question arises why such a function is required, after all, the nodes in the \hyperref[sec:disk8s]{distributed K8s} version do not communicate with each other. This is correct, but NetworkPolicies can also be used to control communications between namespaces. The functionality can therefore also increase local security on individual nodes. It is also easy to replace the standard \ac{CNI} plugin during installation, which is why the use of a plugin with appropriate support should be chosen. Flannel can be skip as follows while installing K3s:
+
+\begin{lstlisting}[caption={K3s no Flannel},captionpos=b]
+--flannel-backend=none
+\end{lstlisting}
+
+Afterwards, a freely selectable plug-in such as Calico, Canal or Cilium can be installed \cite{k3s-network-conf}. 
+
+\paragraph{KubeEdge} As mentioned in the introduction to this section, most of the tests listed above simply cannot be transferred to the KubeEdge environment. This is because the agents used by \ac{K8s} are completely replaced by custom developments on the edge-side, as also shown in \autoref{fig:ke-architecture}. Unfortunately, KubeEdge does not provide documentations explicitly dedicated to security, which is why more intensive research is necessary. In order to take into account as many vectors as possible, the components that are executed on the edge nodes are listed below.
+
+\begin{itemize}
+    \itemsep0em
+    \item Docker
+    \item MQTT Broker
+    \item EdgeCore
+    \item EdgeMesh
+\end{itemize}
+
+Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port and is therefore accessible from the outside, provided it is not blocked on the firewall. 
+
+
 
 
 \par
@@ -1479,6 +1523,7 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
     \acro{HPA}[HPA]{horizontal pod autoscaler}
     \acro{Aha}[Aha]{Ansi HTML adapter}
     \acro{RBAC}[RBAC]{role base access control}
+    \acro{PSP}[PSP]{PodSecurityPolicies}
 \end{acronym}
 
 %

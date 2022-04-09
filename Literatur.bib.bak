@@ -504,6 +504,25 @@
   url    = {https://kubernetes.io/docs/reference/access-authn-authz/rbac/},
 }
 
+@WWW{k3s-assesment,
+  date  = {2022-04-09},
+  title = {CIS Self Assessment Guide},
+  url   = {https://rancher.com/docs/k3s/latest/en/security/self_assessment/},
+}
+
+@WWW{bk-gh-k3s-test,
+  author = {Bernd Klaus},
+  date   = {2022-04-09},
+  title  = {Github K8sEdge: K3s Test},
+  url    = {https://github.com/Berndinox/K8sEdge/blob/main/Tests/it-security/k3s-test.md},
+}
+
+@WWW{flannel,
+  date  = {2022-04-09},
+  title = {Flannel},
+  url   = {https://github.com/flannel-io/flannel},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

@@ -29,7 +29,7 @@ Return: 644
 ```
 ```
 stat -c %U:%G /var/lib/rancher/k3s/agent/kubeproxy.kubeconfig
-root:root
+Return: root:root
 ```
 
 ### API:
