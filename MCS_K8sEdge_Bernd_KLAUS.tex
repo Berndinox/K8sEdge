@@ -986,13 +986,18 @@ After only 20 seconds, all pods could be started successfully. KubeFed thus take
 Both architectures, KubeEdge and KubeFed were able to scale without major problems. Due to the manually performed symmetrical distribution of the pods on KubeFed nodes, the start-up process is significantly faster overall. KubeEdge, on the other hand, has problems with distribution and starts most pods on the node with the supposedly lowest latency. In the specific case, this leads to a disadvantage of KubeEdge, but in larger environments with increased dynamic and complexity, the use of a dynamic scheduler still brings great advantages. The more detailed study of scheduling is reserved for future work.
 
 \subsection{Security bechmark}
-In the course of the tests carried out, some security scans were also executed in order to identify any problems with the two environments. The following illustration shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}.
+In the course of the tests carried out, some security scans were also executed in order to identify any problems with the two environments. The following output shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}. The complete results for each scan including details are deposited in the \hyperref{https://github.com/Berndinox/K8sEdge/tree/main/Tests/it-security}{}{}{Github project}\cite{gh-bk-ke-bench}\cite{gh-bk-kf-bench}.
 
 \vspace{\baselineskip}
 \begin{center}
 \begin{minipage}{.40\linewidth}
     \begin{center}
     \begin{lstlisting}[caption={KubeEdge bench},captionpos=b]
+== Summary node ==
+2 checks PASS
+11 checks FAIL
+10 checks WARN
+0 checks INFO
 == Summary policies ==
 0 checks PASS
 0 checks FAIL
@@ -1010,6 +1015,11 @@ In the course of the tests carried out, some security scans were also executed i
 \begin{minipage}{.40\linewidth}
     \begin{center}
     \begin{lstlisting}[caption={KubeFed bench},captionpos=b]
+== Summary node ==
+2 checks PASS
+11 checks FAIL
+10 checks WARN
+0 checks INFO
 == Summary policies ==
 0 checks PASS
 0 checks FAIL
@@ -1024,6 +1034,24 @@ In the course of the tests carried out, some security scans were also executed i
     \end{center}
 \end{minipage}
 \end{center}
+
+At first glance, the above results do not meet expectations. Both environments have the same result, only two tests can be passed successfully. If one analyses the details, however, one quickly comes to the conclusion that many of the tests carried out are not valid for the present environment. The first part of the test focuses on the analysis of the component "kubelet". The two environments used, however, rely on K3s as \ac{K8s} distribution in the cloud, or for KubeFed also on the edge-nodes. K3s uses different default paths for kubelet and offers its own configuration parameters\cite{k3s-config} to customise the agent. KubeEdge goes one step further on the edge-nodes and dispenses with the standard agent altogether. The result of the first part is not that the environments are not able to fulfill safety aspects, but rather that the standard procedures used within the security benchmark are not, or only slightly, suitable for this type of environments. 
+
+\paragraph{K3s} For this reason, Rancher has published its own guide\cite{k3s-assesment}, which clarifies these points accordingly. In the following, the tests modified especially for K3s are therefore run through in order to obtain a meaningful result. The following tests concern the nodes:
+
+\begin{itemize}
+    \itemsep0em
+    \item KubeFed: Master
+    \item KubeFed: Edge-Nodes
+    \item KubeEdge: Master 
+\end{itemize}
+
+
+
+\par
+The second part focuses mainly on the policies that affect security within the cluster. Since no hardening of the workloads has taken place to date, and the tests were carried out with full administrative rights, warnings also appear here. According to the "4Cs" of security, this mainly concerns the container part. Further safeguarding considerations and recommendations, although not the main focus of this work, can be found in the document \autoref{sec:it-sec-end}.
+
+\subsubsection{Result and interpretation} Tests that check the environment itself for security-relevant factors are only suitable to a limited extent, as the tests above has shown. For the workload itself, on the other hand, the tests carried out are more meaningful. Since no modification for hardening had taken place in this area until then, warnings were to be expected.
 
 \section{Analysis}
 \label{sec:dsranalysis}
@@ -1253,15 +1281,41 @@ As in the Handling chapter outlined above, which deals with general handling, th
 \end{table}
 
 \subsection{IT-Security}
+\label{sec:it-sec-end}
 As almost all statistics and reports show, IT-Security is more important than ever \cite{stat-cyber}\cite{bsi-report-2021}\cite{report-sec-hornet} and there is no sign of this dangerous development abating \cite{sec-2022}\cite{secureops}. This makes it all the more important to always consider the IT-Security factor when setting up new environments or existing ones are expanded. In order to obtain a complete view, this chapter is oriented towards the CIA triad \cite{it-sec-book}. The part of the availability has already been examined respectivley described in \autoref{sec:catops}. The chapter therefore concentrates on the confidentiality and integrity part of the CIA triad.
 
+\subsubsection{Key components}
+The first section build on \autoref{sec:technology} and is dedicated to further information regarding \ac{K8s} and its security architecture. The most important features are listed below in no particular order.
+
+\paragraph{API} The API is used for control, which can be called via HTTPs and authenticates as well as authorises users respectively admins accordingly. Both variants, KubeEdge and KubeFed, offer this interface. To authenticate users, the API supports static tokens, X.509 certificates and service account tokens. As a developer who is to roll out or maintain an application on a system, the use of service tokens is the recommanded method of authentication. In contrast to the previously mentioned variants, these tokens can be easily recalled and equipped with the necessary authorisations\cite{owasp-k8s-cheat}. Understanding this is relevant when comparing the two environments in terms of interaction with the API. While for KubeEdge a central interface controls the entire system, KubeFed has a multi-level structure. The central KubeFed cluster does not control the edge nodes directly, but also via their shared API. Conversely, this means that the central KubeFed instance can be granted the exact necessary rights on the edge nodes. The authorisations can also be different or withdrawn if necessary, which makes the environment very flexible, but also entails an increased configuration effort.\par
+In order to omit fine-grained permissions \ac{K8s} is making use of \ac{RBAC}. "Role-based access control (RBAC) is a method of regulating access to computer or network resources based on the roles of individual users within your organization"\cite{k8s-rbac}. The default behaivor is to block requests, commonly referred to "fail-safe", if not explicit allowed. In the context of the CIA triad, this represents the area of authorization.
+
+\paragraph{ETCD} is the default database for \ac{K8s}. K3s replaces this with a local SQLite database, but the same recommendations apply\cite{k3s-config}. As a general rule, the data contained therein must be particularly well protected. Write access is equivalent to full root rights on the cluster, even read access opens the doors to various privilege escalations\cite{owasp-k8s-cheat}. This is where KubeEdge has an advantage, as only one such database needs to be protected. KubeFed, on the other hand, uses a separate instance on each edge-node respectively \ac{K8s} cluster. Security measures must therefore be taken individually for each node, which causes increased effort.
+
+\paragraph{Networking \& Firewall} Due to the implementation, different characteristics can be applied. In the case of KubeEdge, all ports on a firewall can be closed; no active access from the outside is necessary. This is due to the fact that EdgeHube, the component repsonsible for commuinication between master and edge-nodes,  supports \ac{NAT}-traversel without restrictions.
+With KubeFed, however, the API port 6443 (default) must be accessible from the central instance. This makes the individual nodes publicly accessible and easier to attack. However, in the event of a complete disconnection from the network, KubeFed can be controlled locally and continue to be operated. For KubeEdge, continued operation is also provided for, but taking control is not possible. 
+
+\subsubsection{Workload} Previous points focused on securing the environment itself, or its main components. The Workload section is dedicated to protect the containers respectively applications executed inside each of the solutions. Although the most important points are presented, this thesis focuses on the two architectures themselves and their distinctions, which is why this section can only be understood as an introduction.
+
+\begin{itemize}
+    \item Build phase
+    \begin{itemize}
+        \item Avoid unnecesary stuff like build tools or even the shell. Distroless or "from Scratch" Images is the prefered way to create container images.
+        \item Use recent software packages or containers tagged as "latest". Although this can cause problems in the productive environment, it ensures that the latest version is always used. If specific versions are chosen, a corresponding update mechanism should be implemented.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Securing}
+In order to secure the environment accordingly, taking into account the points mentioned above, and to follow the recommendations of the "4Cs", the following procedure is recommended:
+
+\begin{enumerate}
+    \item \textit{Nodes} - harden the Nodes
+    \item \textit{Access} - apply least privilege approach and safety policies
+    \item \textit{Workload} - make sure your workload runs safeguard
+    \item \textit{Application} - verify the code itself inside the containers
+\end{enumerate}
 
 
- 
-\paragraph{Authentication} (Der Nodes unnd Benutzer)
-\paragraph{Authorization}
-\paragraph{Logging} A fundamental part of the security architecture is logging.
-\paragraph{Updates}
 
 \section{Criteria catalogue}
 \label{sec:cc}
@@ -1424,6 +1478,7 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
     \acro{CRD}[CRD]{costum ressource definition}
     \acro{HPA}[HPA]{horizontal pod autoscaler}
     \acro{Aha}[Aha]{Ansi HTML adapter}
+    \acro{RBAC}[RBAC]{role base access control}
 \end{acronym}
 
 %
