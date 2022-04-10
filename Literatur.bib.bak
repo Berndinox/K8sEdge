@@ -550,6 +550,13 @@
   url    = {https://edgemesh.netlify.app/guide/security.html},
 }
 
+@WWW{em-getstart,
+  author = {The EdgeMesh Authors},
+  date   = {2022-02-24},
+  title  = {Getting Started},
+  url    = {https://edgemesh.netlify.app/guide/getting-started.html},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:

@@ -12,6 +12,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{soul}
 
 \usepackage{amssymb}% http://ctan.org/pkg/amssymb
 \usepackage{pifont}% http://ctan.org/pkg/pifont
@@ -986,7 +987,8 @@ After only 20 seconds, all pods could be started successfully. KubeFed thus take
 Both architectures, KubeEdge and KubeFed were able to scale without major problems. Due to the manually performed symmetrical distribution of the pods on KubeFed nodes, the start-up process is significantly faster overall. KubeEdge, on the other hand, has problems with distribution and starts most pods on the node with the supposedly lowest latency. In the specific case, this leads to a disadvantage of KubeEdge, but in larger environments with increased dynamic and complexity, the use of a dynamic scheduler still brings great advantages. The more detailed study of scheduling is reserved for future work.
 
 \subsection{Security bechmark}
-In the course of the tests carried out, some security scans were also executed in order to identify any problems with the two environments. The following output shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}. The complete results for each scan including details are deposited in the \hyperref{https://github.com/Berndinox/K8sEdge/tree/main/Tests/it-security}{}{}{Github project}\cite{gh-bk-ke-bench}\cite{gh-bk-kf-bench}.
+\label{sec:dsrusecasesec}
+In the course of the tests carried out, security scans were also executed in order to identify any problems with the two environments. The following output shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}. The complete results for each scan including details are deposited in the \hyperref{https://github.com/Berndinox/K8sEdge/tree/main/Tests/it-security}{}{}{Github project}\cite{gh-bk-ke-bench}\cite{gh-bk-kf-bench}.
 
 \vspace{\baselineskip}
 \begin{center}
@@ -1053,8 +1055,9 @@ The tests carried out take into account the following components:
     \item Kubernetes-API
     \item Kube-Scheduler
     \item PodSecurityPolicies
+    \item NetworkPolicies
 \end{itemize}
-The complete test is stored in thesis repo\cite{bk-gh-repo} in the file "k3s-test.md"\cite{bk-gh-k3s-test}. In the course of the test run, all requirements were met, except for two weak points. The first part that did not go through successfully concerns the \ac{PSP}. The \ac{PSP} are an important part of the cluster, responsible for hardening pods. Control mechanisms for volumes, networking or even apparmor or selinux can be used with it. The following code excerpt shows, the extension is not installed.
+The complete test is stored at the thesis repo\cite{bk-gh-repo} in the file \hyperref{RL: https://github.com/Berndinox/}{}{}{"k3s-test.md"}\cite{bk-gh-k3s-test}. In the course of the test run, all requirements were met, except for two weak points. The first part that did not go through successfully concerns the \ac{PSP}. The \ac{PSP} are an important part of the cluster, responsible for hardening pods. Control mechanisms for volumes, networking or even apparmor or selinux can be used with it. The following code excerpt proves, the extension is not installed.
 
 
 \begin{lstlisting}[caption={K3s PSP test},captionpos=b]
@@ -1087,7 +1090,7 @@ Afterwards, a freely selectable plug-in such as Calico, Canal or Cilium can be i
     \item EdgeMesh
 \end{itemize}
 
-Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port\cite{bk-gh-ke-node-test} and is therefore accessible from the outside, provided it is not blocked on the firewall. This can pose a safety risk. With regard to the security of the workloads on EdgeCore, it should be noted that no PodSecurity policies can be applied. For this, however, there is a separate framework, called "SPIFFE" that offers comparable functionalities\cite{ke-secure-fw}. However, the implementation requires additional software and server components and entails a much higher level of complexity. Concerning the last component, EdgeMesh, important insights could be gained. The security section of the official EdgeMesh documentation describes: "The EdgeMesh service does not turn on security by default, and edgemesh-server establishes a connection with edgemesh-agent without any authentication" \cite{em-security}. This means that once the \hyperref{https://edgemesh.netlify.app/guide/getting-started.html}{}{}{"Getting Started"}\cite{em-getstart} instructions have been followed, the nodes communicate with each other without encryption. There is no special note on this on the page. A certificate authority is required so that the data traffic can be encrypted. The CloudCore componente, which runs on the central instance, can fulfil this role. The following adjustments should therefore be carried out in any case for the ConfigMaps of the EdgeMesh agent and server.
+Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port\cite{bk-gh-ke-node-test} and is therefore accessible from the outside, provided it is not blocked on the firewall. This can pose a safety risk. With regard to the security of the workloads on EdgeCore, it should be noted that no PodSecurity policies can be applied. For this, however, there is a separate framework, called "SPIFFE" that offers comparable functionalities\cite{ke-secure-fw}. However, the implementation requires additional software and server components and entails a much higher level of complexity. Concerning the last component, EdgeMesh, important insights could be gained. The security section of the official EdgeMesh documentation describes: "The EdgeMesh service does not turn on security by default, and edgemesh-server establishes a connection with edgemesh-agent without any authentication" \cite{em-security}. This means that once the \hyperref{https://edgemesh.netlify.app/guide/getting-started.html}{}{}{"Getting Started"}\cite{em-getstart} instructions have been followed, the nodes communicate with each other without encryption. There is no special note on this the page which highlights that. A certificate authority is required so that the data traffic can be encrypted. The CloudCore componente, which runs on the central instance, can fulfil this role. The following adjustments should therefore be carried out in any case for the ConfigMaps of the EdgeMesh agent and server.
 
 \begin{lstlisting}[caption={EdgeMesh security\cite{bk-gh-ke-node-test}},captionpos=b]
 modules:
@@ -1343,29 +1346,105 @@ In order to omit fine-grained permissions \ac{K8s} is making use of \ac{RBAC}. "
 \paragraph{ETCD} is the default database for \ac{K8s}. K3s replaces this with a local SQLite database, but the same recommendations apply\cite{k3s-config}. As a general rule, the data contained therein must be particularly well protected. Write access is equivalent to full root rights on the cluster, even read access opens the doors to various privilege escalations\cite{owasp-k8s-cheat}. This is where KubeEdge has an advantage, as only one such database needs to be protected. KubeFed, on the other hand, uses a separate instance on each edge-node respectively \ac{K8s} cluster. Security measures must therefore be taken individually for each node, which causes increased effort.
 
 \paragraph{Networking \& Firewall} Due to the implementation, different characteristics can be applied. In the case of KubeEdge, all ports on a firewall can be closed; no active access from the outside is necessary. This is due to the fact that EdgeHube, the component repsonsible for commuinication between master and edge-nodes,  supports \ac{NAT}-traversel without restrictions.
-With KubeFed, however, the API port 6443 (default) must be accessible from the central instance. This makes the individual nodes publicly accessible and easier to attack. However, in the event of a complete disconnection from the network, KubeFed can be controlled locally and continue to be operated. For KubeEdge, continued operation is also provided for, but taking control is not possible. 
+With KubeFed, however, the API port 6443 (default) must be accessible from the central instance. This makes the individual nodes publicly accessible and easier to attack. However, in the event of a complete disconnection from the network, KubeFed can be controlled locally and continue to be operated. For KubeEdge, continued operation is also provided for, but taking control is not possible. It should be noted, however, that the network solution (EdgeMesh) used for KubeEdge must be specially configured to encrypt traffic, as \autoref{sec:dsrusecasesec} points out. Minor adjustments are also necessary for KubeFed respectively the underframe K3s.
 
 \subsubsection{Workload} Previous points focused on securing the environment itself, or its main components. The Workload section is dedicated to protect the containers respectively applications executed inside each of the solutions. Although the most important points are presented, this thesis focuses on the two architectures themselves and their distinctions, which is why this section can only be understood as an introduction.
 
 \begin{itemize}
-    \item Build phase
+    \label{item:secureworkload}
+    \item \textbf{Build phase}
     \begin{itemize}
         \item Unnecessary stuff inside containers like build tools or even shells should be avoided. Distroless or "from Scratch" Images is the prefered way to create container images.
         \item The use of recent software packages or containers tagged as "latest" is recommanded. Although this can cause problems in the productive environment, it ensures that the latest version is always used. If specific versions are chosen, a corresponding update mechanism should be implemented.
+        \item Images should be checked for vulnerabilities on an ongoing basis. A number of plug-ins integrate seamlessly into the CI/CD pipeline offering this functionality.
+        \item Configurations that describe the workload (YAML Files) must meet certain security standards. Tools that can carry out these checks automatically are also available for this purpose. One of these tools offering such functionality is \hyperref{https://kubesec.io/}{}{}{kubesec}\cite{kubesec}.
+    \end{itemize}
+    \item \textbf{Running worload}
+    \begin{itemize}
+        \item Collect and export \ac{K8s} logging events.
+        \item Seperate different applications making use of Namespaces
+        \item Limit \ac{CPU} and \ac{RAM} for containers or at least the Namespace
+        \item Apply suiteable NetworkPolicies
+        \item Apply appropriate \ac{PSP}s
+        \item Execute containers as non-root
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Securing}
-In order to secure the environment accordingly, taking into account the points mentioned above, and to follow the recommendations of the "4Cs", the following procedure is recommended:
+In order to secure the environment accordingly, taking into account the points mentioned above, and to follow the recommendations of the "4Cs", the following procedure, at a high level, is recommended:
 
 \begin{enumerate}
-    \item \textit{Nodes} - harden the Nodes
-    \item \textit{Access} - apply least privilege approach and safety policies
+    \item \textit{Nodes} - Starting with the node itself, software should kept up to date
+    \begin{itemize}
+        \item \ac{OS}
+        \item Container-runtime
+        \item \ac{K8s} distribution
+        \item Additional softwarepackages
+    \end{itemize}
+    \item \textit{Networking} - The component must be appropriately secured.
+    \begin{itemize}
+        \item Firewall
+        \item Encryption
+    \end{itemize}
+    \item \textit{Cluster} - Implementing the hardening guides recommended by \ac{K8s}
+    \begin{itemize}
+        \item PodSecurityPolicies
+        \item NetworkPolicies
+        \item \ac{RBAC} enabled
+    \end{itemize}
     \item \textit{Workload} - make sure your workload runs safeguard
+    \begin{itemize}
+        \item to be read in \autoref{item:secureworkload}
+    \end{itemize}
     \item \textit{Application} - verify the code itself inside the containers
+    \begin{itemize}
+        \item opensource
+        \item trusted source
+    \end{itemize}
+    \item \textit{User} - Apply least privilege principle
+    \begin{itemize}
+        \item \ac{RBAC}
+    \end{itemize}
 \end{enumerate}
 
-\subsubsection{Findings} was wurde im POC Teil aufgedeckt.
+\subsubsection{Findings} This part clearly summarises the results obtained in Chapter \autoref{sec:dsrusecasesec}.
+
+\paragraph{KubeEdge} Functionalities such as NetworkPolicies or \ac{PSP} are not supported by KubeEdge. An alternative framework, SPIFFE\cite{ke-secure-fw}, is available for this purpose. Thus, while it can be used to check and restrict many security-related aspects such as the integrity of the application and workloads or even the nodes, it also requires more effort to implement. Since specially developed components are used, conventional safety tests cannot be applied or have no significance. KubeEdge does not provide a guide or recommendations for hardening. The EdgeMesh component has a serious gap; if encryption is not explicitly activated, all communications take place without these security safeguards. Finally, it is important to note that KubeEdge only supports Kubernetes up to version 1.21. The most recent version at the time of the survey was version 1.23.
+
+\paragraph{KubeFed} Since KubeFed is based on K3s, some parameters must be specified during installation. \ac{PSP} must be activated, the NetworkPolicies cannot be used with the standard \ac{CNI} plugin and must therefore be replaced. Otherwise, due to the simplified architecture, no noteworthy problems could be detected during the tests.
+
+\paragraph{Summarised assesment} The following table shows the most important factors with regard to IT-security.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            it-security & communication & firewalling all ports & \cmark & \xmark \\
+            it-security & communication & encrypted & \textbf{TLS} & \textbf{TLS} \\
+            it-security & communication & configuration effort & \textbf{high} & \textbf{low} \\
+            it-security & logging & enabled on install & \xmark & \cmark \\
+            it-security & logging & cluster-wide & \cmark & \xmark \tiny{1} \\
+            it-security & workload & K8s security addons & \textbf{default}\tiny{2} & \textbf{SPIFFE} \cite{ke-secure-fw} \\
+            it-security & workload & configuration effort & \textbf{high} & \textbf{moderate} \\
+            it-security & architecture & seperation possible \tiny{3} & \xmark & \cmark \\
+            it-security & architecture & centralized controll & \textbf{fully} & \textbf{partiali} \\
+            it-security & architecture & default security level & \textbf{low} & \textbf{moderate} \\           
+            \hline
+        \end{tabular}
+        \caption{IT-Security overview}
+        \label{tab:security-overview}
+    \end{center}
+\end{table}
+
+Additions to \autoref{tab:security-overview}:
+\begin{enumerate}
+    \itemsep0em
+    \item possible through the use of thirdparty
+    \item \ac{PSP}, NetworkPolicies
+    \item An edge-node can be separated and converted into an independently acting cluster easily.
+\end{enumerate}
 
 
 \section{Criteria catalogue}
@@ -1393,7 +1472,8 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
             \hline
             \multicolumn{2}{|l|}{Category} & \multicolumn{2}{l|}{Criteria} & \multicolumn{2}{l|}{Rating} & \multicolumn{2}{l|}{Weighted rating} \\
             \hline
-            Name & Weight & Criteria & Weight & KubeEdge & KubeFed & KubeEdge & KubeFed \\
+            \textbf{Name} & \textbf{Weight} & \textbf{Criteria} & \textbf{Weight} & \textbf{KubeEdge} & \textbf{KubeFed} &\textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
             \hline
             Installation & 30\% & connectivity & 10\% & 5 & 1 & 0,5 & 0,1 \\
             & & device support & 10\% & 5 & 4 & 0,5 & 0,4 \\
@@ -1420,6 +1500,13 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
             & & handling & 3\% & 2 & 5 & 0,06 & 0,15 \\
             & & scaling nodes & 4\% & 5 & 3 & 0,2 & 0,08 \\
             \hline
+            IT-security & 10\% & commuinication & 3\% & 3 & 4 & 0,09 & 0,12 \\
+            & & logging & 2\% & 4 & 3 & 0,08 & 0,06  \\
+            & & workload & 2\% & 2 & 4 & 0,04 & 0,08 \\
+            & & architecture & 3\% & 3 & 4 & 0,09 & 0,12 \\
+            \hline \hline
+            \textbf{Result} & \textit{100\%} & & \textit{100\%} & \textbf{80} & \textbf{73} & \hl{\textbf{3,57}} & \hl{\textbf{3,24}} \\
+            \hline
         \end{tabular}}
         \caption{Criteria catalog table}
         \label{tab:cct}
@@ -1438,12 +1525,13 @@ The permitted value range for the rating must be taken into account.
 
 \section{Exclusions and Special Cases}
 \label{sec:exclusions}
-TODO: If somethin is really a requirement. How to mark it at the catalog?
-
-
+It must be explicitly emphasised that properties with greater priority must be weighted correspondingly higher. Certain areas or functions can also be declared as absolutely necessary, which directly excludes the respective solution insofar as these are not supported. To check this, details of the variables defined in the catalogue can be found in the respective paragraph in \autoref{sec:variables}. \par
+Furthermore, it is also possible to supplement the properties or variables with your own. This thesis concentrates primarily on the most important key data, which is why special functions may not be included. In contrast to this, however, the template (\autoref{appendix}) also offers the option of omitting elements.
 
 \chapter{Related Work}
 \label{chap:related}
+This chapter explains or enumerates work on which this thesis is based as well as papers which can function as an extension of the respective architecture.
+
 \section{Kubernetes and the Edge}
 The paper\cite{hal-kubeedge} provides an excellent introduction to the topic and offers the necessary basics. However, it mainly examines the vanilla \ac{K8s}, which is only slightly suitable for use in edge-computing without additional tools. In the related work chapter, the paper refers to the use of KubeEdge and KubeFed, on which the present thesis is based on. These theses are therefore to be understood as an extension of the cited paper.
 
@@ -1464,6 +1552,11 @@ In the research paper "Ultra-Reliable and Low-Latency Computing in the Edge with
 
 \section{Findings}
 \label{sec:findings}
+Both environments each offer different and individual advantages and enable different operating models. The environments are characterised in particular as follows.
+
+\paragraph{KubeEdge} offers the native \ac{K8s} approach. Existing objects such as deployments, pods or configmaps can be run on the system without any transformation. Due to the good abstraction, the system acts like a conventional cluster. Functionalities such as central logging, communication encryption via TLS and support for a diverse range of different hardware types round off the product. It should be noted that the development is still at an early stage. Many configurations have to be done by hand and there are gaps in the documentation. The stability is also not completely convincing, as tests have shown, because components may have to be restarted. The hype towards KubeEdge seems to be unbroken, as the Github statistics show.
+
+\paragraph{KubeFed} offers high stability and the distribution of workloads via proven interfaces. This is characterised by less complexity and easier handling. Especially in smaller static environments where applications are rolled out in a controlled way, the solution shines. Edge-nodes can be controlled and operated locally in case of disconnection from the central unit. Even the conversion into an independent instance, which no longer has any dependencies, is possible. On the other hand, \ac{K8s} objects have to be transformed before they can be scheduled. The solution also does not offer the possibility to use the internal \ac{K8s} network via \ac{CNI}. This must be taken into account when creating applications for the environment.
 
 \section{Conclusio}
 \label{sec:conclusio}
@@ -1500,37 +1593,37 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
 \addcontentsline{toc}{chapter}{\listacroname}
 \chapter*{\listacroname}
 \begin{acronym}[XXXXX]
-    \acro{IT}[IT]{information technology}
-    \acro{WWW}[WWW]{world wide web}
-    \acro{K8s}[K8s]{Kubernetes}
+    \acro{Aha}[Aha]{AnsiHTMLadapter}
+    \acro{API}[API]{applicationprogramminginterface}
+    \acro{ARM}[ARM]{advancedRISCmachines}
+    \acro{CI/CD}[CI/CD]{continuousintegration/continuousdelivery}
+    \acro{CLI}[CLI]{commandlineinterface}
+    \acro{CNCF}[CNCF]{CloudNativeComputingFoundation}
+    \acro{CNI}[CNI]{containernetworkinterface}
+    \acro{CPU}[CPU]{centralprocessingunit}
+    \acro{CRD}[CRD]{costumressourcedefinition}
+    \acro{CRI}[CRI]{containerruntimeinterface}
+    \acro{DNS}[DNS]{domainnamesystem}
+    \acro{DSR}[DSR]{designscienceresearch}
+    \acro{FQDN}[FQDN]{fullqualifieddomainname}
+    \acro{GUI}[GUI]{graphicaluserinterface}
+    \acro{HPA}[HPA]{horizontalpodautoscaler}
     \acro{IoT}[IoT]{internet-of-things}
-    \acro{DSR}[DSR]{design science research}
-    \acro{CLI}[CLI]{command line interface}
-    \acro{QoS}[QoS]{quality of service}
-    \acro{CPU}[CPU]{central processing unit}
-    \acro{RAM}[RAM]{random access memory}
-    \acro{CNI}[CNI]{container network interface}
-    \acro{IP}[IP]{internet procotcol}
-    \acro{NAT}[NAT]{network address translation}
-    \acro{DNS}[DNS]{domain name system}
-    \acro{MQTT}[MQTT]{message queuing telemetry transport}
-    \acro{CNCF}[CNCF]{Cloud Native Computing Foundation}
-    \acro{KubeFed}[KubeFed]{Kubernetes cluster federation}
-    \acro{API}[API]{application programming interface}
+    \acro{IP}[IP]{internetprocotcol}
+    \acro{IT}[IT]{informationtechnology}
+    \acro{K8s}[K8s]{Kubernetes}
+    \acro{KubeFed}[KubeFed]{Kubernetesclusterfederation}
+    \acro{MQTT}[MQTT]{messagequeuingtelemetrytransport}
+    \acro{NAT}[NAT]{networkaddresstranslation}
+    \acro{OS}[OS]{operatingsystem}
     \acro{PoC}[PoC]{proof-of-concept}
-    \acro{ARM}[ARM]{advanced RISC machines}
-    \acro{OS}[OS]{operating system}
-    \acro{GUI}[GUI]{graphical user interface}
-    \acro{VPN}[VPN]{virtual private network}
-    \acro{FQDN}[FQDN]{full qualified domain name}
-    \acro{CRI}[CRI]{container runtime interface}
-    \acro{SIG}[SIG]{special interessts group}
-    \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
-    \acro{CRD}[CRD]{costum ressource definition}
-    \acro{HPA}[HPA]{horizontal pod autoscaler}
-    \acro{Aha}[Aha]{Ansi HTML adapter}
-    \acro{RBAC}[RBAC]{role base access control}
     \acro{PSP}[PSP]{PodSecurityPolicies}
+    \acro{QoS}[QoS]{qualityofservice}
+    \acro{RAM}[RAM]{randomaccessmemory}
+    \acro{RBAC}[RBAC]{rolebaseaccesscontrol}
+    \acro{SIG}[SIG]{specialinteresstsgroup}
+    \acro{VPN}[VPN]{virtualprivatenetwork}
+    \acro{WWW}[WWW]{worldwideweb}
 \end{acronym}
 
 %
@@ -1540,4 +1633,50 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
 \appendix
 \chapter{Appendix}
 \label{appendix}
+\begin{table}[ht]
+    \begin{center}
+        \resizebox{\textwidth}{!}{\begin{tabular}{|l|l|l|l|l|l|l|l|}
+            \hline
+            \multicolumn{2}{|l|}{Category} & \multicolumn{2}{l|}{Criteria} & \multicolumn{2}{l|}{Rating} & \multicolumn{2}{l|}{Weighted rating} \\
+            \hline
+            \textbf{Name} & \textbf{Weight} & \textbf{Criteria} & \textbf{Weight} & \textbf{KubeEdge} & \textbf{KubeFed} &\textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            \hline
+            Installation & x\% & connectivity & x\% & 1-5 & 1-5 & x & x \\
+            & & device support & x\% & 1-5 & 1-5 & x & x \\
+            & & required tools & x\% & 1-5 & 1-5 & x & x \\
+            & & configuration & x\% & 1-5 & 1-5 & x & x \\
+            & & documentation & x\% & 1-5 & 1-5 & x & x \\
+            \hline
+            Commuity & x\% & communication channels & x\% & 1-5 & 1-5 & x & x \\
+            & & actual hype & x\% & 1-5 & 1-5 & x & x \\
+            \hline
+            Support & x\% & commercial maintenance & x\% & 1-5 & 1-5 & x & x \\
+            & & bug reporting & 4\% & 1-5 & 1-5 & x & x \\
+            & & sponsor-list & 1\% & 1-5 & 1-5 & x & x \\
+            \hline
+            Future-proof & x\% & Github stats & x\% & 1-5 & 1-5 & x & x \\
+            & & release cycles & x\% & 1-5 & 1-5 & x & x \\
+            & & independencie & x\% & 1-5 & 1-5 & x & x \\
+            & & commercial sponsors & x\% & 1-5 & 1-5 & x & x \\
+            \hline
+            Application & x\% & deployment & x\% & 1-5 & 1-5 & x & x \\
+            & & scaling & x\% & 1-5 & 1-5 & x & x \\
+            \hline
+            Operation & x\% & stability & x\% & 1-5 & 1-5 & x & x \\
+            & & handling & 3\% & 1-5 & 1-5 & x & x \\
+            & & scaling nodes & 4\% & 1-5 & 1-5 & x & x \\
+            \hline
+            IT-security & x\% & commuinication & x\% & 1-5 & 1-5 & x & x \\
+            & & logging & x\% & 1-5 & 1-5 & x & x  \\
+            & & workload & x\% & 1-5 & 1-5 & x & x \\
+            & & architecture & x\% & 1-5 & 1-5 & x & x \\
+            \hline \hline
+            \textbf{Result} & \textit{100\%} & & \textit{100\%} & \textbf{x} & \textbf{x} & \hl{\textbf{x}} & \hl{\textbf{x}} \\
+            \hline
+        \end{tabular}}
+        \caption{Criteria catalog template}
+        \label{tab:cctt}
+    \end{center}
+\end{table}
 \end{document}
