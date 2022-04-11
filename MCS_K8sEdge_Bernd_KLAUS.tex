@@ -1560,12 +1560,14 @@ Both environments each offer different and individual advantages and enable diff
 
 \section{Conclusio}
 \label{sec:conclusio}
+In principle, edge environments can be set up and operated with both variants. In smaller, less complex environments where internal network communication of the applications is not absolutely necessary, KubeFed is a solid solution. If the environment is to scale strongly and the workload is dynamically distributed as well as native \ac{K8s} network is required, KubeEdge provides the better toolset. In addition to these main criteria, however, there are a large number of other properties that need to be assessed individually depending on the requirements. Insofar as a comprehensible and fact-based decision on architecture is to be aimed for, it is recommended to go through the criteria catalogue accordingly.
+
 \section{Generel advice}
+If no clear decision can be made even after going through the criteria catalogue, or if both environments can realise a target architecture, the recommendation goes in the direction of KubeEdge. Applications can be transferred to the system without any modification. Developers do not have to take any special features into account and control or operation is carried out in the same way as on a conventional \ac{K8s} cluster. Research into future developments also points more in the direction of default K8s architecture such as KubeEdge.
 
 \section{Discussion and further research}
 \label{sec:discuss}
-Combine KubeEdge and KubeFed (distributed hybrid Kubernetes)
-Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
+Kubernetes provides the abstraction of an underlying system into a logical entity. KubeEdge follows this paradigm, while KubeFed offers more separation. A combination of both models would also be conceivable. For example, one could delegate at country or continent level via KubeFed and control the individual nodes below via KubeEdge. This would allow the advantages of both architectures to be combined in the form of a "distributed hybrid environment". The environment can also be equipped with an improved scheduler, which can take into account aspects such as latency and geographical distribution, as described in \autoref{chap:related}. In any case, it must be considered that such solutions are partly still in an early stage of development and that errors are to be expected, as our tests have shown. Nevertheless, the use of Kubernetes for edge computing is a hot topic that already offers excellent solutions and functions. Further options and functions can also be provided by the use of a service mesh. Some modern solutions offer functions for multiple distributed clusters as well as within a cluster itself.
 
 
 %
@@ -1652,8 +1654,8 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
             & & actual hype & x\% & 1-5 & 1-5 & x & x \\
             \hline
             Support & x\% & commercial maintenance & x\% & 1-5 & 1-5 & x & x \\
-            & & bug reporting & 4\% & 1-5 & 1-5 & x & x \\
-            & & sponsor-list & 1\% & 1-5 & 1-5 & x & x \\
+            & & bug reporting & x\% & 1-5 & 1-5 & x & x \\
+            & & sponsor-list & x\% & 1-5 & 1-5 & x & x \\
             \hline
             Future-proof & x\% & Github stats & x\% & 1-5 & 1-5 & x & x \\
             & & release cycles & x\% & 1-5 & 1-5 & x & x \\
@@ -1664,8 +1666,8 @@ Dynamic Scheduler (Für KubeFed?; für KubeEdge verbessern!)
             & & scaling & x\% & 1-5 & 1-5 & x & x \\
             \hline
             Operation & x\% & stability & x\% & 1-5 & 1-5 & x & x \\
-            & & handling & 3\% & 1-5 & 1-5 & x & x \\
-            & & scaling nodes & 4\% & 1-5 & 1-5 & x & x \\
+            & & handling & x\% & 1-5 & 1-5 & x & x \\
+            & & scaling nodes & x\% & 1-5 & 1-5 & x & x \\
             \hline
             IT-security & x\% & commuinication & x\% & 1-5 & 1-5 & x & x \\
             & & logging & x\% & 1-5 & 1-5 & x & x  \\
