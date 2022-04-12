@@ -1191,89 +1191,6 @@ The first decision variable that is examined is the effort required for the inst
     \end{center}
 \end{table}
 
-\subsection{Community and support}
-Another important factor is the support and the community for the respective application. Especially with relatively new and intuitive software, it is important to either have access to the community to exchange ideas and discuss problems, or to have a manufacturer who can provide support if needed. This is even more true if you want to use the environment productively and commercially.
-
-\paragraph{Community} Both products offer an active community with regular meetings, an mailing list and Slack channel. The open source approach promotes the formation of these open communities. KubeEdge is somewhat more active in research than KubeFed, but this does not necessarily mean that you will be better with one or the other.
-
-\paragraph{Support} At time of writing, we could not find any official company offering commercial support for the products. This is also, as mentioned above, due to the opensource approach. For KubeEdge, however, there is a list of companies that already use the product and support it accordingly. Among them are well-known companies such as Huawei, Orange and ARM. For KubeFed such a list is not disclosed. In compensation, the project is managed by Jeremy Olmsted-Thompson (Google) and Paul Morie (Apple) for this purpose. For both projects, issues can be submitted via Github.
-
-\paragraph{Activity} During the investigation of the topic, KubeEdge seems to be a bit more in the hype than KubeFed. This indirectly also leads to getting the necessary support faster. Details on the topicality can be found in the next subsection "future proof".
-
-\paragraph{Summarised assessment} The properties revealed above are tabulated below.  
-\begin{table}[ht]
-    \begin{center}
-        \begin{tabular}{|l|l|l|l|l|}
-            \hline
-            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
-            \hline
-            community & communication-channel  & Slack & \cmark & \cmark \\
-            community & communication-channel  & mailing-list & \cmark & \cmark \\
-            community & communication-channel & regular meeting & \cmark & \cmark \\
-            support & commercial & maintenance & \xmark & \xmark \\
-            support & non-commercial & Github issues & \cmark & \cmark \\
-            support & sponsors & official list & \cmark & \xmark \\
-            activity & hype & movement & \textbf{high} & \textbf{medium} \\
-            \hline
-        \end{tabular}
-        \caption{Community and support overview}
-        \label{tab:cs-overview}
-    \end{center}
-\end{table}
-
-\subsection{Future proof}
-Another important element when deciding between the two options is how promising each is for the future. Especially, as in our case, when the project is mainly supported and developed by the community. In the following, the background of the projects, the topicality of the software updates as well as the media impact will be examined. The companies that use or support the project also play an important role in this context.
-
-\paragraph{Releases} An important factor are the release cycles and the associated update frequency. An overview of all versions and updates can be found in the "Releases" site of each Github project. Both projects offer new versions on a regular basis, but KubeEde has slightly shorter cycles. Since the beginning of the year (2022), KubeEde has released two versions and KubeEdge has released one \cite{ke-releases-gh}\cite{kf-releases-gh}. The difference is only small at this point, both products shine with topicality.
-
-\paragraph{Github Stats} Other characteristics that can define the future viability are the current stats from Github. The following table compares the two projects.
-
-\begin{table}[ht]
-    \begin{center}
-        \begin{tabular}{|l|l|l|}
-            \hline
-            Github Stat & \textbf{KubeEdge} & \textbf{KubeFed} \\
-            \hline
-            Stars & 4800 & 2100 \\
-            Forks & 1300 & 470 \\
-            Releases & 30 & 32 \\
-            Contributers & 229 & 87 \\
-            Open issues & 147 & 23 \\
-            Open pull-requests & 34 & 8 \\
-            \hline
-        \end{tabular}
-        \caption{Github stats overview}
-        \label{tab:gh-stats}
-    \end{center}
-\end{table}
-
-It should be noted that the table shown above is only a snapshot. The values may change accordingly. It must also be noted that the higher number of reported problems may also result from more frequent use. Therefore, the correct interpretation is important.
-
-\paragraph{Membership} KubeEdge is listed as a \ac{CNCF} project in the incubation phase. \ac{CNCF} is a central home for the fastest growing projects in the cloud native category. Even \ac{K8s} itself was part of it. In contrast, KubeFed is supported and further developed by the \ac{K8s} oriented \ac{SIG}. It stands out that due to the group membership clear rules concerning the further development have to be observed.
-
-\paragraph{Sponsors} As already mentioned in section "community and support", KubeEdge is officially sponsored by some well-known companies. It should be noted, however, that these are mainly Chinese companies.
-
-\paragraph{Independencie} A final important characteristic with regard to future-proofing is the extent to which a solution can be used without further development of the respective application. Although this assumption represents a worst-case scenario that seems rather unlikely in the foreseeable future, it should nevertheless be taken into account. KubeEdge uses a completely self-developed solution on the worker nodes. To replace it, all nodes must be reinstalled with the vanilla component of \ac{K8s}. Besides the effort involved, important functions concerning edge-computing are lost. \ac{KubeFed} offers a better solution here, due to its different architecture. Each node on the edge is a complete and independent worker. If KubeFed is no longer used, applications continue to run for the time being; no new installation is necessary on the nodes. The control could be taken over by alternative approaches, e.g. via \ac{CI/CD} pipelines. KubeFed thus offers better independence.
-
-\paragraph{Summarised assessment} The characteristics relating to future viability are summarised below.  
-\begin{table}[ht]
-    \begin{center}
-        \begin{tabular}{|l|l|l|l|l|}
-            \hline
-            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
-            \hline
-            future-proof & releases  & frequency & \textbf{very-high} & \textbf{high} \\
-            future-proof & Github  & stars & \textbf{5k} & \textbf{2k} \\
-            future-proof & Github & activities & \textbf{high} & \textbf{moderate} \\
-            future-proof & membership & development programm & \textbf{CNCF} & \textbf{SIG} \\
-            future-proof & sponsors & companies & \cmark & \xmark \\
-            future-proof & independencie & alternative option & \xmark & \cmark \\
-            \hline
-        \end{tabular}
-        \caption{Future-proof overview}
-        \label{tab:fp-overview}
-    \end{center}
-\end{table}
 
 \subsection{Operation}
 \label{sec:catops}
@@ -1446,6 +1363,90 @@ Additions to \autoref{tab:security-overview}:
     \item An edge-node can be separated and converted into an independently acting cluster easily.
 \end{enumerate}
 
+\subsection{Community and support}
+Another important factor is the support and the community for the respective application. Especially with relatively new and intuitive software, it is important to either have access to the community to exchange ideas and discuss problems, or to have a manufacturer who can provide support if needed. This is even more true if you want to use the environment productively and commercially.
+
+\paragraph{Community} Both products offer an active community with regular meetings, an mailing list and Slack channel. The open source approach promotes the formation of these open communities. KubeEdge is somewhat more active in research than KubeFed, but this does not necessarily mean that you will be better with one or the other.
+
+\paragraph{Support} At time of writing, we could not find any official company offering commercial support for the products. This is also, as mentioned above, due to the opensource approach. For KubeEdge, however, there is a list of companies that already use the product and support it accordingly. Among them are well-known companies such as Huawei, Orange and ARM. For KubeFed such a list is not disclosed. In compensation, the project is managed by Jeremy Olmsted-Thompson (Google) and Paul Morie (Apple) for this purpose. For both projects, issues can be submitted via Github.
+
+\paragraph{Activity} During the investigation of the topic, KubeEdge seems to be a bit more in the hype than KubeFed. This indirectly also leads to getting the necessary support faster. Details on the topicality can be found in the next subsection "future proof".
+
+\paragraph{Summarised assessment} The properties revealed above are tabulated below.  
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            community & communication-channel  & Slack & \cmark & \cmark \\
+            community & communication-channel  & mailing-list & \cmark & \cmark \\
+            community & communication-channel & regular meeting & \cmark & \cmark \\
+            support & commercial & maintenance & \xmark & \xmark \\
+            support & non-commercial & Github issues & \cmark & \cmark \\
+            support & sponsors & official list & \cmark & \xmark \\
+            activity & hype & movement & \textbf{high} & \textbf{medium} \\
+            \hline
+        \end{tabular}
+        \caption{Community and support overview}
+        \label{tab:cs-overview}
+    \end{center}
+\end{table}
+
+\subsection{Future proof}
+Another important element when deciding between the two options is how promising each is for the future. Especially, as in our case, when the project is mainly supported and developed by the community. In the following, the background of the projects, the topicality of the software updates as well as the media impact will be examined. The companies that use or support the project also play an important role in this context.
+
+\paragraph{Releases} An important factor are the release cycles and the associated update frequency. An overview of all versions and updates can be found in the "Releases" site of each Github project. Both projects offer new versions on a regular basis, but KubeEde has slightly shorter cycles. Since the beginning of the year (2022), KubeEde has released two versions and KubeEdge has released one \cite{ke-releases-gh}\cite{kf-releases-gh}. The difference is only small at this point, both products shine with topicality.
+
+\paragraph{Github Stats} Other characteristics that can define the future viability are the current stats from Github. The following table compares the two projects.
+
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|}
+            \hline
+            Github Stat & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            Stars & 4800 & 2100 \\
+            Forks & 1300 & 470 \\
+            Releases & 30 & 32 \\
+            Contributers & 229 & 87 \\
+            Open issues & 147 & 23 \\
+            Open pull-requests & 34 & 8 \\
+            \hline
+        \end{tabular}
+        \caption{Github stats overview}
+        \label{tab:gh-stats}
+    \end{center}
+\end{table}
+
+It should be noted that the table shown above is only a snapshot. The values may change accordingly. It must also be noted that the higher number of reported problems may also result from more frequent use. Therefore, the correct interpretation is important.
+
+\paragraph{Membership} KubeEdge is listed as a \ac{CNCF} project in the incubation phase. \ac{CNCF} is a central home for the fastest growing projects in the cloud native category. Even \ac{K8s} itself was part of it. In contrast, KubeFed is supported and further developed by the \ac{K8s} oriented \ac{SIG}. It stands out that due to the group membership clear rules concerning the further development have to be observed.
+
+\paragraph{Sponsors} As already mentioned in section "community and support", KubeEdge is officially sponsored by some well-known companies. It should be noted, however, that these are mainly Chinese companies.
+
+\paragraph{Independencie} A final important characteristic with regard to future-proofing is the extent to which a solution can be used without further development of the respective application. Although this assumption represents a worst-case scenario that seems rather unlikely in the foreseeable future, it should nevertheless be taken into account. KubeEdge uses a completely self-developed solution on the worker nodes. To replace it, all nodes must be reinstalled with the vanilla component of \ac{K8s}. Besides the effort involved, important functions concerning edge-computing are lost. \ac{KubeFed} offers a better solution here, due to its different architecture. Each node on the edge is a complete and independent worker. If KubeFed is no longer used, applications continue to run for the time being; no new installation is necessary on the nodes. The control could be taken over by alternative approaches, e.g. via \ac{CI/CD} pipelines. KubeFed thus offers better independence.
+
+\paragraph{Summarised assessment} The characteristics relating to future viability are summarised below.  
+\begin{table}[ht]
+    \begin{center}
+        \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            Category & Criteria & Property & \textbf{KubeEdge} & \textbf{KubeFed} \\
+            \hline
+            future-proof & releases  & frequency & \textbf{very-high} & \textbf{high} \\
+            future-proof & Github  & stars & \textbf{5k} & \textbf{2k} \\
+            future-proof & Github & activities & \textbf{high} & \textbf{moderate} \\
+            future-proof & membership & development programm & \textbf{CNCF} & \textbf{SIG} \\
+            future-proof & sponsors & companies & \cmark & \xmark \\
+            future-proof & independencie & alternative option & \xmark & \cmark \\
+            \hline
+        \end{tabular}
+        \caption{Future-proof overview}
+        \label{tab:fp-overview}
+    \end{center}
+\end{table}
+
 
 \section{Criteria catalogue}
 \label{sec:cc}
@@ -1481,6 +1482,18 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
             & & configuration & 2\% & 2 & 4 & 0,04 & 0,08 \\
             & & documentation & 6\% & 2 & 4 & 0,12 & 0,24 \\
             \hline
+            Operation & 17\% & stability & 10\% & 1 & 5 & 0,1 & 0,5 \\
+            & & handling & 3\% & 2 & 5 & 0,06 & 0,15 \\
+            & & scaling nodes & 4\% & 5 & 3 & 0,2 & 0,08 \\
+            \hline
+            Application & 17\% & deployment & 10\% & 5 & 4 & 0,5 & 0,4 \\
+            & & scaling & 7\% & 5 & 2 & 0,35 & 0,14 \\
+            \hline
+            IT-security & 10\% & commuinication & 3\% & 3 & 4 & 0,09 & 0,12 \\
+            & & logging & 2\% & 4 & 3 & 0,08 & 0,06  \\
+            & & workload & 2\% & 2 & 4 & 0,04 & 0,08 \\
+            & & architecture & 3\% & 3 & 4 & 0,09 & 0,12 \\
+            \hline
             Commuity & 6\% & communication channels & 3\% & 5 & 5 & 0,15 & 0,15 \\
             & & actual hype & 3\% & 4 & 3 & 0,12 & 0,09 \\
             \hline
@@ -1492,18 +1505,6 @@ The following table acts as a criteria catalogue. Based on the previous qualitat
             & & release cycles & 3\% & 4 & 3 & 0,12 & 0,09 \\
             & & independencie & 3\% & 1 & 4 & 0,03 & 0,09 \\
             & & commercial sponsors & 1\% & 5 & 0 & 0,05 & 0 \\
-            \hline
-            Application & 17\% & deployment & 10\% & 5 & 4 & 0,5 & 0,4 \\
-            & & scaling & 7\% & 5 & 2 & 0,35 & 0,14 \\
-            \hline
-            Operation & 17\% & stability & 10\% & 1 & 5 & 0,1 & 0,5 \\
-            & & handling & 3\% & 2 & 5 & 0,06 & 0,15 \\
-            & & scaling nodes & 4\% & 5 & 3 & 0,2 & 0,08 \\
-            \hline
-            IT-security & 10\% & commuinication & 3\% & 3 & 4 & 0,09 & 0,12 \\
-            & & logging & 2\% & 4 & 3 & 0,08 & 0,06  \\
-            & & workload & 2\% & 2 & 4 & 0,04 & 0,08 \\
-            & & architecture & 3\% & 3 & 4 & 0,09 & 0,12 \\
             \hline \hline
             \textbf{Result} & \textit{100\%} & & \textit{100\%} & \textbf{80} & \textbf{73} & \hl{\textbf{3,57}} & \hl{\textbf{3,24}} \\
             \hline
@@ -1563,7 +1564,7 @@ Both environments each offer different and individual advantages and enable diff
 In principle, edge environments can be set up and operated with both variants. In smaller, less complex environments where internal network communication of the applications is not absolutely necessary, KubeFed is a solid solution. If the environment is to scale strongly and the workload is dynamically distributed as well as native \ac{K8s} network is required, KubeEdge provides the better toolset. In addition to these main criteria, however, there are a large number of other properties that need to be assessed individually depending on the requirements. Insofar as a comprehensible and fact-based decision on architecture is to be aimed for, it is recommended to go through the criteria catalogue accordingly.
 
 \section{Generel advice}
-If no clear decision can be made even after going through the criteria catalogue, or if both environments can realise a target architecture, the recommendation goes in the direction of KubeEdge. Applications can be transferred to the system without any modification. Developers do not have to take any special features into account and control or operation is carried out in the same way as on a conventional \ac{K8s} cluster. Research into future developments also points more in the direction of default K8s architecture such as KubeEdge.
+If no clear decision can be made even after going through the criteria catalogue, or if both environments can realise a target architecture, the recommendation goes in the direction of KubeEdg  take any special features into account and control or operation is carried out in the same way as on a conventional \ac{K8s} cluster. Research into future developments also points more in the direction of default K8s architecture such as KubeEdge.
 
 \section{Discussion and further research}
 \label{sec:discuss}
