@@ -118,7 +118,7 @@ Kubernetes is the de facto swiss-army-knife for orchestrating container-platform
 \maketitle
 \chapter{Introdutcion}
 \label{chap:introduction}
-Because of \ac{IoT} devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast \cite{SotE21} over the coming years. Concomitant edge-computing also will become more important in the future and become an important role in modern \ac{IT} architectures. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are two different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
+Because of \ac{IoT} devices becoming more and more common, the number of devices capable of communicating with the \ac{WWW} increases rapidly. Consequently, also the overall traffic generated as well the amount of data which must be processed increases accordingly. Regarding this development edge-computing is the rising start trying to solve that issues. Thereby data is not processed centrally like in traditional datacenters, but it is tried to handle those data close to the user within several distributed systems. Because of this methodology only really necessary data is transmitted to a central instance for further treatment and those the processing-power as well as the bandwidth necessary for processing required data is reduced significant. \par It is expected that the number of IoT devices will continue to grow fast \cite{SotE21} over the coming years. In connection with this, edge computing will also gain in importance in the future and play an important role in modern \ac{IT} architectures.. \par To be able to control distributed systems effectively \ac{K8s} is providing a lot of useful tools and functions. Fundamentally there are two different approaches regrading the architecture of how to build an edge-computing environment making use of \ac{K8s}:
 
 \begin{itemize}
     \label{item:architecture}
@@ -154,7 +154,7 @@ In the first part of the paper, the current state of research is presented in th
 \chapter{State of the Art}
 \label{chap:current}
 \section{Technology}
-The present chapter provides an introduction to the general thematic. The main components and objects of \ac{K8s} are explained aswell as the layers of edge-computing are highlighted. If anyone is already familiar with the subjects, may you jump over to the \autoref{sec:architecture} "architecture" to read further.
+The present chapter provides an introduction to the general thematic. The main components and objects of \ac{K8s} are explained as well as the layers of edge-computing are highlighted. If anyone is already familiar with the subjects, may you jump over to the \autoref{sec:architecture} "Architecture" to read further.
 \label{sec:technology}
 \subsection{Kubernetes}
 To promote modern development and be able to implement continuous deployment pipelines cumbersome monolithic applications are divided into many smaller units. Each of these units provides only one function. In order to establish the overall functionality, these units are communicating with each other and thus provide services or make use of other ones. This new method of delivering applications brings many advantages in terms of development but also introduce some new challenges and complexities regarding operation. To simplify the tasks around the management of this architecture, \ac{K8s} has established itself as the de facto standard \cite{k8ssurv}. \ac{K8s} was initially developed by Google and later donated to the opensource community. Over the course of time, a broad community has developed around \ac{K8s} and a number of additional tools and extensions have emerged as a result. The most promising solutions regrading geo-distribution respectively edge-computing are highlighted in the subsequent \autoref{sec:architecture} "architecture". In order to be able to interpret the results of the use-cases, as well as building the necessary basic understanding, the following functionalities and components of \ac{K8s} are of relevance.  
@@ -168,11 +168,11 @@ To promote modern development and be able to implement continuous deployment pip
 
 \paragraph{Master Nodes} run the so-called \textit{Control Plane} which is responsible for controlling the cluster itself and all the ressources within. The Control Plane consist of the following components \cite{k8scomp}.
 \begin{itemize}
-    \item \textit{kube-apiserver} - acts as frontend web-interface responsible for controlling the \ac{K8s} cluster as well as the objects inside the cluster. Tools like kubectl abstract the \textit{OpenAPI v2} endpoint and provide access in form of a simply understandable and usable \ac{CLI}. 
+    \item \textit{API Server} - acts as frontend web-interface responsible for controlling the \ac{K8s} cluster as well as the objects inside the cluster. Tools like kubectl abstract the \textit{OpenAPI v2} endpoint and provide access in form of a simply understandable and usable \ac{CLI}. 
     \item \textit{etcd} - represents a high-available and consistent key value store responsible for storing the actual state as well as the desired configuration of the cluster.
-    \item \textit{kube-scheduler} - is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However, the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the pods communicating with each other. As discovered in the following chapters, this appears to be an important variable for edge-deployments. However, some available white-papers already try to address those issues and show possible solutions by adopting a custom scheduler taking care of those values. More details on this can be found in the \autoref{chap:related} "related work".
-    \item \textit{kube-controller-manager} - consists of a single compiled binary controling the status of nodes, jobs, service-accounts and endpoints as well as creating or removing them.
-    \item \textit{cloud-controller-manager} - represents the interface to the underlying cloud-platform. This allows kubernetes to create and/or configure load-balancers, routes and persistent-volumes on the underlying cloud-infrastructure. In a local environment e.g. minikube \cite{minikube} provide the \textit{cloud-controller-manager} - becomes an optional component and is not required. The same may apply to edge-locations as those areas are outside the cloud most of the time.
+    \item \textit{Scheduler} - is responsible for scheduling pods on the available worker nodes. Decision variables such as available ressources, affinity-rules and constraints are taken into account. However, the default \textit{kube-scheduler} ist not aware of any latency between the worker nodes nor the pods communicating with each other. As discovered in the following chapters, this appears to be an important variable for edge-deployments. However, some available white-papers already try to address those issues and show possible solutions by adopting a custom scheduler taking care of those values. More details on this can be found in the \autoref{chap:related} "related work".
+    \item \textit{Controller Manager} - consists of a single compiled binary controlling the status of nodes, jobs, service-accounts and endpoints as well as creating or removing them.
+    \item \textit{Cloud Controller Manager} - represents the interface to the underlying cloud-platform. This allows kubernetes to create and configure load-balancers, routes and persistent-volumes on the underlying cloud-infrastructure. In local environments or at edge-locations, this part of \ac{K8s} is not needed or would not have any functionality. K3s therefore does without cloud-integration by default\cite{minikube}.
 \end{itemize}
 
 \paragraph{Worker Nodes} manage the workload, i.e. run the actual application(s). These nodes are composed of the following, see list below, parts \cite{k8scomp}. It should be mentioned, that also the described \textit{Master Nodes} are executing those components because some core-componentes are containerized (pods) itself. 
@@ -182,13 +182,13 @@ To promote modern development and be able to implement continuous deployment pip
     \item \textit{container runtime} - is the part that finally executes the containers. The default runtime at time of writing is \textit{containerd}, however any runtime is supported that complies with the CRI specification \cite{cri-runtime}.
 \end{itemize}
 
-\paragraph{Kubernetes Objects} are persistent properties inside the \ac{K8s} ecosystem representing the state of a cluster. The most important feature of those objects is to describe the target environment in a declarative way. For this purpose, most of the time, YAML files are used. Kubernetes now ensures that the desired state of the environment is actually achieved and continuously monitors the required objects to meet those defined requirements. This mechanism is also ideal for distributed systems, such as edge computing, as availability can be monitored at any time and a an action can be taken if necessary. Subsequent the main objects are cited starting with the smallest unit \cite{k8sconc}.
+\paragraph{Kubernetes Objects} are persistent properties inside the \ac{K8s} ecosystem representing the state of a cluster. The most important feature of those objects is to describe the target environment in a declarative way. For this purpose, most of the time, YAML files are used. Kubernetes now ensures that the desired state of the environment is actually achieved and continuously monitors the required objects to meet those defined requirements. This mechanism is also ideal for distributed systems, such as edge computing, as availability can be monitored at anytime and a an action can be taken if necessary. Subsequent the main objects are cited starting with the smallest unit \cite{k8sconc}.
 \begin{itemize}
     \item \textit{Containers} - decouple the actual application and its dependencies from the underlying infrastructure. The main properties of those containers are there immutability and repeatability. This means that the container can be rebuilt at anytime resulting in an identical clone. Likewise, the code of a running container cannot be modified subsequently.
     \item \textit{Pods} include at least one or more \textit{Containers}. In the most scenarios a single pod consists of a single container, in some cases a so-called sidecar container is used increasing the number of containers inside a pod. Containers which are in the same \textit{Pod} share the same local Socks as well as volumes mounted.
     \item \textit{Deployments}, \textit{Statefulsets} and \textit{Daemonsets} - are responsible for ensuring the actual workload is provided, to achieve this they control and scale the assigned \textit{Pods}. When creating an application for \ac{K8s}, it is most likely to create one of those objects. The \textit{Pods} and \textit{Containers} are merely an end product that is derived these objects.
     \item \textit{Services} - provide an abstract way to make a set of \textit{Pods} available on the network via a single endpoint. Additional deployed pods will automatically be added to the responsible \textit{Services}. Thereby \ac{K8s} is an excellent choice when it comes to scaling applications without any manual intervention. This also applies for deploying applications to the edge of the network, as illuminated in the course of this thesis. Closely related to the \textit{Services} - is the \textit{Ingress} resource, which is taking care of making the aforementioned objects available outside the cluster. An optional reverse-proxy (\textit{Ingress-Controller}) must be installed in order to make use of the latter. \newline
-    A new feature, which is of relevance regarding edge-computing, currently in beta phase, is the so-called \textit{Topology Aware Hint}. Basically its meta-data added to the endpoints defined previously suggesting the connection client on how to reach the destination efficiently (e.g. zones aware of different locations can be defined)
+    A new feature, which is of relevance regarding edge-computing, currently in beta phase, is the so-called \textit{Topology Aware Hint}. Basically it is meta-data added to the endpoints defined previously suggesting the connecting client on how to reach the destination efficiently; e.g. zones aware of different locations can be defined. In simple terms, short latency connections are preferred, the control to achieve this is fully automatic through \ac{K8s}.
     \item \textit{ConfigMaps} and \textit{Secrets} - are pieces of information which can be mounted into to \textit{Container} to adjust the configuration inside at runtime. Even whole files can be replaced using on of them. \textit{Secrets} are only different in the sense that they decode the content, however technically they are the same.
     \item \textit{Volumes} - provide persistent storage which extends beyond the life cycle of the pods. Volumes can be mounted at any defined position inside the pods. The disadvantage is that the data written to those \textit{Volumes} resides out of the \ac{K8s} ecosystem and therefore the operator must take care of data security and replication. This becomes even more complicated in an edge-computing environment where nodes have higher latency between them.
 \end{itemize}
@@ -206,7 +206,7 @@ In order to create a holistic security concept, all layers must be considered an
 
 \subsection{Edge-Computing}
 Edge-computing is the model that extends cloud services to the edge of the
-network. The computing resources on the edge act as a layer between the user, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the source, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-ressources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
+network. The computing resources on the edge act as a layer between the entity, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the source, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-ressources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
 
 \paragraph{Hierarchy} descripes the layers of the architecture. The following list enumerates the most important layers from top to bottom \cite{intro-edge}.
 \begin{enumerate}
@@ -228,7 +228,7 @@ This chapter focuses on the two different architecture approaches which can be u
 
 \subsection{Default}
 \label{sec:arch-default}
-In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized control plane hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location aswell inside the cloud. The following graphic illustrates the architecture.
+In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized control plane hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location as well inside the cloud. The following graphic illustrates the architecture.
 
 \begin{figure}[ht]
     \centering
@@ -248,7 +248,7 @@ Although the conventional components can also communicate with each other over l
     \item Weave
 \end{itemize}
 
-Other issues, which must be observed, are the replication of metadata hold by the control planes. Because of the higher latency and-or unstable connection at the edge site data may cannot always be reliably retrieved. To circumvent this problem, asynchronous replication can be used for replicating metadata. Another solution is to make independent, thereby no big data chunks are requested at all. The important part of the metadata store are \ac{DNS} entries, because \ac{K8s} heavily relies on them for service discovery. NodeLocal DNS is the recommand way \cite{k8sdnslocal} to hold a copy on the worker nodes. 
+Other issues, which must be observed, are the replication of metadata hold by the control planes. Because of the higher latency and-or unstable connection at the edge site data may cannot always be reliably retrieved. To circumvent this problem, asynchronous replication can be used for replicating metadata. The important part of the metadata store are \ac{DNS} entries, because \ac{K8s} heavily relies on them for service discovery. NodeLocal DNS is the recommand way \cite{k8sdnslocal} to hold a copy on the worker nodes. Another solution is to make the environments independent of each other, thereby no big data chunks are requested respectivly synchronized at all.
 
 Another challenge regarding storage ist the handling of persistent volumes. Those logical data chunks must be replicated in an asynchronous manner because of the latency between the nodes. As this is not alway possible and data management is a generel challenge, making services stateless is the recommand way to work arround this issue.  In contrast to this, forwarding data to the cloud is not an issue in most of the times when using suitable message queues. For that purpose, eg. KubeEdge, is making use of \ac{MQTT}.   
 
@@ -262,7 +262,7 @@ In addition there is no awarness of where workloads are running and the level of
     \item \textit{EdgeController} - a \ac{K8s} controller responsible for managing and distributing metadata.
     \item \textit{EdgeHub} - the counterpart to the Edgecontroller; uses a websocket server for syning updates to and from the cloud.
     \item \textit{MetaManager} - Message processor, coordinating between edgehub and edged. Can also store information in an SQLite database. In case of connectivity issues those database is used so that services can continue to run continuously.
-    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI}, making them fit for edge scenarios. Main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project.
+    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI}, making them fit for edge scenarios. Main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project. Thats als why this component is not part of \autoref{fig:ke-architecture}. A more in detail desccription as well as a figure can be found in \autoref{sec:ke-usecase}.
 \end{itemize}
 
 The following graphic illustrates the interaction of the components. 
@@ -273,7 +273,7 @@ The following graphic illustrates the interaction of the components.
     \label{fig:ke-architecture}
 \end{figure}
 
-In addition a component (EventBus) for device management and seemles integration with \ac{MQTT} is built-in to KubeEdge\cite{hal-kubeedge}. However, because this thesis focuses on the geo-distribution aspect, this part is not researched further.
+In addition components (DeviceTwin, EventBus and ServiceBus) for device and \ac{IoT} management are shwown in \autoref{fig:ke-architecture}. Also a seemles integration with \ac{MQTT} is built-in to KubeEdge\cite{hal-kubeedge}. However, because this thesis focuses on the geo-distribution aspect, this parts are not researched further.
 
 
 \subsection{Distributed K8s}
@@ -283,7 +283,7 @@ In this case, a different approach is chosen and, in contrast to the previous ar
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.60\textwidth]{PICs/drawio/distributed-k8s.drawio.pdf}
-    \caption{Distributed \ac{K8s} architeture}
+    \caption{Distributed \ac{K8s} architecture}
     \label{fig:distributed-k8s}
 \end{figure}
 
@@ -387,7 +387,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik --disable-clo
 
 \subsection{KubeEdge}
 \label{sec:dsrenvke}
-For the default architecture resrespectively KubeEdge variant, only a \ac{K8s} installation on the master node is required. Edge nodes just need be to equipped with a supported containter runtime of choice. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the kube-proxy as shown in the figure \hyperref[fig:k8s-default]{"default K8s architecture"}. A single binary (keadm) is used to initialise KubeEdge. A token and the public IP are specified as parameters on the master. On the edge nodes, those information is used to join the master. 
+For the default architecture respectively KubeEdge variant, only a \ac{K8s} installation on the master node is required. The edge-nodes need be to equipped with a supported containter runtime of choice as well as the KubeEdge installation binary. In our specific \ac{PoC} Docker is used. KubeEdge takes over the roles of the kublete and the kube-proxy as shown in \autoref{fig:k8s-default}. The single binary (keadm) is used to initialise KubeEdge. The KubeEdge installation is carried out on the master according to the default routine. If the process has been successfully completed, X.509 certificates are generated with which the edge-nodes can then authenticate themselves. To simplify this, a token is also generated from the certificates. On the edge-nodes, only the public facing \ac{IP} of the master and the token must be entered during the installation in order to make them join automatically.
 
 \paragraph{Challenges} The most important steps and challenges encountered during the installation are listed below.
 
@@ -413,7 +413,7 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 
     \item \textit{Dynamic IP} - Because the central hosting cluster is initialising the connection to the  nodes at the edge, these nodes must be reachable over a static adress. In most cases the use of static ips is not a problem. However, especially in edge-environments, the use of dynamic ip-addresses may be necessary. To circumvent this problem, a so-called dynamic \ac{DNS} service is used to establish the connection. Although such a service can be set up relatively quickly, it does mean that an additional component has to be installed and maintained. In contrast, \hyperref[sec:dsrenvke]{KubeEdge} works without such a workaround.
     
-    \item \textit{dNAT} - As long as the target node is behind a router and connected with a private ip, destination \ac{NAT} must be configured to forward the necessary port. Alternatively, a reverse-proxy can be used to publish the internal service. This step is also only required for the KubeFed variant. 
+    \item \textit{dNAT} - As long as the target node is behind a router and connected with a private ip, destination \ac{NAT} must be configured to forward the necessary port. Alternatively, a reverse-proxy can be used to publish the internal service. This step is only required for the KubeFed variant. 
 \end{itemize}
 \paragraph{Installation} Steps for installation can be found on the Github: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-install.md}{}{}{Berndinox/K8sEdge} \cite{bk-gh-kf-install}
 
@@ -447,11 +447,15 @@ spec:
 
 It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}\cite{bk-gh-docs}.
 
+\paragraph{Relevance} warum gerade der Test
+\paragraph{Usage} connectivity, ggf. eine Grafik
+\paragraph{Extensions} mögliche andere Services und Erweiterungen
+
 \subsection{KubeEdge} 
 \label{sec:ke-usecase}
-Starting the web-application on KubeEdge environment without any further modifikation on the \ac{K8s} stack the deployment fails. This is manifested as follows: If the deployment and the service definition is created via kubectl, the job looks successful at first. The service is created and pods are scheduled accordingly. However, the goal is to follow the native approach and make the service accessible via ClusterIP using the Kubernetes network functionality. However, this is not possible as a test making use of curl proves. Another problem that arises is that the pods cannot be accessed either directly on the exposed port or via kubectl exec.
+Starting the web-application on KubeEdge environment, without any further modification on the \ac{K8s} stack, the deployment fails. This is manifested as follows: If the deployment and the service definition is created via kubectl, the job looks successful at first. The service is created and pods are scheduled accordingly. However, the goal is to follow the native approach and make the service accessible via ClusterIP using the Kubernetes network functionality. However, this is not possible as a test, making use of curl, proves. Another problem that arises is that the pods cannot be accessed either directly on the exposed port or via kubectl exec.
 
-After some research, it turned out that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
+Research has shown, that KubeEdge does not use any CNI plugin to offer network-connectivity per default. However, a specially developed Kube-API endpoint is used for this, which is to take over the functionalities and improve them for the requirements of an edge environment. This endpoint does not currently cover all functionalities, which is why our deployment needs to be modified accordingly \cite{ke-ake-gh}.
 \vspace{\baselineskip}
 The following list represents the available Kube-API verbs:
 \begin{itemize}
@@ -480,6 +484,8 @@ In the course of solving the problem, two variants were examined in detail, firs
     \caption{KubeEdge networking}
     \label{fig:ke-networking}
 \end{figure}
+
+\autoref{fig:ke-networking} illustrates the both connection methodes. "KE Agents" refers to the componentes of KubeEdge as shown in \autoref{fig:ke-architecture}.
 
 \paragraph{Without network} As long as there is no need for complex network communication between the pods, this variant offers a simple solution. Deployments, StatefullSets and DaemonSets can be distributed and scheduled via \ac{K8s} to the edge-nodes. The services can then be made available for local services only. This is achieved through the configuration of a so-called HostPort. It is important to note that making the port available cannot be done via NodePort, as in this case the port would be made accessible at all nodes, which in turn requires a functioning cluster network. The following is the modified deployment that makes the application accessible on the edge-location. Please note that the object service was removed entierly, only relevant parts are cited.
 \begin{lstlisting}[caption={Web-application HostPort },captionpos=b]
@@ -992,54 +998,30 @@ In the course of the tests carried out, security scans were also executed in ord
 
 \vspace{\baselineskip}
 \begin{center}
-\begin{minipage}{.40\linewidth}
-    \begin{center}
-    \begin{lstlisting}[caption={KubeEdge bench},captionpos=b]
-== Summary node ==
-2 checks PASS
-11 checks FAIL
-10 checks WARN
-0 checks INFO
-== Summary policies ==
-0 checks PASS
-0 checks FAIL
-26 checks WARN
-0 checks INFO
-== Summary total ==
-2 checks PASS
-11 checks FAIL
-36 checks WARN
-0 checks INFO
+\begin{minipage}{.40\textwidth}
+    \begin{lstlisting}[caption={KubeEdge \& KubeFed bench},captionpos=b]
+    == Summary node ==
+    2 checks PASS
+    11 checks FAIL
+    10 checks WARN
+    0 checks INFO
+    == Summary policies ==
+    0 checks PASS
+    0 checks FAIL
+    26 checks WARN
+    0 checks INFO
+    == Summary total ==
+    2 checks PASS
+    11 checks FAIL
+    36 checks WARN
+    0 checks INFO
     \end{lstlisting}
-    \end{center}
-\end{minipage}
-\hspace{.05\linewidth}
-\begin{minipage}{.40\linewidth}
-    \begin{center}
-    \begin{lstlisting}[caption={KubeFed bench},captionpos=b]
-== Summary node ==
-2 checks PASS
-11 checks FAIL
-10 checks WARN
-0 checks INFO
-== Summary policies ==
-0 checks PASS
-0 checks FAIL
-26 checks WARN
-0 checks INFO
-== Summary total ==
-2 checks PASS
-11 checks FAIL
-36 checks WARN
-0 checks INFO
-    \end{lstlisting}
-    \end{center}
 \end{minipage}
 \end{center}
 
 At first glance, the above results do not meet expectations. Both environments have the same result, only two tests can be passed successfully. If one analyses the details, however, one quickly comes to the conclusion that many of the tests carried out are not valid for the present environment. The first part of the test focuses on the analysis of the component "kubelet". The two environments used, however, rely on K3s as \ac{K8s} distribution in the cloud, or for KubeFed also on the edge-nodes. K3s uses different default paths for kubelet and offers its own configuration parameters\cite{k3s-config} to customise the agent. KubeEdge goes one step further on the edge-nodes and dispenses with the standard agent altogether. The result of the first part is not that the environments are not able to fulfill safety aspects, but rather that the standard procedures used within the security benchmark are not, or only slightly, suitable for this type of environments. 
 
-\paragraph{K3s} For this reason, Rancher has published its own guide\cite{k3s-assesment}, which clarifies these points accordingly. In the following, the tests modified especially for K3s are therefore run through in order to obtain a meaningful result. The following tests concern the nodes:
+\paragraph{KubeFed} For this reason, Rancher has published its own guide\cite{k3s-assesment}, which clarifies these points accordingly. In the following, the tests modified especially for K3s are therefore run through in order to obtain a meaningful result. The following tests concern the nodes:
 
 \begin{itemize}
     \itemsep0em
@@ -1326,7 +1308,7 @@ In order to secure the environment accordingly, taking into account the points m
 
 \subsubsection{Findings} This part clearly summarises the results obtained in Chapter \autoref{sec:dsrusecasesec}.
 
-\paragraph{KubeEdge} Functionalities such as NetworkPolicies or \ac{PSP} are not supported by KubeEdge. An alternative framework, SPIFFE\cite{ke-secure-fw}, is available for this purpose. Thus, while it can be used to check and restrict many security-related aspects such as the integrity of the application and workloads or even the nodes, it also requires more effort to implement. Since specially developed components are used, conventional safety tests cannot be applied or have no significance. KubeEdge does not provide a guide or recommendations for hardening. The EdgeMesh component has a serious gap; if encryption is not explicitly activated, all communications take place without these security safeguards. Finally, it is important to note that KubeEdge only supports Kubernetes up to version 1.21. The most recent version at the time of the survey was version 1.23.
+\paragraph{KubeEdge} Functionalities such as NetworkPolicies or \ac{PSP} are not supported by KubeEdge. An alternative framework, SPIFFE\cite{ke-secure-fw}, is available for this purpose. Thus, while it can be used to check and restrict many security-related aspects such as the integrity of the application and workloads or even the nodes, it also requires more effort to implement. Since specially developed components are used, conventional security tests cannot be applied or have no significance. KubeEdge does not provide a guide or recommendations for hardening. The EdgeMesh component has a serious gap; if encryption is not explicitly activated, all communications take place without these security safeguards. Finally, it is important to note that KubeEdge only supports Kubernetes up to version 1.21. The most recent version at the time of the survey was version 1.23.
 
 \paragraph{KubeFed} Since KubeFed is based on K3s, some parameters must be specified during installation. \ac{PSP} must be activated, the NetworkPolicies cannot be used with the standard \ac{CNI} plugin and must therefore be replaced. Otherwise, due to the simplified architecture, no noteworthy problems could be detected during the tests.
 
@@ -1596,37 +1578,37 @@ Kubernetes provides the abstraction of an underlying system into a logical entit
 \addcontentsline{toc}{chapter}{\listacroname}
 \chapter*{\listacroname}
 \begin{acronym}[XXXXX]
-    \acro{Aha}[Aha]{AnsiHTMLadapter}
-    \acro{API}[API]{applicationprogramminginterface}
-    \acro{ARM}[ARM]{advancedRISCmachines}
-    \acro{CI/CD}[CI/CD]{continuousintegration/continuousdelivery}
-    \acro{CLI}[CLI]{commandlineinterface}
-    \acro{CNCF}[CNCF]{CloudNativeComputingFoundation}
-    \acro{CNI}[CNI]{containernetworkinterface}
-    \acro{CPU}[CPU]{centralprocessingunit}
-    \acro{CRD}[CRD]{costumressourcedefinition}
-    \acro{CRI}[CRI]{containerruntimeinterface}
-    \acro{DNS}[DNS]{domainnamesystem}
-    \acro{DSR}[DSR]{designscienceresearch}
-    \acro{FQDN}[FQDN]{fullqualifieddomainname}
-    \acro{GUI}[GUI]{graphicaluserinterface}
-    \acro{HPA}[HPA]{horizontalpodautoscaler}
+    \acro{Aha}[Aha]{Ansi HTML adapter}
+    \acro{API}[API]{application programming interface}
+    \acro{ARM}[ARM]{advanced RISC machines}
+    \acro{CI/CD}[CI/CD]{continuous integration / continuous delivery}
+    \acro{CLI}[CLI]{commandline interface}
+    \acro{CNCF}[CNCF]{Cloud Native Computing Foundation}
+    \acro{CNI}[CNI]{containerne tworkinterface}
+    \acro{CPU}[CPU]{central processing unit}
+    \acro{CRD}[CRD]{costum ressource definition}
+    \acro{CRI}[CRI]{container runtime interface}
+    \acro{DNS}[DNS]{domain namesystem}
+    \acro{DSR}[DSR]{design science research}
+    \acro{FQDN}[FQDN]{full qualified domain name}
+    \acro{GUI}[GUI]{graphical useri nterface}
+    \acro{HPA}[HPA]{horizontal pod autoscaler}
     \acro{IoT}[IoT]{internet-of-things}
-    \acro{IP}[IP]{internetprocotcol}
-    \acro{IT}[IT]{informationtechnology}
+    \acro{IP}[IP]{internet procotcol}
+    \acro{IT}[IT]{information technology}
     \acro{K8s}[K8s]{Kubernetes}
-    \acro{KubeFed}[KubeFed]{Kubernetesclusterfederation}
-    \acro{MQTT}[MQTT]{messagequeuingtelemetrytransport}
-    \acro{NAT}[NAT]{networkaddresstranslation}
-    \acro{OS}[OS]{operatingsystem}
+    \acro{KubeFed}[KubeFed]{Kubernetes cluster federation}
+    \acro{MQTT}[MQTT]{message queuing telemetry transport}
+    \acro{NAT}[NAT]{network address translation}
+    \acro{OS}[OS]{operating system}
     \acro{PoC}[PoC]{proof-of-concept}
     \acro{PSP}[PSP]{PodSecurityPolicies}
-    \acro{QoS}[QoS]{qualityofservice}
-    \acro{RAM}[RAM]{randomaccessmemory}
-    \acro{RBAC}[RBAC]{rolebaseaccesscontrol}
-    \acro{SIG}[SIG]{specialinteresstsgroup}
-    \acro{VPN}[VPN]{virtualprivatenetwork}
-    \acro{WWW}[WWW]{worldwideweb}
+    \acro{QoS}[QoS]{quality of service}
+    \acro{RAM}[RAM]{random access memory}
+    \acro{RBAC}[RBAC]{role based accesscontrol}
+    \acro{SIG}[SIG]{special interessts group}
+    \acro{VPN}[VPN]{virtual private network}
+    \acro{WWW}[WWW]{world wide web}
 \end{acronym}
 
 %
