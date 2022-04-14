@@ -447,9 +447,9 @@ spec:
 
 It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}\cite{bk-gh-docs}.
 
-\paragraph{Relevance} warum gerade der Test
-\paragraph{Usage} connectivity, ggf. eine Grafik
-\paragraph{Extensions} mögliche andere Services und Erweiterungen
+\paragraph{Relevance} The example used provides a good basis for the tests carried out in the following. The object "Deplyoment" is used, which allows the pods defined to be scaled accordingly. This is a fundamental part of any environment at the edge. A "Service" is also defined that allows any network functionalities to be tested. Many of the applications that are specifically designed for the edge are based on these two mechanisms.
+
+\paragraph{Connectivity} Basically, the service can be made available via two different methods. The first variant makes it possible to use the services from the local network. For this purpose, either a HostPort or NodePort is defined in the service object. For example, IoT devices could send or retrieve data via this interface. The second method publishes the service via ClusterIP or Ingress. This variant is only supported by KubeEdge because it is dependent on the \ac{CNI}. With this variant, it would be possible to operate a CDN or distributed web service. For this purpose, the use of an anycast IP or a GeoDNS would be advisable.
 
 \subsection{KubeEdge} 
 \label{sec:ke-usecase}
