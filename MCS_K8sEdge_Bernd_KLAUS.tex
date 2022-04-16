@@ -208,7 +208,7 @@ In order to create a holistic security concept, all layers must be considered an
 
 \subsection{Edge-Computing}
 Edge-computing is the model that extends cloud services to the edge of the
-network. The computing resources on the edge act as a layer between the entity, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the source, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-resources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent s technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
+network. The computing resources on the edge act as a layer between the entity, who provides or wants to process data, and the centralized datacenter (e.g. the cloud). Because data can be processed earlier respective closer to the source, latency and amount of data transferred can be reduced \cite{intro-edge}. Also, the required computing-resources in the datacenter can be minimized because data can be processed at the edge. A major driver of the subsequent technology is \ac{IoT}. The amount of devices and resulting data volume, which must be processed, is increasing exponentially \cite{SotE21}. Another technology which depends on it are low-latency applications like e.g. video-streaming. 
 
 \paragraph{Hierarchy} descripes the layers of the architecture. The following list enumerates the most important layers from top to bottom \cite{intro-edge}.
 \begin{enumerate}
@@ -226,11 +226,11 @@ The main focus of this work is to efficiently combine the two layers \textit{Clo
 
 \section{Architecture}
 \label{sec:architecture}
-This chapter focuses on the two different architecture approaches which can be used for edge computing. After an overview the advantages and disadvantages as well as possible solutions are examinated.
+This chapter focuses on the two different architecture approaches which can be used for edge computing. After an general overview, the advantages and disadvantages of the individual architectures and possible solutions are examined.
 
 \subsection{Default}
 \label{sec:arch-default}
-In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized control plane hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location as well inside the cloud. The following graphic illustrates the architecture.
+In order to be able to manage resources at the edge, a traditional architecture can be used. This is subdivided into a centralized control plane hosted in the cloud and distributed worker nodes near the edge. The same \ac{K8s} architeture is commonly used when deploying to a single location as well as inside the cloud. The following graphic illustrates the architecture.
 
 \begin{figure}[ht]
     \centering
@@ -250,13 +250,13 @@ Although the conventional components can also communicate with each other over l
     \item Weave
 \end{itemize}
 
-Other issues, which must be observed, are the replication of metadata hold by the control planes. Because of the higher latency and-or unstable connection at the edge site data may cannot always be reliably retrieved. To circumvent this problem, asynchronous replication can be used for replicating metadata. The important part of the metadata store are \ac{DNS} entries, because \ac{K8s} heavily relies on them for service discovery. NodeLocal DNS is the recommand way \cite{k8sdnslocal} to hold a copy on the worker nodes. Another solution is to make the environments independent of each other, thereby no big data chunks are requested respectivly synchronized at all.
+Other issues that need to be considered are the replication of metadata hold by the control planes. Because of the higher latency and-or unstable connection at the edge site data cannot always be retrieved reliably. To circumvent this problem, asynchronous replication can be used for replicating metadata. The important part of the metadata store are \ac{DNS} entries, because \ac{K8s} heavily relies on them for service discovery. NodeLocal DNS is the recommand way \cite{k8sdnslocal} to hold a copy on the worker nodes. Another solution is to make the environments independent of each other, thereby no big data chunks are requested respectivly synchronized at all.
 
-Another challenge regarding storage ist the handling of persistent volumes. Those logical data chunks must be replicated in an asynchronous manner because of the latency between the nodes. As this is not alway possible and data management is a generel challenge, making services stateless is the recommand way to work arround this issue. In contrast to this, forwarding data to the cloud is not an issue in most of the times when using suitable message queues. For that purpose, eg. KubeEdge, is making use of \ac{MQTT}.  
+Another challenge regarding storage ist the handling of persistent volumes. Those logical data chunks must be replicated in an asynchronous manner because of the latency between the nodes. As this is not always possible and data management is a generel challenge, making services stateless is the recommended way to work around this issue. In contrast to this, forwarding data to the cloud is not an issue in most of the times when using suitable message queues. For that purpose, eg. KubeEdge, is making use of \ac{MQTT}.  
 
 In addition there is no awarness of where workloads are running and the level of latency between nodes when using vanilla kubernetes. There are some developments in this area, but they have not really caught on yet \cite{k8s-sharping-edge}\cite{tk-k8s-edge-scheduler}\cite{5g-k8s-scheduler}.
 
-\paragraph{KubeEdge} is an open-source \ac{CNCF} project \cite{hal-kubeedge} that already comes with many of these functions respectively requirements pre-charged. Likewise, this tool was explicit developt for edge-computing. Worker nodes can therefore be distributed across the hole globe without any major adjustments. To make this possible, some components were added or exchanged \cite{kubedge}.
+\paragraph{KubeEdge} is an open-source \ac{CNCF} project \cite{hal-kubeedge} that already comes with many of these functions respectively requirements pre-charged. Likewise, this tool was explicit developed for edge-computing. Worker nodes can therefore be distributed across the whole globe without any major adjustments. To make this possible, some components were added or exchanged \cite{kubedge}.
 
 \begin{itemize}
     \item \textit{CloudHub} - webSocket endpoint responsible for sending data to the edge-nodes.
@@ -264,18 +264,18 @@ In addition there is no awarness of where workloads are running and the level of
     \item \textit{EdgeController} - a \ac{K8s} controller responsible for managing and distributing metadata.
     \item \textit{EdgeHub} - the counterpart to the Edgecontroller; uses a websocket server for syning updates to and from the cloud.
     \item \textit{MetaManager} - Message processor, coordinating between edgehub and edged. Can also store information in an SQLite database. In case of connectivity issues those database is used so that services can continue to run continuously.
-    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI}, making them fit for edge scenarios. Main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project. Thats als why this component is not part of \autoref{fig:ke-architecture}. A more in detail desccription as well as a figure can be found in \autoref{sec:ke-usecase}.
+    \item \textit{EdgeMesh} - responsible for replacing the \ac{K8s} default network functionalities such as the kube-proxy, \ac{DNS} and \ac{CNI}, making them fit for edge scenarios. The main goal was to achieve high availability, reliability and the agent as lightweight as possible. However, this agent also has some disadvantages, as we will discover in the use-cases later. It should also be mentioned that this agent is not installed per default and is being developed in a separate project. Thats als why this component is not part of \autoref{fig:ke-architecture}. A more in detail desccription as well as a figure can be found in \autoref{sec:ke-usecase}.
 \end{itemize}
 
-The following graphic illustrates the interaction of the components. 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.70\textwidth]{PICs/kubeedge-arch.png}
+    \includegraphics[width=0.67\textwidth]{PICs/kubeedge-arch.png}
     \caption{KubeEdge architecture\cite{ke-docs-why}}
     \label{fig:ke-architecture}
 \end{figure}
+\autoref{fig:ke-architecture} illustrates the interaction of the components. 
 
-In addition components (DeviceTwin, EventBus and ServiceBus) for device and \ac{IoT} management are shwown in \autoref{fig:ke-architecture}. Also a seemles integration with \ac{MQTT} is built-in to KubeEdge\cite{hal-kubeedge}. However, because this thesis focuses on the geo-distribution aspect, this parts are not researched further.
+In addition components (DeviceTwin, EventBus and ServiceBus) for device and \ac{IoT} management are shwown in \autoref{fig:ke-architecture}. Also a seamless integration with \ac{MQTT} is built-in to KubeEdge\cite{hal-kubeedge}. However, because this thesis focuses on the geo-distribution aspect, this parts are not researched any further.
 
 
 \subsection{Distributed K8s}
@@ -289,19 +289,19 @@ In this case, a different approach is chosen and, in contrast to the previous ar
     \label{fig:distributed-k8s}
 \end{figure}
 
-However, this also creates new challenges such as the distribution and coordination of workloads. Without additional functionality added, the workload running on the clusters does not know about their neighbours. To overcome this gap, the division "multi-cluster deployment" has excelled in recent years. Even Google, the original developer of \ac{K8s}, offers such a service \cite{google-mcs} in their public cloud. Due to the increased demand, the \ac{KubeFed} tool is officially being maintained and further developed by the \ac{K8s} project\cite{kubefed-github}. Although the tool is still in beta, it is a very good choice for our field of application. One possible alternative would be the \ac{K8s} manager by Rancher Labs.
+However, this also creates new challenges such as the distribution and coordination of workloads. Without additional functionality added, the workload running on the clusters does not know about their neighbours. To overcome this gap, the division "multi-cluster deployment" has excelled in recent years. Even Google, who is the original developer of \ac{K8s}, offers such a service \cite{google-mcs} in their public cloud. Due to the increased demand, the \ac{KubeFed} tool is officially being maintained and further developed by the \ac{K8s} project\cite{kubefed-github}. Although the tool is still in beta, it is a very good choice for our field of application. One possible alternative would be the \ac{K8s} manager by Rancher Labs.
 
-\paragraph{\ac{KubeFed}} consists of a central hosting cluster which controls subordinate clusters via \ac{API} delegation. Within \ac{KubeFed} you can define which configuration should be managed by the hosting cluster. The methodes used are intentionally low-level and can thus be expanded well for different edge-deployment variants. Two different types of information is used to configure \ac{KubeFed}\cite{kubefed-github}:
+\paragraph{\ac{KubeFed}} consists of a central hosting cluster which controls subordinate clusters via \ac{API} delegation. Within \ac{KubeFed} it can be defined which configuration should be managed by the hosting cluster. The methodes used are intentionally low-level and can thus be expanded well for different edge-deployment variants. Two different types of information are used to configure \ac{KubeFed}\cite{kubefed-github}:
 
 \begin{itemize}
-    \item \textit{Type configuration} - determines which \ac{API} types are handeld.
+    \item \textit{Type configuration} - determines which \ac{API} types are handled.
     \item \textit{Cluster configuration} - determines which clusters should be targeted.
 \end{itemize}
 
-The type configuration itself consist of three main parts:
+The type configuration itself consists of three main parts:
 
 \begin{itemize}
-    \item \textit{Temaplates} - defines a reprenentation of common resources across the clusters.
+    \item \textit{Temaplates} - defines a common resources across the clusters.
     \item \textit{Placement} - defines which destination-cluster the workload should run on.
     \item \textit{Overrides} - defines varation of the templates on a per cluster level.
 \end{itemize}
