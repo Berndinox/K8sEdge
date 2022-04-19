@@ -557,6 +557,13 @@
   url    = {https://edgemesh.netlify.app/guide/getting-started.html},
 }
 
+@WWW{kubesec,
+  date   = {2022-04-09},
+  editor = {controlplane},
+  title  = {kubesec.io},
+  url    = {https://kubesec.io/},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
 
 @Comment{jabref-meta: grouping:
