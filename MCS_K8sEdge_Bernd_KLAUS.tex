@@ -1141,9 +1141,10 @@ During the tests, the following limitations and challenges came to light.
 
 \paragraph{KubeFed} Although KubeFed does not have many of the limitations of KubeEdge, other drawbacks are to be expected. Thus, due to the architecture itself, no network is available for the data of the pods between the clusters. If the applications themselves only take on local tasks, this is not a problem, but if you want to implement more complex systems with interdependencies, limits are reached quickly. Accesses from one cluster to the other must therefore be solved in the application itself. In concrete terms, this means that existing Kubernetes deployments may have to be revised.
 
+\subsection{Delimitations} At the present time, the operation of such environments is only possible with the help of experts. The development of edge-computing and \ac{K8s} is progressing rapidly and therefore makes adjustments, updates and extensions of the environment inevitably necessary. The necessary commitment, know-how and time must be taken into account. If this is neglected, instabilities or safety deficiencies can quickly occur. 
+
 \subsection{Outcome} The two architectures are fundamentally different. While KubeEdge offers the native Kubernetes approach and existing applications can be used 1:1 for edge-computing, the configurations for KubeFed have to be revised. On the other hand, KubeEdge itself has a more complex structure and some teething troubles were discovered during the test. KubeFed shines with stability and seems to be the perfect choice for smaller controllable environments with simple applications. As far as the detected errors can be fixed, KubeEdge can fit well when complex applications have to be distributed dynamically over many, up to thousands, edge-nodes.
 
-\subsection{Delimitations} TODO: wann werden die Lösungen nicht empfohlen.
 
 \pagebreak
 \chapter{Catalogue}
