@@ -337,7 +337,7 @@ The tests, performed in \autoref{chap:poc-research}, cover four areas: resource 
 \chapter{Proof-of-concept}
 \label{chap:dsr}
 
-All details about the code or the configurations are not listed in the appendix but on the Github repository\cite{bk-gh-repo} of the project, which is linked in the relevant places. The work itself only shows fragments that are relevant to the passage to ensure the best possible reading flow.
+All details about the code or the configurations are not listed in the appendix but on the Github repository \cite{bk-gh-repo} of the project, which is linked in the relevant places. The work itself only shows fragments that are relevant to the passage to ensure the best possible reading flow.
 
 \section{Environment}
 \label{sec:dsrenv}
@@ -430,10 +430,11 @@ In contrast to KubeEdge, as also noted in \autoref{sec:disk8s}, KubeFed relies o
 \section{Use-Case}
 \label{sec:dsrusecase}
 \label{sec:dsrusecaseweb}
-As a test, a web-application is distributed over several egde-nodes which is to be made accessible locally as well as via ClusterIP. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed here:
+As a test, a web-application is distributed over several egde-nodes which is to be made accessible locally as well as via ClusterIP. The goal here is not to develop a complex application, but to uncover the behaviour of the environments. A ready-made nginx container, which is available for both arm and x86, is used as the test pod. The name of the docker image, available in the DockerHub, is: nginxdemos/hello. The \ac{K8s} objects used are composed of a service definition and a deployment file. The most important parts are listed in the example \autoref{lst:webapp}.
 
 \vspace{\baselineskip}
-\begin{lstlisting}[caption={Web-application code},captionpos=b]
+\begin{minipage}{\linewidth}
+    \begin{lstlisting}[caption={Web-application code},captionpos=b,label=lst:webapp]
 kind: Deployment
 spec:
   selector:
@@ -453,9 +454,11 @@ spec:
     targetPort: 80
   selector:
     app: nginx1
-\end{lstlisting}
+    \end{lstlisting}
+\end{minipage}
 
-It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs}\cite{bk-gh-docs}.
+
+It is important to note that the above configuration only contains parts to increase readability and cannot be applied in this form. The full configuration can be found in the Github repository under the folder \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/}{}{}{DOCs} \cite{bk-gh-docs}.
 
 \paragraph{Relevance} The example used provides a good basis for the tests carried out in the following. The object "Deplyoment" is used, which allows the pods defined to be scaled accordingly. This is a fundamental part of any environment at the edge. A "Service" is also defined that allows any network functionalities to be tested. Many of the applications that are specifically designed for the edge are based on these two mechanisms.
 
@@ -539,37 +542,38 @@ One possibility to establish the connection between the edge-locations in this v
     \item \textit{Restart} - and verify your system-changes.
 \end{enumerate}
 
-The complete process is available in the following document: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md}{}{}{Berndinox/K8sEdge}\cite{bk-gh-edgemesh}. Please note that the project may change rapidly, the installation-process linked above is just a snapshot of the current state. As long as EdgeMesh could be installed without errors, the deployment and service object described above can be distributed and scheduled without any modification. With this solution, the native \ac{K8s} approach is fully followed and ensured.\medbreak
+The complete process is available in the following document: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubeedge-edgemesh.md}{}{}{Berndinox/K8sEdge} \cite{bk-gh-edgemesh}. Please note that the project may change rapidly, the installation-process linked above is just a snapshot of the current state. As long as EdgeMesh could be installed without errors, the deployment and service object described above can be distributed and scheduled without any modification. With this solution, the native \ac{K8s} approach is fully followed and ensured.\medbreak
 
 What is certain is that the documentation at this point is not sufficiently well formulated. It advertises native \ac{K8s} support, which cannot be met with a default KubeEdge installation. Although it is pointed out that logging has to be configured separately, the networking section receives little or no attention. It was only through intensive testing and tracking of issues on Github that the above behaviour regarding connectivity could be uncovered. This fact is taken into account in the later evaluation.
 
-\subsection{KubeFed} In principle, the same considerations must be made for delpoying on KubeFed as for those on KubeEdge without network support. The application must be designed so that no communication can take place between the clusters. However, the native approach of \ac{K8s} can be followed within the respective clusters at the edge. It would also be possible to operate several nodes at the respective edge-locations in the form of a cluster. Within this cluster, communication between the workloads would be possible without restrictions. Due to these properties, KubeFed is always particularly suitable when fewer and better developed locations are to be connected, which must be able to act independently. In order to roll out the deployment mentioned in the introduction of the chapter to the federated clusters, some adaptations are nevertheless necessary, which are illustrated below. 
+\subsection{KubeFed} In principle, the same considerations must be made for delpoying on KubeFed as for those on KubeEdge without network support. The application must be designed so that no communication can take place between the clusters. However, the native approach of \ac{K8s} can be followed within the respective clusters at the edge. It would also be possible to operate several nodes at the respective edge-locations in the form of a cluster. Within this cluster, communication between the workloads would be possible without restrictions. Due to these properties, KubeFed is always particularly suitable when fewer and better developed locations are to be connected, which must be able to act independently. In order to roll out the deployment mentioned in the introduction of the chapter to the federated clusters, some adaptations are nevertheless necessary, which are illustrated below.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}
+    \caption{KubeFed objects}
+    \label{fig:kubefed-resources}
+\end{figure}
 
 \begin{enumerate}
     \item \textit{Enable API-Ressource} - On the master instance, the resources earmarked for distribution must be enabled. Per-default KubeFed does not distribute any resources. In this specific case, we have to enable the deployment and serivce object as follows.
     \begin{lstlisting}[caption={Enable federation},captionpos=b]
-        kubefedctl enable deployments.apps, services --kubefed-namespace kube-federation-system
+kubefedctl enable deployments.apps, services --kubefed-namespace kube-federation-system
     \end{lstlisting}
     \item \textit{Create Namespace} - The first step is to create a namespace at the master, which then contains all the resources that are distributed to the clusters at the edge. In our first spefici use-case the namespace ist called "test1".
-    \item \textit{Create Ressources} - At this point it is crucial to understand that KubeFed distinguishes between two types of objects. The normal objects, which are however only executed and managed on the master, and specially federated objects which will be deployed on the edge-clusters. The subsequent picture illustrates the interaction.
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.70\textwidth]{PICs/drawio/kubefed-ressources.drawio.pdf}
-        \caption{KubeFed objects}
-        \label{fig:kubefed-resources}
-    \end{figure} \medbreak
-    The conventional objects are simply preceded by the abbreviation "Federation". If the API-resource is also delegated, the objects are passed to the edge-clusters and schedulded there in form of the default objects. The environment at the edge does not even know about the existence of these special federated resources, because they are scheduld in form of a default object. The service and deployment mentioned at the beginning is therefore expanded as follows.
-    \begin{lstlisting}[float,caption={Federated Object},captionpos=b]
-        apiVersion: types.kubefed.io/v1beta1
-        kind: FederatedDeployment
-        spec:
-          ...
-        placement:
-          clusters:
-          - name: edge1
-          - name: edge2
+    \item \textit{Create Ressources} - At this point it is crucial to understand that KubeFed distinguishes between two types of objects. The normal objects, which are however only executed and managed on the master, and specially federated objects which will be deployed on the edge-clusters. \autoref{fig:kubefed-resources} illustrates the interaction between the components. The conventional objects are simply preceded by the abbreviation "Federation". If the API-resource is also delegated, the objects are passed to the edge-clusters and schedulded there in form of the default objects. The environment at the edge does not even know about the existence of these special federated resources, because they are scheduld in form of a default object. The service and deployment mentioned at the beginning is therefore expanded as shown in \autoref{lst:fedobj}.
+
+    \begin{lstlisting}[caption={Federated Object},captionpos=b,label=lst:fedobj]
+apiVersion: types.kubefed.io/v1beta1
+kind: FederatedDeployment
+spec:
+    ...
+placement:
+    clusters:
+    - name: edge1
+    - name: edge2
     \end{lstlisting}
-    The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved in the Github Repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge - KubeFed usecase}\cite{bk-gh-usecase}.
+    The same approach applies for the service object. An important part of the configuration is the placement part, which defines on which edge clusters the respective object is to be created. The complete configuration, can be found in following file saved in the Github Repository: \hyperref{https://github.com/Berndinox/K8sEdge/blob/main/DOCs/kubefed-usecase1.md}{}{}{Berndinox/K8sEdge - KubeFed usecase} \cite{bk-gh-usecase}.
 \end{enumerate}
 
 \pagebreak
@@ -579,7 +583,7 @@ This part examines the previously created use-case on a scientific level. The va
 
 \section{Performed Tests}
 \label{sec:dsrtest}
-In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with DSR guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
+In addition to the previously described feasibility, the operation of the respective environment is also of great importance. In the following section, tests are therefore carried out on connectivity, resource utilisation and the application itself. If problems arise or environments do not function as expected, adjustments can be made in accordance with \ac{DSR} guidelines. These adjustments are documented and described accordingly and can be regarded as best-practice.
 \subsection{Ressource usage}
 \label{sec:dsrtestress}
 As already described in the \autoref{sec:generalchallanges}, the efficient use of resources is an important characteristic in the edge-computing environment. Due to the fact that we rely on K3s as \ac{K8s} distribution for the expression with KubeFed, which is known for using few resources, comparable results can be expected. In principle, however, KubeEdge should be somewhat more lightweight, since only the Docker agent as well as EdgeMesh is used on the edge-nodes. Unknown at this point is how many resources are consumed by the EdgeMesh containers. The tests are performaned on the edge-side choosing node "edge-1" located in US. The uptime of the nodes for both environments, at time of the measurements, is exactly the same, approximately 15 minutes.
@@ -666,7 +670,7 @@ As the data shows, KubeEdge gets by with less RAM. KubeFed, on the other hand, u
     \item \textit{KubeEdge} - 3.5 GB allocated
     \item \textit{KubeFed} - 4.1 GB allocated
 \end{itemize}
-Similar to the results before, KubeEdge is also more efficient in this section.
+Similar to the results before, KubeEdge is also more efficient in this area.
 
 \subsubsection{Load} In the next part of the tests-series, the behaviour during increased CPU and memory load is examined. Since we are only concentrating on the performance part of individual nodes and its effects in this section, no \ac{HPA} is used but only a pod that simulates high load. The behaviour of the overall system, when distributing and scaling application load is examinated in the \autoref{sec:dsrtestapp}. The same environment as for the previous tests is assumed as the basis for conducting the test. To test the described scenario, the tool "kube-stresscheck"\cite{kube-stress} is used. This tool creates a pod on one of the available edge-nodes which, on the one hand, occupies the entire \ac{RAM} and, on the other hand, utilises all available CPU cores.
 
@@ -1028,7 +1032,7 @@ Both architectures, KubeEdge and KubeFed were able to scale without major proble
 
 \subsection{Security bechmark}
 \label{sec:dsrusecasesec}
-In the course of the tests carried out, security scans were also executed in order to identify any problems with the two environments. The following output shows the results of the test framework "falco"\cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}. The complete results for each scan including details are deposited in the \hyperref{https://github.com/Berndinox/K8sEdge/tree/main/Tests/it-security}{}{}{Github project} \cite{gh-bk-ke-bench,gh-bk-kf-bench}.
+In the course of the tests carried out, security scans were also executed in order to identify any problems with the two environments. The following output shows the results of the test framework "falco" \cite{falco-scan}, which serves as a particularly prominent tool for finding vulnerabilities within \ac{K8s}. The complete results for each scan including details are deposited in the \hyperref{https://github.com/Berndinox/K8sEdge/tree/main/Tests/it-security}{}{}{Github project} \cite{gh-bk-ke-bench,gh-bk-kf-bench}.
 
 \vspace{\baselineskip}
 \begin{center}
@@ -1053,9 +1057,9 @@ In the course of the tests carried out, security scans were also executed in ord
 \end{minipage}
 \end{center}
 
-At first glance, the above results do not meet expectations. Both environments have the same result, only two tests can be passed successfully. If one analyses the details, however, one quickly comes to the conclusion that many of the tests carried out are not valid for the present environment. The first part of the test focuses on the analysis of the component "kubelet". The two environments used, however, rely on K3s as \ac{K8s} distribution in the cloud, or for KubeFed also on the edge-nodes. K3s uses different default paths for kubelet and offers its own configuration parameters\cite{k3s-config} to customise the agent. KubeEdge goes one step further on the edge-nodes and dispenses with the standard agent altogether. The result of the first part is not that the environments are not able to fulfill safety aspects, but rather that the standard procedures used within the security benchmark are not, or only slightly, suitable for this type of environments. 
+At first glance, the above results do not meet expectations. Both environments have the same result, only two tests can be passed successfully. If one analyses the details, however, one quickly comes to the conclusion that many of the tests carried out are not valid for the present environment. The first part of the test focuses on the analysis of the component "kubelet". The two environments used, however, rely on K3s as \ac{K8s} distribution in the cloud, or for KubeFed also on the edge-nodes. K3s uses different default paths for kubelet and offers its own configuration parameters \cite{k3s-config} to customise the agent. KubeEdge goes one step further on the edge-nodes and dispenses with the standard agent altogether. The result of the first part is not that the environments are not able to fulfill safety aspects, but rather that the standard procedures used within the security benchmark are not, or only slightly, suitable for this type of environments. 
 
-\paragraph{KubeFed} For this reason, Rancher has published its own guide\cite{k3s-assesment}, which clarifies these points accordingly. In the following, the tests modified especially for K3s are therefore run through in order to obtain a meaningful result. The following tests concern the nodes:
+\paragraph{KubeFed} For this reason, Rancher has published its own guide \cite{k3s-assesment}, which clarifies these points accordingly. In the following, the tests modified especially for K3s are therefore run through in order to obtain a meaningful result. The following tests concern the nodes:
 
 \begin{itemize}
     \itemsep0em
@@ -1073,7 +1077,7 @@ The tests carried out take into account the following components:
     \item PodSecurityPolicies
     \item NetworkPolicies
 \end{itemize}
-The complete test is stored at the thesis repo\cite{bk-gh-repo} in the file \hyperref{RL: https://github.com/Berndinox/}{}{}{"k3s-test.md"}\cite{bk-gh-k3s-test}. In the course of the test run, all requirements were met, except for two weak points. The first part that did not go through successfully concerns the \ac{PSP}. The \ac{PSP} are an important part of the cluster, responsible for hardening pods. Control mechanisms for volumes, networking or even apparmor or selinux can be used with it. The following code excerpt proves, the extension is not installed.
+The complete test is stored at the thesis repo \cite{bk-gh-repo} in the file \hyperref{RL: https://github.com/Berndinox/}{}{}{"k3s-test.md"} \cite{bk-gh-k3s-test}. In the course of the test run, all requirements were met, except for two weak points. The first part that did not go through successfully concerns the \ac{PSP}. The \ac{PSP} are an important part of the cluster, responsible for hardening pods. Control mechanisms for volumes, networking or even apparmor or selinux can be used with it. The following code excerpt proves, the extension is not installed.
 
 
 \begin{lstlisting}[caption={K3s PSP test},captionpos=b]
@@ -1106,7 +1110,7 @@ Afterwards, a freely selectable plug-in such as Calico, Canal or Cilium can be i
     \item EdgeMesh
 \end{itemize}
 
-Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port\cite{bk-gh-ke-node-test} and is therefore accessible from the outside, provided it is not blocked on the firewall. This can pose a safety risk. With regard to the security of the workloads on EdgeCore, it should be noted that no PodSecurity policies can be applied. For this, however, there is a separate framework, called "SPIFFE" that offers comparable functionalities\cite{ke-secure-fw}. However, the implementation requires additional software and server components and entails a much higher level of complexity. Concerning the last component, EdgeMesh, important insights could be gained. The security section of the official EdgeMesh documentation describes: "The EdgeMesh service does not turn on security by default, and edgemesh-server establishes a connection with edgemesh-agent without any authentication" \cite{em-security}. This means that once the \hyperref{https://edgemesh.netlify.app/guide/getting-started.html}{}{}{"Getting Started"}\cite{em-getstart} instructions have been followed, the nodes communicate with each other without encryption. There is no special note on this page which highlights that. In order to enable the encryption of the communication a certificate authority is required. The CloudCore componente, which runs on the central instance, can fulfil this role. The following adjustments should therefore be carried out in any case for the ConfigMaps of the EdgeMesh agent and server.
+Due to the use of EdgeMesh, only Docker can be used as a container runtime. K3s, on the other hand, is making use of containerd, which has developed as a newer standard. However, both runtimes are generally considered secure. As defined in the introduction, this thesis does not focus on advanced functionalities such as message queues or managing IoT devices. Nevertheless, it should be mentioned that the MQTT broker binds a public port\cite{bk-gh-ke-node-test} and is therefore accessible from the outside, provided it is not blocked on the firewall. This can pose a safety risk. With regard to the security of the workloads on EdgeCore, it should be noted that no PodSecurity policies can be applied. For this, however, there is a separate framework, called "SPIFFE" that offers comparable functionalities\cite{ke-secure-fw}. However, the implementation requires additional software and server components and entails a much higher level of complexity. Concerning the last component, EdgeMesh, important insights could be gained. The security section of the official EdgeMesh documentation describes: "The EdgeMesh service does not turn on security by default, and edgemesh-server establishes a connection with edgemesh-agent without any authentication" \cite{em-security}. This means that once the \hyperref{https://edgemesh.netlify.app/guide/getting-started.html}{}{}{"Getting Started"} \cite{em-getstart} instructions have been followed, the nodes communicate with each other without encryption. There is no special note on this page which highlights that. In order to enable the encryption of the communication a certificate authority is required. The CloudCore componente, which runs on the central instance, can fulfil this role. The following adjustments should therefore be carried out in any case for the ConfigMaps of the EdgeMesh agent and server.
 
 \begin{lstlisting}[caption={EdgeMesh security\cite{bk-gh-ke-node-test}},captionpos=b]
 modules:
@@ -1116,7 +1120,7 @@ modules:
       httpServer: https://KubeEdge-Master:10002
 \end{lstlisting}
 
-\paragraph{Policies} The second part, of the test using "falco"\cite{falco-scan} in the beginning of the chapter, focuses mainly on the policies that affect security within the cluster. Since no hardening of the workloads has taken place to date, and the tests were carried out with full administrative rights, warnings also appear here. According to the "4Cs" of security, this mainly concerns the container part. Further safeguarding considerations and recommendations, although not the main focus of this work, can be found in the document \autoref{sec:it-sec-end}.
+\paragraph{Policies} The second part, of the test using "falco" \cite{falco-scan} in the beginning of the chapter, focuses mainly on the policies that affect security within the cluster. Since no hardening of the workloads has taken place to date, and the tests were carried out with full administrative rights, warnings also appear here. According to the "4Cs" of security, this mainly concerns the container part. Further safeguarding considerations and recommendations, although not the main focus of this work, can be found in the document \autoref{sec:it-sec-end}.
 
 \paragraph{Security by default} The very highest security standard is not achieved with the standard installation for either architecture. In the case of KubeFed, a comparatively good level is achieved. Although some extended functionalities are missing, which allow additional protection of the workload. But, tese are mainly optional features. In the case of KubeEdge, however, there are serious deficiencies. If you follow the normal installation routine, no encryption is used between the nodes. All \ac{K8s} traffic is sent unencrypted over the internet. A customisation to encrypt the communication is highly recommended.
 
@@ -1294,7 +1298,7 @@ With KubeFed, however, the API port 6443 (default) must be accessible from the c
         \item Unnecessary stuff inside containers like build tools or even shells should be avoided. Distroless or "from Scratch" Images is the prefered way to create container images.
         \item The use of recent software packages or containers tagged as "latest" is recommanded. Although this can cause problems in the productive environment, it ensures that the latest version is always used. If specific versions are chosen, a corresponding update mechanism should be implemented.
         \item Images should be checked for vulnerabilities on an ongoing basis. A number of plug-ins integrate seamlessly into the CI/CD pipeline offering this functionality.
-        \item Configurations that describe the workload (YAML Files) must meet certain security standards. Tools that can carry out these checks automatically are also available for this purpose. One of these tools offering such functionality is \hyperref{https://kubesec.io/}{}{}{kubesec}\cite{kubesec}.
+        \item Configurations that describe the workload (YAML Files) must meet certain security standards. Tools that can carry out these checks automatically are also available for this purpose. One of these tools offering such functionality is \hyperref{https://kubesec.io/}{}{}{kubesec} \cite{kubesec}.
     \end{itemize}
     \item \textbf{Running worload}
     \begin{itemize}
@@ -1344,7 +1348,7 @@ In order to secure the environment accordingly, taking into account the points m
     \end{itemize}
 \end{enumerate}
 
-\subsubsection{Findings} This part clearly summarises the results obtained in Chapter \autoref{sec:dsrusecasesec}.
+\subsubsection{Findings} The following paragraphs summarises the results obtained in Chapter \autoref{sec:dsrusecasesec}.
 
 \paragraph{KubeEdge} Functionalities such as NetworkPolicies or \ac{PSP} are not supported by KubeEdge. An alternative framework, SPIFFE\cite{ke-secure-fw}, is available for this purpose. Thus, while it can be used to check and restrict many security-related aspects such as the integrity of the application and workloads or even the nodes, it also requires more effort to implement. Since specially developed components are used, conventional security tests cannot be applied or have no significance. KubeEdge does not provide a guide or recommendations for hardening. The EdgeMesh component has a serious gap; if encryption is not explicitly activated, all communications take place without these security safeguards. Finally, it is important to note that KubeEdge only supports Kubernetes up to version 1.21. The most recent version at the time of the survey was version 1.23.
 
@@ -1470,7 +1474,7 @@ It should be noted that the table shown above is only a snapshot. The values may
 
 \section{Criteria catalogue}
 \label{sec:cc}
-The following catalogue of criteria can be compiled on the basis of the data obtained in \autoref{sec:variables}. Zangemeister defines the method as follows: "Utility analysis is the analysis of a set of complex alternative actions with the purpose of ordering the elements of this set according to the preferences of the decision maker with respect to a multidimensional goal system"\cite{nwa}. By awarding points for each sub-area, the target environment with the highest effectiveness can be selected. The multiattribute value function is used for this purpose. The sum of the calculated individual attributes results in the total value per solution.
+The following catalogue of criteria can be compiled on the basis of the data obtained in \autoref{sec:variables}. Zangemeister defines the method as follows: "Utility analysis is the analysis of a set of complex alternative actions with the purpose of ordering the elements of this set according to the preferences of the decision maker with respect to a multidimensional goal system" \cite{nwa}. By awarding points for each sub-area, the target environment with the highest effectiveness can be selected. The multiattribute value function is used for this purpose. The sum of the calculated individual attributes results in the total value per solution.
 
 \begin{equation*}
 v(a) = \sum \limits_{r=0}^{m}w_{r} v_{r} (a_{r})
