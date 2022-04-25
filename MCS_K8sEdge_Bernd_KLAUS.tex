@@ -330,8 +330,47 @@ The above-mentioned challenges provide a good starting point for defining the ne
 As described in \autoref{sec:methodology}, \ac{DSR} is used as a scientific method to create the \ac{PoC}. \ac{DSR} describes itself as follows: "A common topic when performing research in technical disciplines is to design some kind of artefact, such as a model, an information system, or a method for performing a certain task. To address this topic in a systematic and scientific way, Design Science Research (DSR) has stablished itself as an appropriate research method" \cite{dsr-method}. Following the paradigm two environments are built as described in \autoref{sec:dsrenv}, each representing one of the architectures listed in \autoref{sec:architecture}. A test-deployment is then applied to both environments and tested against specific use-cases to be found in \autoref{sec:dsrusecase}. The findings are finally interpreted and summarised in \autoref{sec:dsranalysis} and serve as a basis for the catalog in \autoref{chap:catalogue}.\par
 It is essential in the procedure that the environments can be refined and adapted during the execution of the test scenarios. This is listed and described in the respective chapters insofar as adaptations have been made. The starting point is always the simplest form of implementation or the standard version without any adaptations for both architectures.
 
+\section{Requirements}
+
+\subsection{Functional requirements}
+Technical aspects that should be sealed in the course of the \ac{PoC}.
+\paragraph{Distribution} The goal is to provide a web application that can be deployed across many nodes that are geographically spread out. It should be possible to carry out the distribution in an essentially automated manner.
+\paragraph{Connectivity} The service should be made accessible locally as well as within the cluster itself. The possibility of releasing services to the Internet should also be examined.
+\paragraph{Compatibility} The more different devices are supported, the more flexible the environment can be. A high level of diversity is therefore the main focus.
+\paragraph{Scalability} If necessary, the service should be able to be quickly adapted to load changes. The scaling of the application will be evaluated accordingly.
+\paragraph{Operation} Easy handling as well as high stability can simplify the operation accordingly. Activities such as those that can occur in daily business are also examined.
+
+
+\subsection{Non-functional requirements}
+Other non-technical requirements which should be covered accordingly. The focus in this section is on the dependencies around the products.
+\paragraph{Community} An active community can be an important attribute. Sharing experiences can help to build up know-how more quickly.
+\paragraph{Support} Especially in the business environment, support from the manufacturer can be an important means.
+\paragraph{Future-proof} The further development or the roadmap of the respective solutions also play an important role in the choice. The background of the two projects should therefore be illuminated accordingly.
+
+\subsection{Security requirements}
+The security requirements are defined according to the security measures or recommendations defined by OWASP CheatSheetSeries \cite{owasp-k8s-cheat}. The model of the "4C's" \cite{k8s-4cs} also has an influence in order to be able to cover all safety aspects. The work is divided into the following categories and respective requirements.
+\paragraph{Encryption} Encryption of data transferred between workers and masters is an absolute requirement. Data traffic should generally no longer be transmitted unencrypted on the public internet at the time of writing.
+\paragraph{Logging} The central collection of log data is another important factor in making attacks detectable in the first place. Such functionality is therefore being evaluated.
+\paragraph{Workload} The workload itself should be appropriately hardenable according to OWASP specifications \cite{owasp-k8s-cheat}. For this purpose, different guidelines that can secure the system are examined.
+\paragraph{Architecture} The basic security architecture of the environments is also checked for standards and best practices. The focus is also on the behaviour during operation. The highest possible standard should be achieved.
+
 \section{Testing and Research}
-The tests, performed in \autoref{chap:poc-research}, cover four areas: resource utilisation, network and connectivity, application stability and IT-Security. The focus is on exploring the peculiarities and behaviour of the respective environment. As far as possible, quantitative data is collected, which is then evaluated in qualitative form. The focus is not on implementing the most complicated applications available, but on testing the main functionalities of \ac{K8s} itself. Therefore, using the most commonly used configuration objects is sufficient.
+In order to fully check the requirements, tests are carried out at the \ac{PoC} in the following categories: resource utilisation, network and connectivity, application stability and IT-Security. The focus is on exploring the peculiarities and behaviour of the respective environment. As far as possible, quantitative data is collected, which is then evaluated. The focus is not on implementing the most complicated applications available, but on testing the main functionalities of \ac{K8s} itself. Therefore, using the most commonly used configuration objects is sufficient.
+
+\section{Headings covered}
+Based on the requirements and including the results collected in the \ac{PoC}, the following categories are considered in the catalogue.
+
+\begin{itemize}
+    \itemsep0em
+    \item Installation
+    \item Operation
+    \item Application
+    \item IT-Security
+    \item Community
+    \item Support
+    \item Future-proof
+\end{itemize}
+
 
 \pagebreak
 \chapter{Proof-of-concept}
