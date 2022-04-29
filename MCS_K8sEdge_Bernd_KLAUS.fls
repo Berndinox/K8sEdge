@@ -1504,10 +1504,10 @@ INPUT .\PICs\k8s-architecture.png
 INPUT .\PICs\k8s-architecture.png
 INPUT .\PICs\k8s-architecture.png
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8t.tfm
-INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvro8t.vf
-INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvro8r.tfm
 INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvr8t.vf
 INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvr8r.tfm
+INPUT C:\Program Files\MiKTeX\fonts\vf\adobe\helvetic\phvro8t.vf
+INPUT C:\Program Files\MiKTeX\fonts\tfm\adobe\helvetic\phvro8r.tfm
 INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
 INPUT .\PICs\drawio\defaul-k8s.drawio.pdf
 INPUT PICs\drawio\defaul-k8s.drawio.pdf
