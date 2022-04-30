@@ -12,7 +12,7 @@
 %% Die genaue Beschreibung entnehmen Sie bitte der beigelegten Dokumentation twbook.pdf.
 %% Diese wurde ebenso automatisch generiert.
 %% 
-%% Aktuelle SVN-Version der Datei: 149
+%% Aktuelle Version der Datei: cae46ed Richard Otrebski 2020-12-10 19:40:13 +0100
 %% 
 %% Copyright (C) 2014-2015 Richard Otrebski
 %% <otrebski@technikum-wien.at>
@@ -32,38 +32,62 @@
 \newcommand{\degreecourse}{TW}
 \DeclareOption{ACADEMY}{\renewcommand*{\degreecourse}{Academy}%
 \renewcommand*{\institution}{Academy}}
-\DeclareOption{BBE}{\renewcommand*{\degreecourse}{BBE}}
-\DeclareOption{BEE}{\renewcommand*{\degreecourse}{BEE}}
-\DeclareOption{BEL}{\renewcommand*{\degreecourse}{BEL}}
-\DeclareOption{BEW}{\renewcommand*{\degreecourse}{BEW}}
-\DeclareOption{BIC}{\renewcommand*{\degreecourse}{BIC}}
-\DeclareOption{BIF}{\renewcommand*{\degreecourse}{BIF}}
-\DeclareOption{BIW}{\renewcommand*{\degreecourse}{BIW}}
-\DeclareOption{BMB}{\renewcommand*{\degreecourse}{BMB}}
-\DeclareOption{BMR}{\renewcommand*{\degreecourse}{BMR}}
-\DeclareOption{BSA}{\renewcommand*{\degreecourse}{BSA}}
-\DeclareOption{BST}{\renewcommand*{\degreecourse}{BST}}
-\DeclareOption{BVU}{\renewcommand*{\degreecourse}{BVU}}
-\DeclareOption{BWI}{\renewcommand*{\degreecourse}{BWI}}
-\DeclareOption{MBE}{\renewcommand*{\degreecourse}{MBE}}
-\DeclareOption{MEE}{\renewcommand*{\degreecourse}{MEE}}
-\DeclareOption{MES}{\renewcommand*{\degreecourse}{MES}}
-\DeclareOption{MGR}{\renewcommand*{\degreecourse}{MGR}}
-\DeclareOption{MGS}{\renewcommand*{\degreecourse}{MGS}}
-\DeclareOption{MIC}{\renewcommand*{\degreecourse}{MIC}}
-\DeclareOption{MIE}{\renewcommand*{\degreecourse}{MIE}}
-\DeclareOption{MIT}{\renewcommand*{\degreecourse}{MIT}}
-\DeclareOption{MIW}{\renewcommand*{\degreecourse}{MIW}}
-\DeclareOption{MMB}{\renewcommand*{\degreecourse}{MMB}}
-\DeclareOption{MMR}{\renewcommand*{\degreecourse}{MMR}}
-\DeclareOption{MSC}{\renewcommand*{\degreecourse}{MSC}}
-\DeclareOption{MSE}{\renewcommand*{\degreecourse}{MSE}}
-\DeclareOption{MST}{\renewcommand*{\degreecourse}{MST}}
-\DeclareOption{MTE}{\renewcommand*{\degreecourse}{MTE}}
-\DeclareOption{MTI}{\renewcommand*{\degreecourse}{MTI}}
-\DeclareOption{MTM}{\renewcommand*{\degreecourse}{MTM}}
-\DeclareOption{MTU}{\renewcommand*{\degreecourse}{MTU}}
-\DeclareOption{MWI}{\renewcommand*{\degreecourse}{MWI}}
+    \DeclareOption{BBE}{\renewcommand*{\degreecourse}{BBE}}
+    \DeclareOption{BEE}{\renewcommand*{\degreecourse}{BEE}}
+    \DeclareOption{BEL}{\renewcommand*{\degreecourse}{BEL}}
+    \DeclareOption{BEW}{\renewcommand*{\degreecourse}{BEW}}
+    \DeclareOption{BHF}{\renewcommand*{\degreecourse}{BHF}}
+    \DeclareOption{BIC}{\renewcommand*{\degreecourse}{BIC}}
+    \DeclareOption{BIF}{\renewcommand*{\degreecourse}{BIF}}
+    \DeclareOption{BIW}{\renewcommand*{\degreecourse}{BIW}}
+    \DeclareOption{BMB}{\renewcommand*{\degreecourse}{BMB}}
+    \DeclareOption{BMR}{\renewcommand*{\degreecourse}{BMR}}
+    \DeclareOption{BSA}{\renewcommand*{\degreecourse}{BSA}}
+    \DeclareOption{BWI}{\renewcommand*{\degreecourse}{BWI}}
+    \DeclareOption{LAA}{\renewcommand*{\degreecourse}{LAA}}
+    \DeclareOption{LAM}{\renewcommand*{\degreecourse}{LAM}}
+    \DeclareOption{LAZ}{\renewcommand*{\degreecourse}{LAZ}}
+    \DeclareOption{LBA}{\renewcommand*{\degreecourse}{LBA}}
+    \DeclareOption{LBD}{\renewcommand*{\degreecourse}{LBD}}
+    \DeclareOption{LBM}{\renewcommand*{\degreecourse}{LBM}}
+    \DeclareOption{LDA}{\renewcommand*{\degreecourse}{LDA}}
+    \DeclareOption{LDZ}{\renewcommand*{\degreecourse}{LDZ}}
+    \DeclareOption{LMD}{\renewcommand*{\degreecourse}{LMD}}
+    \DeclareOption{LPA}{\renewcommand*{\degreecourse}{LPA}}
+    \DeclareOption{LPC}{\renewcommand*{\degreecourse}{LPC}}
+    \DeclareOption{LPE}{\renewcommand*{\degreecourse}{LPE}}
+    \DeclareOption{LPJ}{\renewcommand*{\degreecourse}{LPJ}}
+    \DeclareOption{LPM}{\renewcommand*{\degreecourse}{LPM}}
+    \DeclareOption{LPP}{\renewcommand*{\degreecourse}{LPP}}
+    \DeclareOption{LPW}{\renewcommand*{\degreecourse}{LPW}}
+    \DeclareOption{LRA}{\renewcommand*{\degreecourse}{LRA}}
+    \DeclareOption{LRM}{\renewcommand*{\degreecourse}{LRM}}
+    \DeclareOption{LRZ}{\renewcommand*{\degreecourse}{LRZ}}
+    \DeclareOption{LUE}{\renewcommand*{\degreecourse}{LUE}}
+    \DeclareOption{LUM}{\renewcommand*{\degreecourse}{LUM}}
+    \DeclareOption{LUX}{\renewcommand*{\degreecourse}{LUX}}
+    \DeclareOption{LZA}{\renewcommand*{\degreecourse}{LZA}}
+    \DeclareOption{LZM}{\renewcommand*{\degreecourse}{LZM}}
+    \DeclareOption{LZZ}{\renewcommand*{\degreecourse}{LZZ}}
+    \DeclareOption{MCS}{\renewcommand*{\degreecourse}{MCS}}
+    \DeclareOption{MDS}{\renewcommand*{\degreecourse}{MDS}}
+    \DeclareOption{MEE}{\renewcommand*{\degreecourse}{MEE}}
+    \DeclareOption{MES}{\renewcommand*{\degreecourse}{MES}}
+    \DeclareOption{MGR}{\renewcommand*{\degreecourse}{MGR}}
+    \DeclareOption{MGS}{\renewcommand*{\degreecourse}{MGS}}
+    \DeclareOption{MIW}{\renewcommand*{\degreecourse}{MIW}}
+    \DeclareOption{MLE}{\renewcommand*{\degreecourse}{MLE}}
+    \DeclareOption{MMB}{\renewcommand*{\degreecourse}{MMB}}
+    \DeclareOption{MME}{\renewcommand*{\degreecourse}{MME}}
+    \DeclareOption{MMR}{\renewcommand*{\degreecourse}{MMR}}
+    \DeclareOption{MSC}{\renewcommand*{\degreecourse}{MSC}}
+    \DeclareOption{MSE}{\renewcommand*{\degreecourse}{MSE}}
+    \DeclareOption{MST}{\renewcommand*{\degreecourse}{MST}}
+    \DeclareOption{MTE}{\renewcommand*{\degreecourse}{MTE}}
+    \DeclareOption{MTI}{\renewcommand*{\degreecourse}{MTI}}
+    \DeclareOption{MTM}{\renewcommand*{\degreecourse}{MTM}}
+    \DeclareOption{MUT}{\renewcommand*{\degreecourse}{MUT}}
+    \DeclareOption{MWI}{\renewcommand*{\degreecourse}{MWI}}
 
 \newcommand{\doctype}{}
 \newcommand{\doctypeprint}{}
@@ -89,6 +113,8 @@ numbers=noendperiod]{scrbook}
 \RequirePackage{ifdraft}
 \RequirePackage{wallpaper}
 \RequirePackage{palatino}
+\RequirePackage{scrlfile}
+\ReplacePackage{scrpage2}{scrlayer-scrpage}
 \RequirePackage{scrlayer-scrpage}
 \RequirePackage{acronym}
 \RequirePackage{amsmath,amssymb,amsfonts,amstext}
@@ -143,6 +169,7 @@ numbers=noendperiod]{scrbook}
    \fi
 \fi
 \fi
+\RequirePackage{bookmark}
 
 \providecommand*{\@noopterr}[1]{}
 \renewcommand*{\@noopterr}[1]{%
@@ -174,7 +201,6 @@ urlcolor=TWblue, urlbordercolor=white}
 \ofoot[\footnotesize\pagemark]{\footnotesize\pagemark}
 \renewcommand*{\chapterpagestyle}{plain}
 
-\RequirePackage{remreset}
  \@removefromreset{figure}{chapter}
  \@removefromreset{table}{chapter}
  \@removefromreset{equation}{chapter}
@@ -235,153 +261,288 @@ urlcolor=TWblue, urlbordercolor=white}
 \Ifstr{\sprache}{german}{%
 \Ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
 \renewcommand*{\degreecourse}{Biomedical Engineering}}{}
-  \Ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
-\renewcommand*{\degreecourse}{Urbane Erneuerbare Energietechniken}}{}
+\Ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
+\renewcommand*{\degreecourse}{Urbane Erneuerbare Energietechnologien}}{}
 \Ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
 \renewcommand*{\degreecourse}{Elektronik}}{}
 \Ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW}%
-\renewcommand*{\degreecourse}{Elektronik/\allowbreak{}Wirtschaft}}{}
+\renewcommand*{\degreecourse}{Elektronik/Wirtschaft}}{}
+\Ifstr{\degreecourse}{BHF}{\renewcommand*{\cover}{PICs/BHF}%
+\renewcommand*{\degreecourse}{Human Factors and Sports Engineering}}{}
 \Ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
-\renewcommand*{\degreecourse}{Informations- und %
-  Kommunikationssysteme}}{}
+\renewcommand*{\degreecourse}{Informations- und Kommunikationssysteme}}{}
 \Ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
-\renewcommand*{\degreecourse}{Informatik}}{}
+\renewcommand*{\degreecourse}{Informatik/Computer Science}}{}
 \Ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
-\renewcommand*{\degreecourse}{Internationales %
-  Wirtschaftsingenieurwesen}}{}
-\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
-\renewcommand*{\degreecourse}{Mechatronik/\allowbreak{}Robotik}}{}
+\renewcommand*{\degreecourse}{Internationales Wirtschaftsingenieurwesen}}{}
 \Ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
 \renewcommand*{\degreecourse}{Maschinenbau}}{}
+\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR}%
+\renewcommand*{\degreecourse}{Mechatronik/Robotik}}{}
 \Ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
-\renewcommand*{\degreecourse}{Smart Homes und Assistive Technologies}}{}
-\Ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
-\renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\Ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
-\renewcommand*{\degreecourse}{Verkehr und Umwelt}}{}
-\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI}
+\renewcommand*{\degreecourse}{Smart Homes und Assistive Technologien}}{}
+\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI}%
 \renewcommand*{\degreecourse}{Wirtschaftsinformatik}}{}
-\Ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
-\renewcommand*{\degreecourse}{Medical Engineering \& e-Health}}{}
+\Ifstr{\degreecourse}{LAA}{\renewcommand*{\cover}{PICs/LAA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LAM}{\renewcommand*{\cover}{PICs/LAM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LAZ}{\renewcommand*{\cover}{PICs/LAZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LBA}{\renewcommand*{\cover}{PICs/LBA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LBD}{\renewcommand*{\cover}{PICs/LBD}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LBM}{\renewcommand*{\cover}{PICs/LBM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LDA}{\renewcommand*{\cover}{PICs/LDA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LDZ}{\renewcommand*{\cover}{PICs/LDZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LMD}{\renewcommand*{\cover}{PICs/LMD}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LPA}{\renewcommand*{\cover}{PICs/LPA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{App-Development}}{}
+\Ifstr{\degreecourse}{LPC}{\renewcommand*{\cover}{PICs/LPC}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Pre College Program}}{}
+\Ifstr{\degreecourse}{LPE}{\renewcommand*{\cover}{PICs/LPE}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Pre College Program Extended}}{}
+\Ifstr{\degreecourse}{LPJ}{\renewcommand*{\cover}{PICs/LPJ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPM}{\renewcommand*{\cover}{PICs/LPM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPP}{\renewcommand*{\cover}{PICs/LPP}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPW}{\renewcommand*{\cover}{PICs/LPW}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Web-Development}}{}
+\Ifstr{\degreecourse}{LRA}{\renewcommand*{\cover}{PICs/LRA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LRM}{\renewcommand*{\cover}{PICs/LRM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LRZ}{\renewcommand*{\cover}{PICs/LRZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LUE}{\renewcommand*{\cover}{PICs/LUE}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LUM}{\renewcommand*{\cover}{PICs/LUM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LUX}{\renewcommand*{\cover}{PICs/LUX}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LZA}{\renewcommand*{\cover}{PICs/LZA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{LZM}{\renewcommand*{\cover}{PICs/LZM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{LZZ}{\renewcommand*{\cover}{PICs/LZZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{MCS}{\renewcommand*{\cover}{PICs/MCS}%
+\renewcommand*{\degreecourse}{IT-Security}}{}
+\Ifstr{\degreecourse}{MDS}{\renewcommand*{\cover}{PICs/MDS}%
+\renewcommand*{\degreecourse}{Data Science}}{}
 \Ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
 \renewcommand*{\degreecourse}{Erneuerbare Urbane Energiesysteme}}{}
 \Ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
 \renewcommand*{\degreecourse}{Embedded Systems}}{}
 \Ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
-\renewcommand*{\degreecourse}{Gesundheits- und %
-  Rehabilitationstechnik}}{}
+\renewcommand*{\degreecourse}{Gesundheits- und Rehabilitationstechnik}}{}
 \Ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
 \renewcommand*{\degreecourse}{Game Engineering und Simulation}}{}
-\Ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC}%
-\renewcommand*{\degreecourse}{IT-Security}}{}
-\Ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
-\renewcommand*{\degreecourse}{Industrielle Elektronik}}{}
-\Ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
-\renewcommand*{\degreecourse}{Intelligent Transport Systems}}{}
 \Ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
-\renewcommand*{\degreecourse}{Internationales %
-  Wirtschaftsingenieurwesen}}{}
-\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
-\renewcommand*{\degreecourse}{Mechatronik/\allowbreak{}Robotik}}{}
-\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
-\renewcommand*{\degreecourse}{Integrative Stadtentwicklung -- Smart City}}{}
+\renewcommand*{\degreecourse}{Internationales Wirtschaftsingenieurwesen}}{}
+\Ifstr{\degreecourse}{MLE}{\renewcommand*{\cover}{PICs/MLE}%
+\renewcommand*{\degreecourse}{Leistungselektronik}}{}
+\Ifstr{\degreecourse}{MMB}{\renewcommand*{\cover}{PICs/MMB}%
+\renewcommand*{\degreecourse}{Maschinenbau}}{}
+\Ifstr{\degreecourse}{MME}{\renewcommand*{\cover}{PICs/MME}%
+\renewcommand*{\degreecourse}{Medical Engineering \& eHealth}}{}
+\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/MMR}%
+\renewcommand*{\degreecourse}{Mechatronik/Robotik}}{}
+\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MSC}%
+\renewcommand*{\degreecourse}{Integrative Stadtentwicklung - Smart City}}{}
 \Ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
-\renewcommand*{\degreecourse}{Softwareentwicklung}}{}
+\renewcommand*{\degreecourse}{Software Engineering}}{}
 \Ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
-\renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\Ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE_en}%
-\renewcommand*{\degreecourse}{Tissue Engineering and Regenerative %
-Medicine}}{}
+\renewcommand*{\degreecourse}{Sports Technology}}{}
+\Ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE}%
+\renewcommand*{\degreecourse}{Tissue Engineering and Regenerative Medicine}}{}
 \Ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI}%
-\renewcommand*{\degreecourse}{Telekommunikation und %
-  Internettechnologien}}{}
+\renewcommand*{\degreecourse}{Telekommunikation und Internettechnologien}}{}
 \Ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
-\renewcommand*{\degreecourse}{Innovations- und %
-  Technologiemanagement}}{}
-\Ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
-\renewcommand*{\degreecourse}{Technisches Umweltmanagement und %
-  {\"O}kotoxikologie}}{}
-\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI}%
-\renewcommand*{\degreecourse}{Wirtschaftsinformatik}}
+\renewcommand*{\degreecourse}{Innovations- und Technologiemanagement}}{}
+\Ifstr{\degreecourse}{MUT}{\renewcommand*{\cover}{PICs/MUT}%
+\renewcommand*{\degreecourse}{Technisches Umweltmanagement und {\"O}kotoxikologie}}{}
+\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/MWI}%
+\renewcommand*{\degreecourse}{Wirtschaftsinformatik}}{}
 }{}
 
 \Ifstr{\sprache}{english}{%
 \Ifstr{\degreecourse}{BBE}{\renewcommand*{\cover}{PICs/BBE}%
 \renewcommand*{\degreecourse}{Biomedical Engineering}}{}
 \Ifstr{\degreecourse}{BEE}{\renewcommand*{\cover}{PICs/BEE}%
-\renewcommand*{\degreecourse}{Urban Renewable Energy Technologies}}{}
+\renewcommand*{\degreecourse}{Renewable Energies}}{}
 \Ifstr{\degreecourse}{BEL}{\renewcommand*{\cover}{PICs/BEL}%
-\renewcommand*{\degreecourse}{Electronic Engineering}}{}
-\Ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW_en}%
-\renewcommand*{\degreecourse}{Electronics and Business}}{}
+\renewcommand*{\degreecourse}{Elektronic Engineering}}{}
+\Ifstr{\degreecourse}{BEW}{\renewcommand*{\cover}{PICs/BEW}%
+\renewcommand*{\degreecourse}{Elektronics and business}}{}
+\Ifstr{\degreecourse}{BHF}{\renewcommand*{\cover}{PICs/BHF}%
+\renewcommand*{\degreecourse}{Human Factors and Sports Engineering}}{}
 \Ifstr{\degreecourse}{BIC}{\renewcommand*{\cover}{PICs/BIC}%
-\renewcommand*{\degreecourse}{Information and Communication Systems %
-and Services}}{}
+\renewcommand*{\degreecourse}{Information and Communication Systems and Services}}{}
 \Ifstr{\degreecourse}{BIF}{\renewcommand*{\cover}{PICs/BIF}%
 \renewcommand*{\degreecourse}{Computer Science}}{}
 \Ifstr{\degreecourse}{BIW}{\renewcommand*{\cover}{PICs/BIW}%
-\renewcommand*{\degreecourse}{International Business and %
-Engineering}}{}
-\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
-\renewcommand*{\degreecourse}{Mechatronics/\allowbreak{}Robotics}}{}
+\renewcommand*{\degreecourse}{International Business and Engineering}}{}
 \Ifstr{\degreecourse}{BMB}{\renewcommand*{\cover}{PICs/BMB}%
-\renewcommand*{\degreecourse}{Maschinenbau}}{}
+\renewcommand*{\degreecourse}{Mechanical Engineering}}{}
+\Ifstr{\degreecourse}{BMR}{\renewcommand*{\cover}{PICs/BMR}%
+\renewcommand*{\degreecourse}{Mechatronics/Robotics}}{}
 \Ifstr{\degreecourse}{BSA}{\renewcommand*{\cover}{PICs/BSA}%
-\renewcommand*{\degreecourse}{Smart Homes und Assistive Technologies}}{}
-\Ifstr{\degreecourse}{BST}{\renewcommand*{\cover}{PICs/BST}%
-\renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
-\Ifstr{\degreecourse}{BVU}{\renewcommand*{\cover}{PICs/BVU}%
-\renewcommand*{\degreecourse}{Transport and Environment}}{}
-\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
+\renewcommand*{\degreecourse}{Smart Homes and Assistive Technologies}}{}
+\Ifstr{\degreecourse}{BWI}{\renewcommand*{\cover}{PICs/BWI}%
 \renewcommand*{\degreecourse}{Business Informatics}}{}
-\Ifstr{\degreecourse}{MBE}{\renewcommand*{\cover}{PICs/MBE}%
-\renewcommand*{\degreecourse}{Medical Engineering \& e-Health}}{}
+\Ifstr{\degreecourse}{LAA}{\renewcommand*{\cover}{PICs/LAA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LAM}{\renewcommand*{\cover}{PICs/LAM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LAZ}{\renewcommand*{\cover}{PICs/LAZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Software Quality Assurance Management}}{}
+\Ifstr{\degreecourse}{LBA}{\renewcommand*{\cover}{PICs/LBA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LBD}{\renewcommand*{\cover}{PICs/LBD}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LBM}{\renewcommand*{\cover}{PICs/LBM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Business Development and Transformation}}{}
+\Ifstr{\degreecourse}{LDA}{\renewcommand*{\cover}{PICs/LDA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LDZ}{\renewcommand*{\cover}{PICs/LDZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LMD}{\renewcommand*{\cover}{PICs/LMD}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Digital Business}}{}
+\Ifstr{\degreecourse}{LPA}{\renewcommand*{\cover}{PICs/LPA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{App-Development}}{}
+\Ifstr{\degreecourse}{LPC}{\renewcommand*{\cover}{PICs/LPC}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Pre College Program}}{}
+\Ifstr{\degreecourse}{LPE}{\renewcommand*{\cover}{PICs/LPE}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Pre College Program Extended}}{}
+\Ifstr{\degreecourse}{LPJ}{\renewcommand*{\cover}{PICs/LPJ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPM}{\renewcommand*{\cover}{PICs/LPM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPP}{\renewcommand*{\cover}{PICs/LPP}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Projekt- und Prozessmanagement}}{}
+\Ifstr{\degreecourse}{LPW}{\renewcommand*{\cover}{PICs/LPW}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Web-Development}}{}
+\Ifstr{\degreecourse}{LRA}{\renewcommand*{\cover}{PICs/LRA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LRM}{\renewcommand*{\cover}{PICs/LRM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LRZ}{\renewcommand*{\cover}{PICs/LRZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Rolling Stock Engineering}}{}
+\Ifstr{\degreecourse}{LUE}{\renewcommand*{\cover}{PICs/LUE}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LUM}{\renewcommand*{\cover}{PICs/LUM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LUX}{\renewcommand*{\cover}{PICs/LUX}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{User Experience Management}}{}
+\Ifstr{\degreecourse}{LZA}{\renewcommand*{\cover}{PICs/LZA}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{LZM}{\renewcommand*{\cover}{PICs/LZM}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{LZZ}{\renewcommand*{\cover}{PICs/LZZ}%
+\renewcommand*{\institution}{Academy}%
+\renewcommand*{\degreecourse}{Engineering Management}}{}
+\Ifstr{\degreecourse}{MCS}{\renewcommand*{\cover}{PICs/MCS}%
+\renewcommand*{\degreecourse}{IT-Security}}{}
+\Ifstr{\degreecourse}{MDS}{\renewcommand*{\cover}{PICs/MDS}%
+\renewcommand*{\degreecourse}{Data Science}}{}
 \Ifstr{\degreecourse}{MEE}{\renewcommand*{\cover}{PICs/MEE}%
-\renewcommand*{\degreecourse}{Renewable Urban Energy Systems}}{}
+\renewcommand*{\degreecourse}{Renewable Energies}}{}
 \Ifstr{\degreecourse}{MES}{\renewcommand*{\cover}{PICs/MES}%
 \renewcommand*{\degreecourse}{Embedded Systems}}{}
 \Ifstr{\degreecourse}{MGR}{\renewcommand*{\cover}{PICs/MGR}%
-\renewcommand*{\degreecourse}{Healthcare and Rehabilitation %
-  Technology}}{}
+\renewcommand*{\degreecourse}{Healthcare and Rehabilitation Technology}}{}
 \Ifstr{\degreecourse}{MGS}{\renewcommand*{\cover}{PICs/MGS}%
-\renewcommand*{\degreecourse}{Game Engineering and Simulation %
-  Technology}}{}
-\Ifstr{\degreecourse}{MIC}{\renewcommand*{\cover}{PICs/MIC_en}%
-\renewcommand*{\degreecourse}{IT-Security}}{}
-\Ifstr{\degreecourse}{MIE}{\renewcommand*{\cover}{PICs/MIE}%
-\renewcommand*{\degreecourse}{Industrial Electronics}}{}
-\Ifstr{\degreecourse}{MIT}{\renewcommand*{\cover}{PICs/MIT}%
-\renewcommand*{\degreecourse}{Intelligent Transport Systems}}{}
+\renewcommand*{\degreecourse}{Game Engineering and Simulation Technology}}{}
 \Ifstr{\degreecourse}{MIW}{\renewcommand*{\cover}{PICs/MIW}%
-\renewcommand*{\degreecourse}{International Business and %
-Engineering}}{}
-\Ifstr{\degreecourse}{MMB}{\renewcommand*{\cover}{PICs/BMB}%
-\renewcommand*{\degreecourse}{Maschinenbau}}{}
-\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/BMR_MMR}%
-\renewcommand*{\degreecourse}{Mechatronics/\allowbreak{}Robotics}}{}
-\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MIT}%
-\renewcommand*{\degreecourse}{Smart City}}{}
+\renewcommand*{\degreecourse}{International Business and Engineering}}{}
+\Ifstr{\degreecourse}{MLE}{\renewcommand*{\cover}{PICs/MLE}%
+\renewcommand*{\degreecourse}{Power Electronics}}{}
+\Ifstr{\degreecourse}{MMB}{\renewcommand*{\cover}{PICs/MMB}%
+\renewcommand*{\degreecourse}{Mechanical Engineering}}{}
+\Ifstr{\degreecourse}{MME}{\renewcommand*{\cover}{PICs/MME}%
+\renewcommand*{\degreecourse}{Medical Engineering \& eHealth}}{}
+\Ifstr{\degreecourse}{MMR}{\renewcommand*{\cover}{PICs/MMR}%
+\renewcommand*{\degreecourse}{Mechatronics/Robotics}}{}
+\Ifstr{\degreecourse}{MSC}{\renewcommand*{\cover}{PICs/MSC}%
+\renewcommand*{\degreecourse}{Integrative Urban Development - Smart City}}{}
 \Ifstr{\degreecourse}{MSE}{\renewcommand*{\cover}{PICs/MSE}%
 \renewcommand*{\degreecourse}{Software Engineering}}{}
 \Ifstr{\degreecourse}{MST}{\renewcommand*{\cover}{PICs/MST}%
-\renewcommand*{\degreecourse}{Sports Equipment Technology}}{}
+\renewcommand*{\degreecourse}{Sports Technology}}{}
 \Ifstr{\degreecourse}{MTE}{\renewcommand*{\cover}{PICs/MTE}%
-\renewcommand*{\degreecourse}{Tissue Engineering and Regenerative %
-Medicine}}{}
-\Ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI_en}%
-\renewcommand*{\degreecourse}{Telecommunications- and Internet %
-  Technologies}}{}
+\renewcommand*{\degreecourse}{Tissue Engineering and Regenerative Medicine}}{}
+\Ifstr{\degreecourse}{MTI}{\renewcommand*{\cover}{PICs/MTI}%
+\renewcommand*{\degreecourse}{Telecommunications and Internet Technologies}}{}
 \Ifstr{\degreecourse}{MTM}{\renewcommand*{\cover}{PICs/MTM}%
 \renewcommand*{\degreecourse}{Innovation and Technology Management}}{}
-\Ifstr{\degreecourse}{MTU}{\renewcommand*{\cover}{PICs/MTU}%
-\renewcommand*{\degreecourse}{Environmental Management and %
-  Ecotoxicolgy}}{}
-\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/BWI_MWI_en}%
+\Ifstr{\degreecourse}{MUT}{\renewcommand*{\cover}{PICs/MUT}%
+\renewcommand*{\degreecourse}{Ecotoxicology \& Environmental Management}}{}
+\Ifstr{\degreecourse}{MWI}{\renewcommand*{\cover}{PICs/MWI}%
 \renewcommand*{\degreecourse}{Information Systems Management}}{}
 }{}
-\Ifstr{\doctype}{}{}{\Ifstr{\institution}{Technikum}%
-  {\renewcommand*{\cover}{PICs/Arbeiten.jpg}}%
-  {\renewcommand*{\cover}{PICs/Arbeiten_Academy.jpg}}}
+
+\Ifstr{\doctype}{}{%
+  \renewcommand*{\cover}{PICs/fhtw_cover.png}%
+}{\Ifstr{\institution}{Technikum}%
+  {\renewcommand*{\cover}{PICs/fhtw_cover.png}}%
+  {\renewcommand*{\cover}{PICs/fhtw_cover.png}}}
 \newcommand*{\@supervisor}{}
 \newcommand*{\@supervisordesc}{}
 \newcommand{\supervisor}[2][]{\gdef\@supervisordesc{#1}\gdef\@supervisor{#2}}
@@ -442,12 +603,12 @@ Medicine}}{}
   \Ifstr{\degreecourse}{Technisches Umweltmanagement und
     {\"O}kotoxikologie}
   {
-    \begin{minipage}{0.64\linewidth}
+    \begin{minipage}{0.72\linewidth}
       \Ifstr{\sprache}{german}{\Ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\Ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\Ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\Ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
       \degreecourse
     \end{minipage}\vspace{5pt}}
   {
-    \begin{minipage}{0.64\linewidth}
+    \begin{minipage}{0.72\linewidth}
       \Ifstr{\sprache}{german}{\Ifstr{\doctype}{MASTERARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Master of Science in Engineering\grqq{}\\im Studiengang }{\Ifstr{\doctype}{BACHELORARBEIT}{zur Erlangung des akademischen Grades\\\glqq{}Bachelor of Science in Engineering\grqq{}\\im Studiengang }{Im Studiengang}}}{\Ifstr{\doctype}{MASTERTHESIS}{Thesis submitted in partial fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{\Ifstr{\doctype}{BACHELORTHESIS}{Term paper submitted in partial fulfillment of the requirements for the degree of Bachelor of Science in Engineering at the University of Applied Sciences Technikum Wien - Degree Program }{In}}}
       \degreecourse\vspace{5pt}
     \end{minipage}}}
@@ -821,7 +982,7 @@ Medicine}}{}
   \renewcommand*{\labelitemiii}{
     \LARGE\raisebox{0.3ex}{$\centerdot$}\hspace{-5pt}}
 }{}
-%% Verfasser der ï¿½nderung: Otrebski
+%% Verfasser der Änderung: Otrebski
 \endinput 
 \endinput
 %%
